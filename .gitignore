@@ -224,9 +224,10 @@ log/
 log/builds/test_*.log
 log/builds/*_test_*.log
 
-# Output directory (generated content)
+# Output directories (generated content)
 # Uncomment if you don't want to track generated output
 # output/
+custom-output/
 
 # Model cache files
 *.safetensors
