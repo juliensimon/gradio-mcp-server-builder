@@ -216,6 +216,10 @@ $RECYCLE.BIN/
 *.lnk
 
 # Project specific
+# Log directory and files
+log/
+*.log
+
 # Temporary log files from tests
 log/builds/test_*.log
 log/builds/*_test_*.log
