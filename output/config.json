@@ -1,0 +1,6 @@
+{
+  "server_port": 7860,
+  "client_port": 7861,
+  "mcp_sse_endpoint": "http://127.0.0.1:7860/gradio_api/mcp/sse",
+  "generated_at": "2025-07-25T01:12:38.479699"
+}

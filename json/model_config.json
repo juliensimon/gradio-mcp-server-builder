@@ -1,0 +1,93 @@
+{
+    "local_model": {
+        "default_model": "HuggingFaceTB/SmolLM3-3B",
+        "generation_params": {
+            "max_new_tokens": 300,
+            "temperature": 0.9,
+            "do_sample": true,
+            "top_p": 0.95,
+            "top_k": 40,
+            "repetition_penalty": 1.2,
+            "num_return_sequences": 1,
+            "length_penalty": 1.0
+        },
+        "tokenizer_params": {
+            "max_length": 512,
+            "truncation": true,
+            "padding": true,
+            "return_tensors": "pt"
+        },
+        "model_loading": {
+            "torch_dtype": "auto",
+            "low_cpu_mem_usage": true,
+            "trust_remote_code": false,
+            "cache_dir": null
+        },
+        "device_specific": {
+            "cpu": {
+                "torch_dtype": "float32",
+                "device_map": {"": "cpu"}
+            },
+            "mps": {
+                "torch_dtype": "float16",
+                "device_map": null
+            },
+            "cuda": {
+                "torch_dtype": "float16",
+                "device_map": "auto"
+            }
+        }
+    },
+    "api_model": {
+        "default_model": "gpt-3.5-turbo",
+        "generation_params": {
+            "max_tokens": 300,
+            "temperature": 0.8,
+            "top_p": 0.95,
+            "frequency_penalty": 0.1,
+            "presence_penalty": 0.1,
+            "n": 1,
+            "stream": false
+        },
+        "request_params": {
+            "timeout": 30,
+            "max_retries": 3,
+            "retry_delay": 1.0
+        }
+    },
+    "prompts": {
+        "docstring_improvement": {
+            "system_prompt": "Write only docstring text. No explanations.",
+            "user_prompt_template": "Docstring for {function_name}{signature}:",
+            "max_lines": 15,
+            "cleanup_patterns": [
+                "^```.*",
+                "^Here's?.*",
+                "^The function.*",
+                "^Revised.*",
+                "def .*"
+            ]
+        },
+        "test_prompt_generation": {
+            "system_prompt": "You are a helpful assistant that generates realistic test prompts for MCP functions.",
+            "user_prompt_template": "Generate {num_prompts} different test prompts that a user might ask to invoke this MCP function.\n\nFunction: {function_name}\nSignature: {signature}\nDocstring: {docstring}\n\nGenerate {num_prompts} natural language prompts that would trigger this function. Make them varied and realistic:",
+            "num_prompts": 5,
+            "fallback_template": "Test {function_name} with sample inputs"
+        }
+    },
+    "performance": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "use_cache": true,
+        "attention_implementation": "eager"
+    },
+    "fallback": {
+        "docstring_template": "Performs {function_name} operation with optimized parameters.",
+        "test_prompt_template": "Test {function_name} with various realistic inputs",
+        "error_handling": {
+            "max_retries": 3,
+            "fallback_on_error": true,
+            "log_errors": true
+        }
+    }
+} 

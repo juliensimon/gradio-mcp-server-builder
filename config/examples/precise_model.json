@@ -1,0 +1,94 @@
+{
+    "local_model": {
+        "default_model": "HuggingFaceTB/SmolLM3-3B",
+        "generation_params": {
+            "max_new_tokens": 150,
+            "temperature": 0.3,
+            "do_sample": true,
+            "top_p": 0.8,
+            "top_k": 20,
+            "repetition_penalty": 1.1,
+            "num_return_sequences": 1,
+            "early_stopping": true,
+            "length_penalty": 1.0
+        },
+        "tokenizer_params": {
+            "max_length": 512,
+            "truncation": true,
+            "padding": true,
+            "return_tensors": "pt"
+        },
+        "model_loading": {
+            "torch_dtype": "auto",
+            "low_cpu_mem_usage": true,
+            "trust_remote_code": false,
+            "cache_dir": null
+        },
+        "device_specific": {
+            "cpu": {
+                "torch_dtype": "float32",
+                "device_map": {"": "cpu"}
+            },
+            "mps": {
+                "torch_dtype": "float16",
+                "device_map": null
+            },
+            "cuda": {
+                "torch_dtype": "float16",
+                "device_map": "auto"
+            }
+        }
+    },
+    "api_model": {
+        "default_model": "gpt-3.5-turbo",
+        "generation_params": {
+            "max_tokens": 150,
+            "temperature": 0.3,
+            "top_p": 0.8,
+            "frequency_penalty": 0.0,
+            "presence_penalty": 0.0,
+            "n": 1,
+            "stream": false
+        },
+        "request_params": {
+            "timeout": 20,
+            "max_retries": 2,
+            "retry_delay": 1.0
+        }
+    },
+    "prompts": {
+        "docstring_improvement": {
+            "system_prompt": "You are a precise Python developer who writes concise, accurate docstrings for MCP functions.",
+            "user_prompt_template": "Generate a concise, accurate docstring for this function.\n\nFunction: {function_name}\nSignature: {signature}\nCurrent docstring: {current_docstring}\n\nCreate a brief, precise docstring that explains:\n- What the function does (one clear sentence)\n- Parameters and their types\n- Return value and type\n\nDocstring:",
+            "max_lines": 8,
+            "cleanup_patterns": [
+                "^```.*",
+                "^Here's?.*",
+                "^The function.*",
+                "^Revised.*",
+                "def .*"
+            ]
+        },
+        "test_prompt_generation": {
+            "system_prompt": "You are a systematic assistant that generates clear, direct test prompts for MCP functions.",
+            "user_prompt_template": "Generate {num_prompts} clear, direct test prompts for this MCP function.\n\nFunction: {function_name}\nSignature: {signature}\nDocstring: {docstring}\n\nGenerate {num_prompts} straightforward prompts that would invoke this function:",
+            "num_prompts": 3,
+            "fallback_template": "Test {function_name} with standard inputs"
+        }
+    },
+    "performance": {
+        "batch_size": 1,
+        "gradient_checkpointing": false,
+        "use_cache": true,
+        "attention_implementation": "eager"
+    },
+    "fallback": {
+        "docstring_template": "Performs {function_name} operation.",
+        "test_prompt_template": "Test {function_name} with standard inputs",
+        "error_handling": {
+            "max_retries": 2,
+            "fallback_on_error": true,
+            "log_errors": true
+        }
+    }
+} 
