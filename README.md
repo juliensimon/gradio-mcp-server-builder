@@ -2,6 +2,31 @@
 
 > **Generate MCP servers with Gradio interfaces from Python functions**
 
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-green.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+[![Gradio](https://img.shields.io/badge/Gradio-Interface-orange.svg)](https://gradio.app/)
+[![MCP](https://img.shields.io/badge/MCP-Server-purple.svg)](https://modelcontextprotocol.io/)
+
+## Table of Contents
+
+[![TOC](https://img.shields.io/badge/Table%20of%20Contents-%F0%9F%93%8B-blue.svg)](#table-of-contents)
+
+- [What It Does](#what-it-does)
+- [Example Functions](#example-functions)
+- [Getting Started](#getting-started)
+- [How It Works](#how-it-works)
+- [Configuration Options](#configuration-options)
+- [Limitations and Considerations](#limitations-and-considerations)
+- [Project Structure](#project-structure)
+- [Examples](#examples)
+- [Documentation](#documentation)
+- [Development Setup](#development-setup)
+- [Contributing](#contributing)
+- [License](#license)
+
 You have Python functions that you'd like to expose as web services. Maybe
 you've built utilities for data processing, calculations, or text analysis. You
 could build a web interface from scratch, but that takes time and requires web
@@ -268,6 +293,12 @@ pre-commit install
 
 The project uses pre-commit hooks to maintain code quality:
 
+[![Black](https://img.shields.io/badge/Code%20Style-Black-black.svg)](https://github.com/psf/black)
+[![isort](https://img.shields.io/badge/Imports-isort-blue.svg)](https://pycqa.github.io/isort/)
+[![flake8](https://img.shields.io/badge/Linting-flake8-yellow.svg)](https://flake8.pycqa.org/)
+[![Prettier](https://img.shields.io/badge/Formatting-Prettier-orange.svg)](https://prettier.io/)
+[![Markdownlint](https://img.shields.io/badge/Markdown-lint-green.svg)](https://github.com/DavidAnson/markdownlint)
+
 - **Black**: Code formatting
 - **isort**: Import sorting
 - **autopep8**: Auto-fix PEP 8 violations
@@ -276,6 +307,33 @@ The project uses pre-commit hooks to maintain code quality:
 - **markdownlint**: Markdown linting
 
 Run manually: `pre-commit run --all-files`
+
+### Testing
+
+The project has two test suites:
+
+#### Fast Tests (CI)
+```bash
+# Run all fast tests (excludes slow tests)
+python -m pytest tests/ -v --ignore=tests/slow/
+```
+
+#### Slow Tests (Local Development)
+```bash
+# Run all slow tests (server building, startup, E2E)
+./run-slow-tests.sh
+
+# Or run specific slow test files
+python -m pytest tests/slow/test_input_samples.py -v
+python -m pytest tests/slow/test_advanced_samples.py -v
+python -m pytest tests/slow/test_input_samples_e2e.py -v
+```
+
+**Test Categories:**
+- **Fast Tests**: Unit tests, parser tests, builder tests (run in CI)
+- **Slow Tests**: Server building, startup verification, end-to-end tests (run locally)
+
+See [tests/slow/README.md](tests/slow/README.md) for detailed information about slow tests.
 
 ### Auto-Fixing Everything
 

@@ -8,6 +8,8 @@ Includes statistics, progress tracking, and productivity insights.
 import json
 from datetime import datetime
 
+import mcp
+
 
 def _parse_datetime(date_str: str) -> datetime:
     """Parse ISO format datetime string."""

@@ -8,6 +8,11 @@ Provides persistent storage and retrieval of tasks.
 import json
 from typing import Dict, List
 
+import mcp
+
+# Configuration constants
+TASKS_FILE = "tasks.json"
+
 # Dummy task storage data
 DUMMY_TASKS = [
     {

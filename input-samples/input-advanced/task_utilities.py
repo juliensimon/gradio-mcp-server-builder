@@ -8,6 +8,8 @@ Includes search, filtering, bulk operations, and data management tools.
 import json
 from datetime import datetime, timedelta
 
+import mcp
+
 # Dummy task data for utilities
 DUMMY_TASKS = [
     {

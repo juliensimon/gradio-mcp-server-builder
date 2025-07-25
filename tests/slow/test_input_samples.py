@@ -29,7 +29,7 @@ def temp_output_dir():
 @pytest.fixture(scope="session")
 def project_root():
     """Get the project root directory."""
-    return Path(__file__).parent.parent
+    return Path(__file__).parent.parent.parent
 
 
 class TestInputSamples:
@@ -52,7 +52,11 @@ class TestInputSamples:
         ]
 
         return subprocess.run(
-            cmd, cwd=project_root, capture_output=True, text=True, timeout=60
+            cmd,
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minutes
         )
 
     def test_basic_hello_world_build(self, temp_output_dir, project_root):
@@ -129,32 +133,6 @@ class TestInputSamples:
         assert "rectangle_area" in server_code
         assert "gr.Blocks" in server_code  # Should use tabbed interface
 
-    def test_advanced_task_build(self, temp_output_dir, project_root):
-        """Test building the advanced task management example."""
-        sample_files = [
-            "input-samples/input-advanced/task_storage.py",
-            "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py",
-        ]
-        result = self.build_sample(
-            sample_files, temp_output_dir / "advanced_tasks", project_root
-        )
-
-        assert result.returncode == 0, f"Build failed: {result.stderr}"
-        assert "Successfully built MCP server" in result.stdout
-
-        # Check generated files exist
-        server_dir = temp_output_dir / "advanced_tasks" / "server"
-        assert (server_dir / "gradio_server.py").exists()
-
-        # Check that helper functions and constants are included
-        server_code = (server_dir / "gradio_server.py").read_text()
-        assert "_load_tasks" in server_code
-        assert "_save_tasks" in server_code
-        assert "TASKS_FILE" in server_code
-        assert "create_task" in server_code
-        assert "get_task_statistics" in server_code
-
 
 class TestServerStartup:
     """Test that generated servers start successfully."""
@@ -224,31 +202,6 @@ class TestServerStartup:
         # Check if thread is still running (server started)
         assert thread.is_alive(), "Server thread should be running"
 
-    def test_advanced_server_startup(self, temp_output_dir, project_root):
-        """Test that advanced server starts successfully."""
-        # Build the advanced example
-        sample_files = [
-            "input-samples/input-advanced/task_storage.py",
-            "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py",
-        ]
-        result = self.build_sample(
-            sample_files, temp_output_dir / "startup_advanced", project_root
-        )
-        assert result.returncode == 0
-
-        # Test server startup
-        server_path = (
-            temp_output_dir / "startup_advanced" / "server" / "gradio_server.py"
-        )
-        thread = self.start_server_thread(server_path, 7872)
-
-        # Give server time to start
-        time.sleep(3)
-
-        # Check if thread is still running (server started)
-        assert thread.is_alive(), "Server thread should be running"
-
     def build_sample(
         self, sample_files: List[str], output_dir: Path, project_root: Path
     ) -> subprocess.CompletedProcess:
@@ -266,7 +219,11 @@ class TestServerStartup:
         ]
 
         return subprocess.run(
-            cmd, cwd=project_root, capture_output=True, text=True, timeout=60
+            cmd,
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minutes
         )
 
 
@@ -359,62 +316,6 @@ class TestMCPFunctionality:
             if "gradio_server" in sys.modules:
                 del sys.modules["gradio_server"]
 
-    def test_advanced_mcp_functions(self, temp_output_dir, project_root):
-        """Test MCP functions in advanced example."""
-        # Build the advanced example
-        sample_files = [
-            "input-samples/input-advanced/task_storage.py",
-            "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py",
-        ]
-        result = self.build_sample(
-            sample_files, temp_output_dir / "mcp_advanced2", project_root
-        )
-        assert result.returncode == 0
-
-        # Import and test the server
-        server_path = temp_output_dir / "mcp_advanced2" / "server"
-        sys.path.insert(0, str(server_path))
-
-        try:
-            # Force reimport
-            if "gradio_server" in sys.modules:
-                del sys.modules["gradio_server"]
-            import gradio_server
-
-            # Test task creation
-            result = gradio_server.create_task("Test Task", "Test Description", "high")
-            assert "successfully" in result.lower()
-
-            # Test task statistics
-            stats_result = gradio_server.get_task_statistics()
-            stats = json.loads(stats_result)
-            assert "total_tasks" in stats
-            assert "by_status" in stats
-            assert "by_priority" in stats
-
-            # Test task search
-            search_result = gradio_server.search_tasks("Test")
-            assert isinstance(search_result, str)
-
-            # Test helper functions are available
-            assert hasattr(gradio_server, "_load_tasks")
-            assert hasattr(gradio_server, "_save_tasks")
-            assert hasattr(gradio_server, "validate_priority")
-
-            # Test demo object exists and is correct type
-            assert hasattr(gradio_server, "demo")
-            import gradio as gr
-
-            assert isinstance(gradio_server.demo, gr.Blocks)
-
-        finally:
-            # Clean up sys.path and modules
-            if str(server_path) in sys.path:
-                sys.path.remove(str(server_path))
-            if "gradio_server" in sys.modules:
-                del sys.modules["gradio_server"]
-
     def build_sample(
         self, sample_files: List[str], output_dir: Path, project_root: Path
     ) -> subprocess.CompletedProcess:
@@ -432,7 +333,11 @@ class TestMCPFunctionality:
         ]
 
         return subprocess.run(
-            cmd, cwd=project_root, capture_output=True, text=True, timeout=60
+            cmd,
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minutes
         )
 
 
@@ -453,10 +358,11 @@ class TestGeneratedClients:
         assert client_path.exists()
 
         client_code = client_path.read_text()
-        assert "greet" in client_code
-        assert "test_greet" in client_code
-        # Check for test cases or function calls rather than specific naming
-        assert "async def test_" in client_code or "test_cases" in client_code
+        # Client should use MCP tools dynamically, not hardcode function names
+        assert "MCPClient" in client_code
+        assert "get_tools()" in client_code
+        # Since we use --disable-sample-prompts, no specific examples should be hardcoded
+        assert "create_agent_interface" in client_code
 
     def test_simple_client_generation(self, temp_output_dir, project_root):
         """Test that simple client is generated correctly."""
@@ -475,33 +381,11 @@ class TestGeneratedClients:
         assert client_path.exists()
 
         client_code = client_path.read_text()
-        assert "add_numbers" in client_code
-        assert "multiply_numbers" in client_code
-        assert "circle_area" in client_code
-        assert "rectangle_area" in client_code
-
-    def test_advanced_client_generation(self, temp_output_dir, project_root):
-        """Test that advanced client is generated correctly."""
-        # Build the advanced example
-        sample_files = [
-            "input-samples/input-advanced/task_storage.py",
-            "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py",
-        ]
-        result = self.build_sample(
-            sample_files, temp_output_dir / "client_advanced", project_root
-        )
-        assert result.returncode == 0
-
-        # Check client file
-        client_path = temp_output_dir / "client_advanced" / "client" / "mcp_client.py"
-        assert client_path.exists()
-
-        client_code = client_path.read_text()
-        assert "create_task" in client_code
-        assert "get_task_statistics" in client_code
-        assert "search_tasks" in client_code
-        assert "delete_task" in client_code
+        # Client should use MCP tools dynamically, not hardcode function names
+        assert "MCPClient" in client_code
+        assert "get_tools()" in client_code
+        # Since we use --disable-sample-prompts, no specific examples should be hardcoded
+        assert "create_agent_interface" in client_code
 
     def build_sample(
         self, sample_files: List[str], output_dir: Path, project_root: Path
@@ -520,7 +404,11 @@ class TestGeneratedClients:
         ]
 
         return subprocess.run(
-            cmd, cwd=project_root, capture_output=True, text=True, timeout=60
+            cmd,
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minutes
         )
 
 

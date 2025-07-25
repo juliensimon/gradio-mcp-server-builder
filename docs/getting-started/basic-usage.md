@@ -30,323 +30,180 @@ python main.py input/functions.py \
     --model-endpoint http://localhost:8000 \
     --preserve-docstrings \
     --local-model custom-model \
-    --output-dir custom-output \
-    --env-file .env
+    --output-dir custom-output
 ```
 
 ## Command Line Options
 
-| Option                                    | Description                               | Default                          |                                           | --------------------------       |                                           |                                         |                    |                                  |     |     |     |
-| ----------------------------------------- | ----------------------------------------- | -------------------------------- | ----------------------------------------- | -------------------------------- | ----------------------------------------- | --------------------------------------- | ------------------ | -------------------------------- | --- | --- | --- | --- |
-| --------------------------------          | ----------------------------------------- |
-| ----------------------------------------- |
-| ---------------------------------------   | --------------------------------          |
-| --------------------------------          | ---                                       | ---                              | ---                                       | ---                              |                                           |
-| ----------------------------------------- | --------------------------------          |                                  |
-| ----------------------------------------- |                                           |
-| ---------------------------------------   | ------------                              |                                  |
-| --------------------------------          | --------------------------------          | ---                              | ---                                       |
-|                                           | ---                                       | ---                              |                                           | ------------------               | ----------------------------------------- |
-|                                           | --------------------------                | -------------------------------- |                                           |                                  |
-| --------------------------------          | ------------------                        | ---                              | ---                                       | ---                              | ---                                       |
-| ---------------------------------------   |                                           |                                  |                                           |
-| ----------------------------------------- | --------------------------------          |                                  |
-| ---                                       | --------------------------------          | ------------------               | ---                                       | ---                              | ---                                       |
-|                                           |                                           | ------------------               | --------------------------------          |                                  |                                           |                                         |                    |
-| --------------------------                | ---                                       | ---                              | ---                                       | ---                              | ---                                       |                                         | ------------------ |
-|                                           |                                           |                                  |                                           | -------------------------------- |                                           | --------------------------              | ---                |
-|                                           | ---                                       |                                  |                                           | ---                              | ---                                       |                                         |                    | -------------------------------- |     |     |     |     |
-| --------------------------------          |                                           |                                  | ----------------------------------------- |
-|                                           |                                           |                                  |                                           |                                  |                                           | --------------------------------------- | ------------       |                                  |     |     |     |
-| ------------------                        |                                           |                                  | --------                                  | ---                              |                                           | --------------------------------        |
+### Core Options
 
-| -------------------------------- | | -----------------------------------------
+- **`--device`** - Device for inference (default: `mps`)
+  - Options: `cpu`, `mps`, `cuda`
+  - Example: `--device cuda`
 
-|                                                   | ------------------------------------------------- |     |     |     |     |     |
-| ------------------------------------------------- | ------------------------------------------------- | --- | --- | --- | --- | --- |
-| ------------------------------------------------- | ---                                               | --- | --- | --- |     |
-| ------------------------------------------------- | ---                                               | --- | --- |     |     |
-| ------------------------------------------------- | ---                                               | --- |     |     |     |
-| ------------------------------------------------- | ---                                               |     |     |     |     |
-| ------------------------------------------------- |
+- **`--disable-sample-prompts`** - Disable generation of sample prompts
+  - Default: False
+  - Example: `--disable-sample-prompts`
 
-| --------------------------------          | ----------------------------------------- |
-| ----------------------------------------- | ----------------------------------------- | --- | --- |
-| ----------------------------------------- | ---                                       |     |
-| ----------------------------------------- |                                           |     |
-| ----------------------------------------- |                                           |     |     |
-| ----------------------------------------- |
+- **`--local-model`** - Local Hugging Face model to use
+  - Default: `HuggingFaceTB/SmolLM3-3B`
+  - Example: `--local-model microsoft/DialoGPT-medium`
 
-| ----------------------------------------- | ------------------------ |     |     |     |
-| ----------------------------------------- | ------------------------ | --- | --- | --- |
+- **`--log-config`** - Path to logging configuration file
+  - Default: `json/log_config.json`
+  - Example: `--log-config config/debug.json`
 
-|
+- **`--log-file`** - Log file name
+  - Default: `log/builds/output.log`
+  - Example: `--log-file custom.log`
 
-| -------------------------------- | ------------------ | | |
--------------------------------- | ------------------ | ----------------- | |
--------------------------------- | ------------------ | ----------------- |
+- **`--model-config`** - Path to model configuration file
+  - Default: `json/model_config.json`
+  - Example: `--model-config config/custom.json`
 
-| -----------------------------------------         | ----------------------           |                            |
-| ------------------------------------------------- | -------------------------------- | -------------------------- | ------------------ | ------------------------ | ------- | ------------------------ | ----------------------------------------- | -------------------------------- | -------------------------- | ------- | ----------------------- | --------------- | ------------------ |
+- **`--model-endpoint`** - OpenAI-compatible model endpoint URL
+  - Default: None
+  - Example: `--model-endpoint http://localhost:8000`
 
+- **`--output-dir`** - Output directory
+  - Default: `output`
+  - Example: `--output-dir my_server`
 
+- **`--port`** - Server port
+  - Default: `7860`
+  - Example: `--port 8080`
 
-| --------------------------------                  | -------------------------------- |
-| --------------------------------                  | ------------------------         |
-| -----------------------------------------         | ------------------------         |
-| --------------------------------                  | --------------------------       |
-| --------------------------                        | ---                              | -----------------------    | ------------------ |
-| -------------                                     |                                  | -------------------------- | ------------------ |
-| ---------------                                   |                                  | -------------------------- | ---                |                          |
-| --------------------------------                  |                                  | -------------------------  |                    |
-| --------------------------------                  | ---------------                  |                            |                    |
-| --------------------------------                  | ------------------               | ---                        |                    |                          |         |
-| -----------------------                           | -------------------------------- |                            |                    |                          |
-| --------------------------------                  | ------------------               | ---                        | ---                | ---                      |         |                          |                                           |
-| --------------------------------                  | --------                         | ------------------         | ------             |
-| ---                                               |                                  |                            |                    |                          | ---     |                          | ----------------------------------------- |                                  |                            |         |                         |                 |
-| ---------------------------------------           | -------------------------------- |                            |                    |
-| ----                                              | ------------------               | ------                     | ---                |                          |         | ---                      |                                           |                                  |                            |         |                         |                 |
-| -----------------------------                     | -------------------------------- |                            |                    |                          |         |                          |                                           |                                  |
-| -----------------------------------------         |                                  |                            |                    |                          |         |                          |                                           |                                  |
-| ---------------------------------------           | -----------                      |                            |                    |                          |         |                          |                                           |                                  |                            |         |
-| ------------------------------------------------- | -----------------------          |                            |
-| -----------------------------------------         |                                  |                            |                    |                          |         |                          |                                           |                                  |                            |
-| ---------------------------------------           | ---                              |                            | `input_files`      | One or more              |
-| Python files containing MCP functions             | Required                         |                            | `--share`          | Enable Gradio            |
-|                                                   |                                  |                            |                    |                          |         |                          |                                           |                                  | sharing for public access  | `False` |                         |                 | `--model-endpoint` |
-|                                                   | Use                              |                            |                    | an                       |         |                          |                                           | OpenAI-compatible model endpoint | `None` (local              |         |                         |
-| model)                                            |                                  |                            |                    |                          |         |                          |                                           | `--preserve-docstrings`          | Keep original docstrings   |         |
-| `False`                                           |                                  | (improve                   |                    |                          | them)   |                          |                                           |                                  |                            |         |                         | `--local-model` | Specify local      |
-| Hugging Face                                      |                                  | model                      |                    |                          |         |                          |                                           |                                  | `HuggingFaceTB/SmolLM3-3B` |         |                         |
-| `--output-dir`                                    | Output                           |                            | directory for      |                          |         | generated                |                                           | files                            | `output`                   |
-| `--env-file`                                      | Path to                          |                            | .env file for      |                          |         | parameter passing        |                                           | `None`                           |
-| `--device`                                        | Device for                       |                            | model inference    |                          |         | (cpu/mps/cuda)           | `mps`                                     |                                  |                            |
-| `--port`                                          | Port for the                     |                            | generated server   | `7860`                   |         |                          |                                           |                                  |                            |         |                         |
-| `--disable-sample-prompts`                        |                                  | Disable                    |                    | sample prompt generation |         |                          |                                           |
-| `False`                                           |                                  |                            |                    | `--log-config`           | Path to |                          |                                           | logging configuration file       |                            |         |
-|                                                   | `json/log_config.json`           |                            |                    |                          |         | `--model-config`         | Path                                      |                                  | to model                   |         |                         |
-|                                                   |                                  | configuration file         |                    |                          |         | `json/model_config.json` |                                           | `--log-file`                     |                            |
-| Path                                              |                                  | to                         |                    |                          |         |                          |                                           | log file                         |                            |         | `log/builds/output.log` |
+- **`--preserve-docstrings`** - Keep original docstrings
+  - Default: False
+  - Example: `--preserve-docstrings`
 
-## Input File Format
+- **`--share`** - Enable Gradio sharing
+  - Default: False
+  - Example: `--share`
 
-Your input files should contain functions decorated with `@mcp.tool()`:
+- **`--verbose`, `-v`** - Enable verbose logging
+  - Default: False
+  - Example: `--verbose`
 
-### Basic Function
+## Quick Start Examples
 
-```python
-@mcp.tool()
-def add_floats(a: float, b: float) -> float:
-    """
-    Add two floating point numbers.
+### 1. Simple Build
 
-    Args:
-        a: First floating point number
-        b: Second floating point number
-
-    Returns:
-        The sum of a and b
-    """
-    return a + b
+```bash
+# Basic build with default settings
+python main.py functions.py
 ```
 
-### Function with Helper Functions
+This creates:
 
-```python
-import json
-from pathlib import Path
+- MCP server in `output/server/`
+- Test client in `output/client/`
+- Documentation in `output/README.md`
 
-# Helper function (not decorated)
-def load_data(filename: str) -> dict:
-    """Load data from JSON file."""
-    with open(filename, 'r') as f:
-        return json.load(f)
+### 2. Custom Output
 
-@mcp.tool()
-def process_data(filename: str, operation: str) -> dict:
-    """Process data from a file with specified operation."""
-    data = load_data(filename)
-    # Process data based on operation
-    return {"result": f"Processed {operation} on {len(data)} items"}
+```bash
+# Build with custom output directory
+python main.py functions.py --output-dir my_server
+
+# Build with custom port
+python main.py functions.py --port 8080
 ```
 
-### Function with Constants
+### 3. Model Configuration
 
-```python
-import math
+```bash
+# Use a local Hugging Face model
+python main.py functions.py --local-model "microsoft/DialoGPT-medium"
 
-# Module constants
-PI = math.pi
-GRAVITY = 9.81
+# Use an OpenAI-compatible endpoint
+python main.py functions.py --model-endpoint http://localhost:8000
 
-@mcp.tool()
-def calculate_circle_area(radius: float) -> float:
-    """Calculate the area of a circle."""
-    return PI * radius ** 2
+# Use CPU for inference
+python main.py functions.py --device cpu
 
-@mcp.tool()
-def calculate_falling_distance(time: float) -> float:
-    """Calculate distance fallen under gravity."""
-    return 0.5 * GRAVITY * time ** 2
+# Use NVIDIA GPU
+python main.py functions.py --device cuda
 ```
 
-## Function Requirements
+### 4. Logging and Debugging
 
-### Required Decorator
+```bash
+# Enable verbose logging
+python main.py functions.py --verbose
 
-Every function must be decorated with `@mcp.tool()`:
+# Use custom logging configuration
+python main.py functions.py --log-config config/examples/debug_logging.json
 
-```python
-@mcp.tool()  # Required
-def my_function():
-    pass
+# Specify custom log file
+python main.py functions.py --log-file log/custom_build.log
 ```
 
-### Type Hints
+### 5. Advanced Options
 
-Use type hints for all parameters and return values:
+```bash
+# Preserve original docstrings
+python main.py functions.py --preserve-docstrings
 
-```python
-@mcp.tool()
-def process_text(text: str, max_length: int) -> str:
-    """Process text with length limit."""
-    return text[:max_length]
+# Enable Gradio sharing (creates public URL)
+python main.py functions.py --share
+
+# Disable sample prompt generation
+python main.py functions.py --disable-sample-prompts
 ```
 
-### Docstrings
+## Device Options
 
-Include docstrings for all functions:
+The `--device` option controls which hardware to use for model inference:
 
-```python
-@mcp.tool()
-def calculate_bmi(weight: float, height: float) -> float:
-    """
-    Calculate Body Mass Index.
+- **`cpu`** - CPU inference
+  - Use case: When no GPU is available or for compatibility
 
-    Args:
-        weight: Weight in kilograms
-        height: Height in meters
+- **`mps`** - Apple Silicon GPU (Metal Performance Shaders)
+  - Use case: Mac with M1/M2/M3 chips (default)
 
-    Returns:
-        BMI value
-    """
-    return weight / (height ** 2)
+- **`cuda`** - NVIDIA GPU
+  - Use case: Windows/Linux with NVIDIA GPU
+
+## Complete Example
+
+```bash
+python main.py input/functions.py \
+    --share \
+    --model-endpoint http://localhost:8000 \
+    --preserve-docstrings \
+    --local-model custom-model \
+    --output-dir custom-output \
+    --device cuda \
+    --verbose \
+    --log-config config/examples/debug_logging.json
 ```
 
-## Supported Data Types
+## What Gets Generated
 
-The builder supports these Python types:
-
-- **Basic Types**: `str`, `int`, `float`, `bool`
-- **Complex Types**: `list`, `dict`, `tuple`
-- **Optional Types**: `Optional[str]`, `Union[int, float]`
-- **Custom Types**: Any type that can be serialized to JSON
-
-### Type Examples
-
-```python
-from typing import List, Dict, Optional, Union
-
-@mcp.tool()
-def process_list(items: List[str]) -> List[str]:
-    """Process a list of strings."""
-    return [item.upper() for item in items]
-
-@mcp.tool()
-def create_user(name: str, age: int, preferences: Optional[Dict] = None) -> Dict:
-    """Create a user with optional preferences."""
-    user = {"name": name, "age": age}
-    if preferences:
-        user["preferences"] = preferences
-    return user
-
-@mcp.tool()
-def calculate_result(value: Union[int, float]) -> float:
-    """Calculate result from numeric value."""
-    return float(value) * 2.5
-```
-
-## Error Handling
-
-### Basic Error Handling
-
-```python
-@mcp.tool()
-def safe_divide(a: float, b: float) -> float:
-    """Safely divide a by b."""
-    if b == 0:
-        raise ValueError("Cannot divide by zero")
-    return a / b
-```
-
-### Custom Exceptions
-
-```python
-class ValidationError(Exception):
-    pass
-
-@mcp.tool()
-def validate_age(age: int) -> bool:
-    """Validate age is reasonable."""
-    if age < 0 or age > 150:
-        raise ValidationError(f"Age {age} is not reasonable")
-    return True
-```
-
-## Import Statements
-
-The builder automatically handles imports:
-
-```python
-import math
-import json
-from pathlib import Path
-from typing import List, Dict
-
-@mcp.tool()
-def complex_calculation(data: List[float]) -> Dict[str, float]:
-    """Perform complex calculations."""
-    return {
-        "sum": sum(data),
-        "mean": sum(data) / len(data),
-        "max": max(data),
-        "min": min(data)
-    }
-```
-
-## Output Structure
-
-The builder generates this structure:
+After running the command, you'll find:
 
 ```
 output/
-├── server/           # MCP server files
-│   ├── gradio_server.py
-│   └── __init__.py
-├── client/           # MCP client
-│   └── mcp_client.py
-├── README.md         # Generated documentation
-├── requirements.txt  # Python dependencies
-└── config.json      # Configuration
+├── server/
+│   ├── gradio_server.py     # Main Gradio interface
+│   └── __init__.py          # Package initialization
+├── client/
+│   └── mcp_client.py       # MCP client with examples
+├── README.md                # Documentation
+└── requirements.txt         # Dependencies
 ```
 
-## Running Generated Servers
-
-### Start the Server
+### Running the Generated Server
 
 ```bash
 cd output
 python server/gradio_server.py
 ```
 
-### Access the Interface
+Then visit `http://127.0.0.1:7860` (or your custom port) in your browser.
 
-- **Local**: <http://127.0.0.1:7860>
-- **Network**: <http://0.0.0.0:7860> (if configured)
-- **Public**: <https://xxx.gradio.live> (if using --share)
-
-### Test the Client
+### Testing with the MCP Client
 
 ```bash
 cd output
@@ -355,32 +212,69 @@ python client/mcp_client.py
 
 ## Environment Variables
 
-Create a `.env` file for configuration:
+The tool automatically loads environment variables from a `.env` file if
+present. Common variables include:
 
-```env
-# Model configuration
-MODEL_ENDPOINT=http://localhost:8000
-LOCAL_MODEL=custom-model
-DEVICE=cuda
+- `OPENAI_API_KEY` - For OpenAI API access
+- `HUGGINGFACE_TOKEN` - For Hugging Face model access
+- `MODEL_ENDPOINT` - Default model endpoint URL
 
-# Server configuration
-PORT=8080
-SHARE=true
+## Configuration Files
 
-# Logging
-LOG_LEVEL=DEBUG
+### Model Configuration
+
+The `--model-config` option allows you to specify custom model behavior:
+
+```json
+{
+  "temperature": 0.7,
+  "max_tokens": 1000,
+  "top_p": 0.9,
+  "frequency_penalty": 0.0,
+  "presence_penalty": 0.0
+}
 ```
 
-Then use:
+### Logging Configuration
 
-```bash
-python main.py input/functions.py --env-file .env
+The `--log-config` option allows you to customize logging behavior:
+
+```json
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "standard": {
+      "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "INFO",
+      "formatter": "standard"
+    }
+  },
+  "root": {
+    "handlers": ["console"],
+    "level": "INFO"
+  }
+}
 ```
+
+## Tips and Best Practices
+
+1. **Start Simple**: Begin with `--preserve-docstrings` to test your functions
+1. **Use Verbose Logging**: Enable `--verbose` when troubleshooting
+1. **Test Locally**: Use `--device cpu` for compatibility testing
+1. **Custom Output**: Use `--output-dir` to organize multiple builds
+1. **Share Carefully**: Only use `--share` when you want public access
+1. **Monitor Logs**: Check log files for detailed build information
 
 ## Next Steps
 
-- **[Input Format Guide](../user-guide/input-format.md)** - Detailed input
-  specifications
-- **[Command Line Options](../user-guide/command-line.md)** - Complete option
-  reference
-- **[Configuration Guide](../configuration/overview.md)** - Customize behavior
+- **[Input Format](user-guide/input-format.md)** - Learn how to write MCP
+  functions
+- **[Configuration](configuration/overview.md)** - Advanced configuration
+  options
+- **[Testing Guide](user-guide/testing.md)** - Comprehensive testing strategies

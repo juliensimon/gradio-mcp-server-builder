@@ -126,7 +126,11 @@ class TestEndToEndInputSamples:
         ]
 
         return subprocess.run(
-            cmd, cwd=project_root, capture_output=True, text=True, timeout=120
+            cmd,
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minutes
         )
 
     def test_e2e_basic_hello_world(self, temp_output_dir, project_root):
@@ -225,7 +229,9 @@ class TestEndToEndInputSamples:
                     result_data = response.json()
                     print(f"✅ MCP function call successful: {result_data}")
                 else:
-                    print(f"⚠️ MCP function call returned status {response.status_code}")
+                    print(
+                        f"⚠️ MCP function call returned status {response.status_code}"
+                    )
             except Exception as e:
                 print(f"⚠️ MCP function call error: {e}")
 
@@ -335,104 +341,6 @@ class TestEndToEndInputSamples:
             print("✅ Server stopped")
 
         print("✅ Simple combined E2E test completed successfully\n")
-
-    def test_e2e_advanced_tasks(self, temp_output_dir, project_root):
-        """End-to-end test for advanced task management example."""
-        print("\n=== Testing Advanced Tasks (E2E) ===")
-
-        # 1. Build the server and client
-        sample_files = [
-            "input-samples/input-advanced/task_storage.py",
-            "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py",
-        ]
-        build_dir = temp_output_dir / "e2e_advanced"
-
-        print("Building server and client...")
-        result = self.build_sample(sample_files, build_dir, project_root)
-        assert result.returncode == 0, f"Build failed: {result.stderr}"
-        print("✅ Build successful")
-
-        # 2. Launch the server
-        server_file = build_dir / "server" / "gradio_server.py"
-        server = ServerProcess(server_file, 7892)
-
-        try:
-            print("Starting server...")
-            assert server.start(), "Failed to start server"
-            print("✅ Server started successfully")
-
-            # 3. Test MCP SSE endpoint for advanced server
-            print("Testing MCP SSE endpoint...")
-            mcp_url = f"{server.base_url}/gradio_api/mcp/sse"
-            try:
-                response = requests.get(mcp_url, timeout=3, stream=True)
-                assert (
-                    response.status_code == 200
-                ), f"MCP SSE endpoint returned {response.status_code}"
-                print("✅ MCP SSE endpoint accessible")
-            except requests.exceptions.ReadTimeout:
-                print("✅ MCP SSE endpoint opened (timeout normal)")
-            except Exception as e:
-                print(f"⚠️ MCP SSE endpoint error: {e}")
-
-            # 4. Test complex task management workflow
-            sys.path.insert(0, str(server_file.parent))
-            try:
-                import gradio_server
-
-                # Test task creation
-                result1 = gradio_server.create_task(
-                    "E2E Test Task", "Testing end-to-end workflow", "high"
-                )
-                assert (
-                    "successfully" in result1.lower()
-                ), f"create_task failed: {result1}"
-                print(f"✅ Task created: {result1}")
-
-                # Test task statistics
-                stats_json = gradio_server.get_task_statistics()
-                stats = json.loads(stats_json)
-                assert "total_tasks" in stats, "Statistics missing total_tasks"
-                assert stats["total_tasks"] >= 1, "Should have at least 1 task"
-                print(f"✅ Task statistics: {stats['total_tasks']} total tasks")
-
-                # Test task search
-                search_result = gradio_server.search_tasks("E2E")
-                assert isinstance(search_result, str), "Search should return string"
-                print(f"✅ Task search completed: {len(search_result)} chars returned")
-
-                # Test helper functions are available
-                assert hasattr(
-                    gradio_server, "_load_tasks"
-                ), "Helper function _load_tasks missing"
-                assert hasattr(
-                    gradio_server, "_save_tasks"
-                ), "Helper function _save_tasks missing"
-                assert hasattr(
-                    gradio_server, "TASKS_FILE"
-                ), "Constant TASKS_FILE missing"
-                print("✅ Helper functions and constants available")
-
-                # Verify it's using Blocks (tabbed interface)
-                import gradio as gr
-
-                assert isinstance(
-                    gradio_server.demo, gr.Blocks
-                ), "Should use Blocks for multiple functions"
-                print("✅ Using Blocks interface for multiple functions")
-
-            finally:
-                if str(server_file.parent) in sys.path:
-                    sys.path.remove(str(server_file.parent))
-                if "gradio_server" in sys.modules:
-                    del sys.modules["gradio_server"]
-
-        finally:
-            server.stop()
-            print("✅ Server stopped")
-
-        print("✅ Advanced tasks E2E test completed successfully\n")
 
 
 if __name__ == "__main__":

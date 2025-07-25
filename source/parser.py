@@ -138,8 +138,10 @@ class MCPParser:
                                     f"failed to extract constant {target.id}: {e}"
                                 )
 
-            for node in ast.walk(tree):
+            # Look at top-level nodes to avoid nested functions
+            for node in tree.body:
                 if isinstance(node, ast.FunctionDef):
+                    # Handle standalone functions
                     has_mcp_decorator = any(
                         isinstance(decorator, ast.Call)
                         and isinstance(decorator.func, ast.Attribute)
@@ -188,6 +190,62 @@ class MCPParser:
                             self.logger.warning(
                                 f"failed to process helper function {node.name}: {e}"
                             )
+                elif isinstance(node, ast.ClassDef):
+                    # Handle class methods
+                    for class_node in node.body:
+                        if isinstance(class_node, ast.FunctionDef):
+                            has_mcp_decorator = any(
+                                isinstance(decorator, ast.Call)
+                                and isinstance(decorator.func, ast.Attribute)
+                                and isinstance(decorator.func.value, ast.Name)
+                                and decorator.func.value.id == "mcp"
+                                and decorator.func.attr == "tool"
+                                for decorator in class_node.decorator_list
+                            )
+                            if has_mcp_decorator:
+                                try:
+                                    func_source = self._extract_function_source(
+                                        content, class_node
+                                    )
+                                    docstring = ast.get_docstring(class_node) or ""
+                                    signature = self._build_signature_string(class_node)
+                                    mcp_func = MCPFunction(
+                                        class_node.name, None, docstring, signature
+                                    )
+                                    mcp_func.source_code = func_source
+                                    mcp_func.line_number = class_node.lineno
+                                    mcp_func.module_imports = module_imports
+                                    self.mcp_functions.append(mcp_func)
+                                    mcp_function_count += 1
+                                    self.logger.debug(
+                                        f"found mcp class method: {class_node.name} at line {class_node.lineno}"
+                                    )
+                                except Exception as e:
+                                    self.logger.warning(
+                                        f"failed to process mcp class method {class_node.name}: {e}"
+                                    )
+                            else:
+                                # Collect helper class methods (non-MCP functions)
+                                try:
+                                    func_source = self._extract_function_source(
+                                        content, class_node
+                                    )
+                                    docstring = ast.get_docstring(class_node) or ""
+                                    signature = self._build_signature_string(class_node)
+                                    helper_func = MCPFunction(
+                                        class_node.name, None, docstring, signature
+                                    )
+                                    helper_func.source_code = func_source
+                                    helper_func.line_number = class_node.lineno
+                                    helper_func.module_imports = module_imports
+                                    helper_functions.append(helper_func)
+                                    self.logger.debug(
+                                        f"found helper class method: {class_node.name} at line {class_node.lineno}"
+                                    )
+                                except Exception as e:
+                                    self.logger.warning(
+                                        f"failed to process helper class method {class_node.name}: {e}"
+                                    )
 
             self.logger.info(
                 f"successfully parsed {file_path.name}: {mcp_function_count} mcp functions found"
