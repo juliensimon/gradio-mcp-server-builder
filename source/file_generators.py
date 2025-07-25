@@ -690,197 +690,7 @@ __all__ = ["test_mcp_server", "main"]
 '''
 
 
-class TestGenerator:
-    """Generates test files."""
-    
-    def __init__(self, config: Config):
-        self.config = config
-    
-    def _parse_signature_params(self, signature: str):
-        """Parse parameters from signature string."""
-        # Parse signature like "(a: float, b: float) -> float"
-        if not signature.startswith('('):
-            return []
-        
-        # Extract parameter part
-        param_part = signature.split(')')[0][1:]  # Remove '(' and everything after ')'
-        
-        params = []
-        if param_part.strip():
-            for param in param_part.split(','):
-                param = param.strip()
-                if ':' in param:
-                    name, type_str = param.split(':', 1)
-                    name = name.strip()
-                    type_str = type_str.strip()
-                    params.append((name, type_str))
-                else:
-                    params.append((param, 'str'))  # Default to str
-        
-        return params
-    
-    def generate_tests(self, mcp_functions: List[MCPFunction]) -> str:
-        """Generate unit tests for all MCP functions."""
-        # Generate test functions
-        test_functions = []
-        for func in mcp_functions:
-            test_func = self._generate_test_function(func)
-            test_functions.append(test_func)
-        
-        code = f'''"""
-Unit tests for MCP server functions.
-"""
 
-import pytest
-import inspect
-from unittest.mock import Mock, patch
-import sys
-from pathlib import Path
-
-# Add the server directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "server"))
-
-from gradio_server import {', '.join(func.name for func in mcp_functions)}
-
-{chr(10).join(test_functions)}
-
-class TestMCPServer:
-    """Test class for MCP server functionality."""
-    
-    def test_all_functions_importable(self):
-        """Test that all MCP functions can be imported."""
-        functions = [{', '.join(f'"{func.name}"' for func in mcp_functions)}]
-        for func_name in functions:
-            assert hasattr(sys.modules[__name__], func_name), f"Function {{func_name}} not found"
-    
-    def test_function_signatures(self):
-        """Test that all functions have the expected signatures."""
-        {self._generate_signature_tests(mcp_functions)}
-
-if __name__ == "__main__":
-    pytest.main([__file__])
-'''
-        return code
-    
-    def _generate_test_function(self, func: MCPFunction) -> str:
-        """Generate a test function for a specific MCP function."""
-        # Generate test cases
-        test_cases = self._generate_unit_test_cases(func)
-        
-        return f'''
-def test_{func.name}():
-    """Test the {func.name} function."""
-    {test_cases}
-    
-    # Test error cases
-    {self._generate_error_test_cases(func)}
-'''
-    
-    def _generate_unit_test_cases(self, func: MCPFunction) -> str:
-        """Generate unit test cases for a function."""
-        params = self._parse_signature_params(func.signature)
-        
-        if len(params) == 2 and all(param_type == "float" for _, param_type in params):
-            # Arithmetic functions
-            if "add" in func.name:
-                return f'''
-    # Test basic functionality
-    assert {func.name}(1.0, 2.0) == 3.0
-    assert {func.name}(0.0, 0.0) == 0.0
-    assert {func.name}(-1.0, 1.0) == 0.0
-'''
-            elif "subtract" in func.name:
-                return f'''
-    # Test basic functionality
-    assert {func.name}(3.0, 2.0) == 1.0
-    assert {func.name}(0.0, 0.0) == 0.0
-    assert {func.name}(1.0, 1.0) == 0.0
-'''
-            elif "multiply" in func.name:
-                return f'''
-    # Test basic functionality
-    assert {func.name}(2.0, 3.0) == 6.0
-    assert {func.name}(0.0, 5.0) == 0.0
-    assert {func.name}(1.0, 1.0) == 1.0
-'''
-            elif "divide" in func.name:
-                return f'''
-    # Test basic functionality
-    assert {func.name}(6.0, 2.0) == 3.0
-    assert {func.name}(1.0, 1.0) == 1.0
-    assert {func.name}(0.0, 1.0) == 0.0
-'''
-            else:
-                return f'''
-    # Test basic functionality
-    result = {func.name}(1.0, 2.0)
-    assert isinstance(result, (int, float))
-'''
-        elif len(params) == 2 and all(param_type == "int" for _, param_type in params):
-            # Integer arithmetic
-            return f'''
-    # Test basic functionality
-    result = {func.name}(1, 2)
-    assert isinstance(result, (int, float))
-'''
-        else:
-            # Generic test cases
-            test_args = []
-            for param_name, param_type in params:
-                if param_type == "float":
-                    test_args.append("1.5")
-                elif param_type == "int":
-                    test_args.append("1")
-                elif param_type == "str":
-                    test_args.append('"test"')
-                elif param_type == "bool":
-                    test_args.append("True")
-                else:
-                    test_args.append('"test"')
-            
-            args_str = ', '.join(test_args)
-            return f'''
-    # Test basic functionality
-    result = {func.name}({args_str})
-    assert result is not None
-'''
-    
-    def _generate_error_test_cases(self, func: MCPFunction) -> str:
-        """Generate error test cases for a function."""        
-        if func.name == 'divide_floats':
-            return '''
-    # Test division by zero
-    with pytest.raises(ZeroDivisionError):
-        divide_floats(1.0, 0.0)
-'''
-        else:
-            return '''
-    # Test with invalid arguments (if applicable)
-    # Add specific error tests based on function behavior
-    pass
-'''
-    
-    def _generate_signature_tests(self, mcp_functions: List[MCPFunction]) -> str:
-        """Generate signature tests for all functions."""
-        tests = []
-        for func in mcp_functions:
-            params = self._parse_signature_params(func.signature)
-            param_names = [name for name, _ in params]
-            tests.append(f'''
-        # Test {func.name} signature
-        sig = inspect.signature({func.name})
-        assert list(sig.parameters.keys()) == {param_names}
-''')
-        return ''.join(tests)
-    
-    def generate_init_file(self) -> str:
-        """Generate __init__.py for the tests package."""
-        return '''"""
-Tests Package
-"""
-
-# This file makes the tests directory a Python package
-'''
 
 
 class DocumentationGenerator:
@@ -966,12 +776,7 @@ The Gradio interface provides a web-based UI for testing the MCP functions:
 
 Run the test client:
 ```bash
-python client/test_client.py
-```
-
-Run unit tests:
-```bash
-pytest tests/
+python client/mcp_client.py
 ```
 
 ## Project Structure
@@ -979,15 +784,10 @@ pytest tests/
 ```
 output/
 ├── server/           # MCP server files
-│   ├── mcp_server.py
-│   ├── gradio_interface.py
+│   ├── gradio_server.py
 │   └── __init__.py
-├── client/           # Test client
-│   ├── test_client.py
-│   └── __init__.py
-├── tests/            # Unit tests
-│   ├── test_mcp_server.py
-│   └── __init__.py
+├── client/           # MCP client
+│   └── mcp_client.py
 ├── README.md         # This file
 └── requirements.txt  # Python dependencies
 ```

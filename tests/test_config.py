@@ -70,12 +70,11 @@ class TestConfig:
         config = Config(input_files=input_files)
 
         # Check that directories were created
-        assert mock_mkdir.call_count == 4  # output_dir, server_dir, client_dir, tests_dir
+        assert mock_mkdir.call_count == 3  # output_dir, server_dir, client_dir
 
         # Check directory paths
         assert config.server_dir == config.output_dir / "server"
         assert config.client_dir == config.output_dir / "client"
-        assert config.tests_dir == config.output_dir / "tests"
 
     def test_use_local_model_true(self):
         """Test use_local_model property when model_endpoint is None."""
@@ -253,19 +252,16 @@ class TestConfig:
         # Check all directory attributes exist
         assert hasattr(config, 'server_dir')
         assert hasattr(config, 'client_dir')
-        assert hasattr(config, 'tests_dir')
 
         # Check directory paths are correct
         assert config.server_dir == config.output_dir / "server"
         assert config.client_dir == config.output_dir / "client"
-        assert config.tests_dir == config.output_dir / "tests"
 
         # Check mkdir was called for each directory
         expected_calls = [
             config.output_dir,
             config.server_dir,
-            config.client_dir,
-            config.tests_dir
+            config.client_dir
         ]
         assert mock_mkdir.call_count == len(expected_calls)
 

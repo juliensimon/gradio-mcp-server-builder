@@ -34,10 +34,9 @@ class Config:
         # Set up subdirectories
         self.server_dir = self.output_dir / "server"
         self.client_dir = self.output_dir / "client"
-        self.tests_dir = self.output_dir / "tests"
         
         # Create subdirectories
-        for directory in [self.server_dir, self.client_dir, self.tests_dir]:
+        for directory in [self.server_dir, self.client_dir]:
             directory.mkdir(parents=True, exist_ok=True)
     
     @property

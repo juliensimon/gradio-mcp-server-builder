@@ -13,7 +13,7 @@ from .parser import MCPParser, MCPFunction
 from .docstring_improver import DocstringImprover
 from .gradio_generator import GradioGenerator
 from .file_generators import (
-    ServerGenerator, ClientGenerator, TestGenerator,
+    ServerGenerator, ClientGenerator,
     DocumentationGenerator, RequirementsGenerator
 )
 from .logging_config import get_logger, log_step
@@ -33,7 +33,6 @@ class GradioMCPBuilder:
         self.gradio_generator = GradioGenerator(config)
         self.server_generator = ServerGenerator(config)
         self.client_generator = ClientGenerator(config)
-        self.test_generator = TestGenerator(config)
         self.doc_generator = DocumentationGenerator(config)
         self.req_generator = RequirementsGenerator(config)
         
@@ -55,7 +54,6 @@ class GradioMCPBuilder:
             self._create_output_directories()
             self._generate_server_files()
             self._generate_client_files()
-            self._generate_test_files()
             self._generate_documentation()
             self._generate_requirements()
             self._generate_config_file()
@@ -136,8 +134,7 @@ class GradioMCPBuilder:
             directories = [
                 self.config.output_dir,
                 self.config.output_dir / "server",
-                self.config.output_dir / "client",
-                self.config.output_dir / "tests"
+                self.config.output_dir / "client"
             ]
             
             for directory in directories:
@@ -181,19 +178,7 @@ class GradioMCPBuilder:
                 self.logger.error(f"Failed to generate client files: {e}")
                 raise
     
-    def _generate_test_files(self) -> None:
-        """Generate test files."""
-        with log_step("Generating test files", self.logger):
-            try:
-                test_code = self.test_generator.generate_tests(self.mcp_functions)
-                test_file = self.config.output_dir / "tests" / "test_mcp_server.py"
-                test_file.write_text(test_code)
-                self.logger.debug(f"Generated test file: {test_file}")
-                
-                self.logger.info("Successfully generated test files")
-            except Exception as e:
-                self.logger.error(f"Failed to generate test files: {e}")
-                raise
+
     
     def _generate_documentation(self) -> None:
         """Generate documentation files."""

@@ -233,19 +233,7 @@ class TestEndToEndInputSamples:
                 if 'gradio_server' in sys.modules:
                     del sys.modules['gradio_server']
 
-            # 8. Run the generated client tests
-            print("Running client tests...")
-            client_result = subprocess.run(
-                [sys.executable, "-m", "pytest", str(build_dir / "tests" / "test_mcp_server.py"), "-v"],
-                cwd=project_root,
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
-            print(f"Client tests result: {client_result.returncode}")
-            if client_result.returncode != 0:
-                print(f"Client test stdout: {client_result.stdout}")
-                print(f"Client test stderr: {client_result.stderr}")
+
 
         finally:
             server.stop()

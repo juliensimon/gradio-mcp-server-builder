@@ -102,15 +102,10 @@ The tool generates the following structure:
 ```
 output/
 ├── server/           # MCP server files
-│   ├── mcp_server.py
-│   ├── gradio_interface.py
+│   ├── gradio_server.py
 │   └── __init__.py
-├── client/           # Test client
-│   ├── test_client.py
-│   └── __init__.py
-├── tests/            # Unit tests
-│   ├── test_mcp_server.py
-│   └── __init__.py
+├── client/           # MCP client
+│   └── mcp_client.py
 ├── README.md         # Generated documentation
 └── requirements.txt  # Python dependencies
 ```
@@ -141,12 +136,6 @@ python server/gradio_interface.py
 
 ### Run the CLI tool tests:
 ```bash
-pytest tests/
-```
-
-### Run the generated server tests:
-```bash
-cd output
 pytest tests/
 ```
 

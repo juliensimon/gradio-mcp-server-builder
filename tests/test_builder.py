@@ -34,7 +34,7 @@ class TestGradioMCPBuilder(unittest.TestCase):
         assert hasattr(self.builder, 'gradio_generator')
         assert hasattr(self.builder, 'server_generator')
         assert hasattr(self.builder, 'client_generator')
-        assert hasattr(self.builder, 'test_generator')
+
         assert hasattr(self.builder, 'doc_generator')
         assert hasattr(self.builder, 'req_generator')
         assert self.builder.mcp_functions == []
@@ -70,7 +70,6 @@ class TestGradioMCPBuilder(unittest.TestCase):
              patch.object(self.builder.server_generator, 'generate_server', return_value='server content'), \
              patch.object(self.builder.server_generator, 'generate_init_file', return_value='server init'), \
              patch.object(self.builder.client_generator, 'generate_client', return_value='client content'), \
-             patch.object(self.builder.test_generator, 'generate_tests', return_value='test content'), \
              patch.object(self.builder.doc_generator, 'generate_readme', return_value='readme content'), \
              patch.object(self.builder.req_generator, 'generate_requirements', return_value='requirements content'), \
              patch.object(self.builder, '_generate_config_file') as mock_config_gen, \
@@ -207,7 +206,7 @@ class TestGradioMCPBuilder(unittest.TestCase):
         self.builder._create_output_directories()
 
         # Should create multiple directories
-        assert mock_mkdir.call_count >= 4  # output_dir and subdirectories
+        assert mock_mkdir.call_count >= 3  # output_dir and subdirectories (server, client)
 
     @patch('pathlib.Path.write_text')
     def test_generate_server_files(self, mock_write_text):
@@ -232,15 +231,7 @@ class TestGradioMCPBuilder(unittest.TestCase):
             mock_gen.assert_called_once_with(self.builder.mcp_functions, self.builder.test_prompts)
             mock_write_text.assert_called_once()
 
-    @patch('pathlib.Path.write_text')
-    def test_generate_test_files(self, mock_write_text):
-        """Test test file generation."""
-        with patch.object(self.builder.test_generator, 'generate_tests', return_value='test content') as mock_gen:
 
-            self.builder._generate_test_files()
-
-            mock_gen.assert_called_once_with(self.builder.mcp_functions)
-            mock_write_text.assert_called_once()
 
     @patch('pathlib.Path.write_text')
     def test_generate_documentation(self, mock_write_text):

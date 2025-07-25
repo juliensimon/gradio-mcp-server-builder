@@ -64,7 +64,7 @@ def create_agent_interface(mcp_url: str, model_name: str = "HuggingFaceTB/SmolLM
             func_list += f" and {len(func_names) - 3} more"
         
         # Prepare examples
-        examples = ["Can you create task with title='example'?", "Can you get task with task_id='example'?", "Can you list tasks with status='example'?", "Can you update task status with task_id='example'?", "Can you delete task with task_id='example'?", 'Can you get task statistics?', "Can you get productivity report with days='example'?", 'Can you get overdue tasks?', 'Can you export tasks csv for me?', "Can you search tasks with query='example'?", "Can you bulk update priority with task_ids='example'?", "Can you filter tasks by date with date_filter='example'?", "Can you count tasks by criteria with criteria='example'?", "Can you cleanup completed tasks with days_old='example'?", 'What tools do you have available?']
+        examples = ['Can you greet for Alice?']
         
         # Create the Gradio interface
         demo = gr.ChatInterface(

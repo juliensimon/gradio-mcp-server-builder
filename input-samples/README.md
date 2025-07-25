@@ -133,9 +133,7 @@ output/
 │   ├── gradio_server.py     # Main Gradio interface
 │   └── __init__.py          # Package initialization
 ├── client/
-│   └── test_client.py       # Test client with examples
-├── tests/
-│   └── test_mcp_server.py   # Unit tests for all functions
+│   └── mcp_client.py       # MCP client with examples
 ├── README.md                # Documentation
 └── requirements.txt         # Dependencies
 ```
@@ -152,9 +150,9 @@ output/
    cd output && python server/gradio_server.py
    ```
 
-3. **Run the tests:**
+3. **Test the MCP client:**
    ```bash
-   cd output && python -m pytest tests/ -v
+   cd output && python client/mcp_client.py
    ```
 
 4. **Scale up to more complex examples:**

@@ -69,8 +69,7 @@ class TestInputSamples:
         client_dir = temp_output_dir / "basic" / "client"
         assert (client_dir / "mcp_client.py").exists()
 
-        tests_dir = temp_output_dir / "basic" / "tests"
-        assert (tests_dir / "test_mcp_server.py").exists()
+
 
         assert (temp_output_dir / "basic" / "README.md").exists()
         assert (temp_output_dir / "basic" / "requirements.txt").exists()
