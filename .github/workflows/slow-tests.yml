@@ -41,7 +41,7 @@ jobs:
 
       - name: Run slow tests
         run: |
-          python -m pytest tests/slow/ -v --tb=short --timeout=600
+          python -m pytest -c pytest-slow.ini
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
