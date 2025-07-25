@@ -110,7 +110,20 @@ The generated server provides multiple ways to test your functions. The web inte
 
 ### Using the MCP Client
 
-The builder automatically generates an MCP client with sample prompts for each function. This client demonstrates how to programmatically interact with your server and provides examples of the types of requests you can make.
+The builder automatically generates an MCP client that uses the `smolagents` library to interact with your server. This client demonstrates how to programmatically interact with your server and provides examples of the types of requests you can make.
+
+#### What is smolagents?
+
+`smolagents` is a lightweight library for creating intelligent agents that can interact with MCP servers. It provides a simple, intuitive interface for connecting to MCP servers, discovering available tools, and executing function calls. The generated client uses smolagents to create an intelligent agent that can:
+
+- Connect to your MCP server automatically
+- Discover all available tools and their capabilities
+- Understand natural language requests and map them to appropriate tools
+- Execute function calls with proper parameter handling
+- Provide conversational responses with results
+- Handle complex multi-step interactions
+
+#### Running the Generated Client
 
 To use the MCP client, navigate to your output directory and run:
 
@@ -125,6 +138,58 @@ For example, if you have a function called `calculate_area` that takes a `radius
 - "Calculate the area of a circle with radius 5"
 - "What's the area of a circle with radius 10 meters?"
 - "Compute the area for radius 3.14"
+
+#### How the Client Works
+
+The generated client creates an intelligent agent using smolagents and presents it through a Gradio chat interface. When you run the client:
+
+1. **Connection**: It automatically connects to your running MCP server
+2. **Tool Discovery**: It queries the server to discover all available tools and their metadata
+3. **Agent Creation**: It initializes a local language model (SmolLM3-3B by default) to power the agent
+4. **Chat Interface**: It launches a web-based chat interface where you can interact naturally
+5. **Natural Language Processing**: The agent understands your requests and automatically selects appropriate tools
+6. **Execution**: It executes the selected tools with proper parameters and returns conversational responses
+7. **Error Handling**: It gracefully handles errors and provides helpful feedback
+
+#### Client Features
+
+The generated client includes several advanced features:
+
+**Intelligent Agent**: The client creates an AI agent powered by a local language model that can understand natural language requests and automatically select appropriate tools.
+
+**Natural Language Interface**: Instead of selecting from menus, you can simply chat with the agent using natural language. For example, "Calculate the area of a circle with radius 5" or "What's 10 plus 20?"
+
+**Automatic Tool Selection**: The agent automatically determines which tool to use based on your request, eliminating the need to manually select functions.
+
+**Conversational Responses**: The agent provides natural, conversational responses that include both the results and helpful explanations.
+
+**Web-Based Interface**: A beautiful Gradio chat interface makes interaction intuitive and accessible from any browser.
+
+**Local Model Support**: The agent runs entirely locally using the SmolLM3-3B model, ensuring privacy and fast response times.
+
+#### Integration with Other Tools
+
+The smolagents-based client is designed to work seamlessly with other MCP-compatible tools and frameworks. You can:
+
+- Use it as a reference for integrating your server with other MCP clients
+- Extend it to add custom functionality or testing capabilities
+- Use it as a starting point for building more sophisticated MCP applications
+- Share it with users who want to test your server programmatically
+- Integrate it with other AI frameworks and tools that support MCP
+- Use it as a foundation for building conversational AI applications
+
+#### Customizing the Client
+
+The generated client code is fully customizable. You can modify it to:
+
+- Change the language model used by the agent (e.g., use a different Hugging Face model)
+- Customize the agent's behavior and response style
+- Add custom error handling or logging
+- Implement additional testing scenarios
+- Add batch processing capabilities
+- Integrate with other testing frameworks
+- Add custom parameter validation logic
+- Modify the chat interface appearance and functionality
 
 ### Sample Prompt Generation
 

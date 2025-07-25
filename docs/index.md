@@ -16,7 +16,9 @@ Performance optimization is built-in, with automatic detection and utilization o
 
 ## What You Get
 
-When you run the builder, it generates a complete package ready for deployment. The output includes a fully functional MCP server that exposes your functions as tools, a web-based Gradio interface for testing and demonstration, an MCP client with sample prompts for each function, and comprehensive documentation with requirements files.
+When you run the builder, it generates a complete package ready for deployment. The output includes a fully functional MCP server that exposes your functions as tools, a web-based Gradio interface for testing and demonstration, an MCP client built with smolagents for programmatic testing, and comprehensive documentation with requirements files.
+
+The generated MCP client uses the smolagents library to provide interactive testing capabilities. It automatically discovers your server's tools, validates parameters, and provides sample prompts for each function. This client serves as both a testing tool and a reference implementation for integrating your server with other MCP-compatible applications.
 
 ## Quick Start
 
@@ -49,6 +51,8 @@ The builder automatically creates interfaces that adapt to your function structu
 ## Advanced Features
 
 Beyond basic server generation, the builder offers several advanced capabilities. Local model support allows you to use Hugging Face models locally for docstring improvement, while API integration connects to OpenAI-compatible endpoints. Custom configuration options let you fine-tune model behavior and logging, and environment variables provide secure configuration management. The tool includes performance optimization with automatic device detection for CPU, CUDA, and MPS.
+
+The smolagents-based MCP client provides advanced testing and integration capabilities. It automatically discovers server tools, validates parameters, and generates sample prompts. This client can be customized for specific testing scenarios or extended to integrate with other MCP-compatible frameworks and applications.
 
 ## Documentation
 
