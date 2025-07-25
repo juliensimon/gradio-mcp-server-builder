@@ -319,7 +319,7 @@ The project has two test suites:
 python -m pytest tests/ -v --ignore=tests/slow/
 ```
 
-#### Slow Tests (Manual/Weekly)
+#### Slow Tests (Local Development)
 ```bash
 # Run all slow tests (server building, startup, E2E)
 ./run-slow-tests.sh
@@ -332,7 +332,7 @@ python -m pytest tests/slow/test_input_samples_e2e.py -v
 
 **Test Categories:**
 - **Fast Tests**: Unit tests, parser tests, builder tests (run in CI on every push)
-- **Slow Tests**: Server building, startup verification, end-to-end tests (run manually or weekly via GitHub Actions)
+- **Slow Tests**: Server building, startup verification, end-to-end tests (run locally only)
 
 See [tests/slow/README.md](tests/slow/README.md) for detailed information about slow tests.
 

@@ -17,22 +17,7 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 
 **Duration**: ~5-10 minutes per Python version
 
-### 2. Slow Tests (`slow-tests.yml`)
-**Triggers**:
-- Manual trigger (workflow_dispatch)
-- Weekly schedule (Sundays 2 AM UTC)
-
-**Purpose**: Comprehensive testing of server building and E2E scenarios
-
-**What it does**:
-- Runs on Python 3.13 only
-- Runs all slow tests (server building, startup, E2E)
-- 1-hour timeout
-- Uploads test artifacts
-
-**Duration**: ~30-60 minutes
-
-### 3. Documentation (`docs.yml`)
+### 2. Documentation (`docs.yml`)
 **Triggers**: Push to main/master with changes to docs
 **Purpose**: Auto-deploy documentation to GitHub Pages
 
@@ -40,27 +25,18 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 - Builds MkDocs documentation
 - Deploys to GitHub Pages
 
-## Manual Triggers
-
-### Run Slow Tests Manually
-1. Go to Actions tab in GitHub
-2. Select "Slow Tests" workflow
-3. Click "Run workflow"
-4. Select branch and click "Run workflow"
-
 ## Artifacts
 
-Both CI and slow test workflows upload artifacts:
+CI workflow uploads artifacts:
 - Test results (`.pytest_cache/`)
 - Log files (`log/`)
-- Retention: 7 days (CI), 30 days (slow tests)
+- Retention: 7 days
 - Uses latest GitHub Actions (v4 for artifacts, v4 for cache)
 
 ## Configuration
 
 ### Python Versions
 - **CI**: 3.10, 3.11, 3.12, 3.13 (matrix)
-- **Slow Tests**: 3.13 only
 - **Docs**: 3.13 only
 
 ### Dependencies
@@ -69,7 +45,6 @@ Both CI and slow test workflows upload artifacts:
 
 ### Test Configuration
 - **CI**: `pytest tests/ -v --ignore=tests/slow/`
-- **Slow Tests**: `pytest tests/slow/ -v --timeout=600`
 
 ## Local Development
 
