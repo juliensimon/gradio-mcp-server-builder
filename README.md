@@ -65,11 +65,18 @@ def format_currency(amount: float, currency: str = "USD") -> str:
 ### Prerequisites
 - Python 3.8+
 - Basic familiarity with Python functions
+- Virtual environment (recommended to avoid dependency conflicts)
 
 ### Installation
 ```bash
 git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
+
+# Create and activate a virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -99,6 +106,8 @@ cd output && python server/gradio_server.py
 ```
 
 4. **Test the interface** at http://127.0.0.1:7860
+
+**Note**: When you're done working with the project, you can deactivate the virtual environment with `deactivate`.
 
 ## How It Works
 
