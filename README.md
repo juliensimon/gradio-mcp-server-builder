@@ -2,7 +2,7 @@
 
 > **Generate MCP servers with Gradio interfaces from Python functions**
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-CC%20BY--NC%204.0-green.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
 [![CI](https://github.com/juliensimon/gradio-mcp-server-builder/workflows/CI/badge.svg)](https://github.com/juliensimon/gradio-mcp-server-builder/actions/workflows/ci.yml)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
