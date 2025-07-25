@@ -60,9 +60,8 @@ python server/gradio_interface.py
 The MCP server can be used with any MCP client. The server exposes the following
 tools:
 
-| Function | Description                           |
-| -------- | ------------------------------------- |
-| `greet`  | Generate a friendly greeting message. |
+| Function | Description | | -------- | ------------------------------------- |
+| `greet` | Generate a friendly greeting message. |
 
 Args: n... |
 

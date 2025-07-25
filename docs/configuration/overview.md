@@ -304,18 +304,16 @@ python main.py input/functions.py \
 ### Common Issues
 
 1. **Configuration not loading**:
-
    - Check file path and permissions
    - Validate JSON syntax
    - Check logs for error messages
 
-2. **Model parameters ignored**:
-
+1. **Model parameters ignored**:
    - Verify parameter names match expected format
    - Check device compatibility
    - Review generation parameter limits
 
-3. **Logging not working**:
+1. **Logging not working**:
    - Ensure log directory exists and is writable
    - Check formatter syntax
    - Verify handler configuration
@@ -336,11 +334,11 @@ application.
 ## Best Practices
 
 1. **Version control**: Keep configurations in source control
-2. **Environment-specific**: Use different configs for dev/staging/prod
-3. **Documentation**: Comment your custom configurations
-4. **Testing**: Test configuration changes with sample inputs
-5. **Monitoring**: Use appropriate logging levels for your environment
-6. **Performance**: Balance creativity with speed based on your needs
+1. **Environment-specific**: Use different configs for dev/staging/prod
+1. **Documentation**: Comment your custom configurations
+1. **Testing**: Test configuration changes with sample inputs
+1. **Monitoring**: Use appropriate logging levels for your environment
+1. **Performance**: Balance creativity with speed based on your needs
 
 The configuration system provides complete control over the CLI tool's behavior
 while maintaining ease of use and robust defaults.

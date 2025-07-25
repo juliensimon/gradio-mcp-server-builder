@@ -228,10 +228,10 @@ Model configuration activities are logged:
 ## Best Practices
 
 1. **Start with defaults**: Use the provided `model_config.json` as a baseline
-2. **Adjust gradually**: Make small changes to temperature/top_p first
-3. **Test different models**: Try various Hugging Face models for your use case
-4. **Monitor logs**: Check logs to see which parameters are being applied
-5. **Balance creativity vs consistency**: Higher temperature = more creative but
+1. **Adjust gradually**: Make small changes to temperature/top_p first
+1. **Test different models**: Try various Hugging Face models for your use case
+1. **Monitor logs**: Check logs to see which parameters are being applied
+1. **Balance creativity vs consistency**: Higher temperature = more creative but
    less predictable
 
 ## Troubleshooting

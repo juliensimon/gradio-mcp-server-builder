@@ -156,9 +156,9 @@ The generated Gradio interface provides immediate visual testing:
    python server/gradio_server.py
    ```
 
-2. **Open the web interface** in your browser (usually `http://127.0.0.1:7860`)
+1. **Open the web interface** in your browser (usually `http://127.0.0.1:7860`)
 
-3. **Test each function**:
+1. **Test each function**:
    - Enter test parameters
    - Verify the output is correct
    - Test edge cases and error conditions
@@ -294,11 +294,11 @@ The project includes automated testing through GitHub Actions:
 The CI pipeline runs on every pull request and commit:
 
 1. **Install dependencies**
-2. **Run linting checks**
-3. **Run unit tests**
-4. **Run integration tests**
-5. **Generate coverage reports**
-6. **Upload artifacts**
+1. **Run linting checks**
+1. **Run unit tests**
+1. **Run integration tests**
+1. **Generate coverage reports**
+1. **Upload artifacts**
 
 ### Local CI Simulation
 

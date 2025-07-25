@@ -220,17 +220,17 @@ The generated client creates an intelligent agent using smolagents and presents
 it through a Gradio chat interface. When you run the client:
 
 1. **Connection**: It automatically connects to your running MCP server
-2. **Tool Discovery**: It queries the server to discover all available tools and
+1. **Tool Discovery**: It queries the server to discover all available tools and
    their metadata
-3. **Agent Creation**: It initializes a local language model (SmolLM3-3B by
+1. **Agent Creation**: It initializes a local language model (SmolLM3-3B by
    default) to power the agent
-4. **Chat Interface**: It launches a web-based chat interface where you can
+1. **Chat Interface**: It launches a web-based chat interface where you can
    interact naturally
-5. **Natural Language Processing**: The agent understands your requests and
+1. **Natural Language Processing**: The agent understands your requests and
    automatically selects appropriate tools
-6. **Execution**: It executes the selected tools with proper parameters and
+1. **Execution**: It executes the selected tools with proper parameters and
    returns conversational responses
-7. **Error Handling**: It gracefully handles errors and provides helpful
+1. **Error Handling**: It gracefully handles errors and provides helpful
    feedback
 
 #### Client Features
@@ -345,11 +345,11 @@ After building a server, you can test it in several ways:
 
 1. **Web Interface Testing**: Use the generated Gradio interface to test
    functions interactively
-2. **Test Client Testing**: Use the intelligent test client for natural language
+1. **Test Client Testing**: Use the intelligent test client for natural language
    interaction and conversational testing
-3. **Direct Function Testing**: Import and test functions directly in Python
+1. **Direct Function Testing**: Import and test functions directly in Python
    scripts
-4. **End-to-End Testing**: Run the complete server and test all functionality
+1. **End-to-End Testing**: Run the complete server and test all functionality
 
 ### Test Coverage
 

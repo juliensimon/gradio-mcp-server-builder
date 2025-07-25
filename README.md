@@ -299,9 +299,9 @@ before submitting changes.
 **Before submitting a pull request:**
 
 1. Set up the development environment
-2. Ensure all pre-commit hooks pass
-3. Add tests for new functionality
-4. Update documentation as needed
+1. Ensure all pre-commit hooks pass
+1. Add tests for new functionality
+1. Update documentation as needed
 
 ## License
 

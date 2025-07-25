@@ -13,9 +13,9 @@ python main.py [input_files] [options]
 
 ### Positional Arguments
 
-| Argument      | Description                                       | Required |
-| ------------- | ------------------------------------------------- | -------- |
-| `input_files` | One or more Python files containing MCP functions | Yes      |
+| Argument | Description | Required | | ------------- |
+------------------------------------------------- | -------- | | `input_files` |
+One or more Python files containing MCP functions | Yes |
 
 ### Examples
 
@@ -34,35 +34,42 @@ python main.py input/*.py
 
 ### Output Configuration
 
-| Option         | Description                          | Default  | Example                  |
-| -------------- | ------------------------------------ | -------- | ------------------------ |
-| `--output-dir` | Output directory for generated files | `output` | `--output-dir my_server` |
-| `--port`       | Port for the generated server        | `7860`   | `--port 8080`            |
+| Option | Description | Default | Example | | -------------- |
+------------------------------------ | -------- | ------------------------ | |
+`--output-dir` | Output directory for generated files | `output` |
+`--output-dir my_server` | | `--port` | Port for the generated server | `7860` |
+`--port 8080` |
 
 ### Model Configuration
 
-| Option             | Description                    | Default                    | Example                                   |
-| ------------------ | ------------------------------ | -------------------------- | ----------------------------------------- |
-| `--local-model`    | Local Hugging Face model name  | `HuggingFaceTB/SmolLM3-3B` | `--local-model microsoft/DialoGPT-medium` |
-| `--model-endpoint` | OpenAI-compatible API endpoint | `None`                     | `--model-endpoint http://localhost:8000`  |
-| `--device`         | Device for model inference     | `mps`                      | `--device cuda`                           |
+| Option                                    | Description                | Default            | Example          |     | ------------------ |
+| ----------------------------------------- | -------------------------- | ------------------ | ---------------- | --- | ------------------ |
+| ----------------------------------------- |                            | `--local-model`    | Local Hugging    |
+| Face model name                           | `HuggingFaceTB/SmolLM3-3B` |
+| `--local-model microsoft/DialoGPT-medium` |                            | `--model-endpoint` |
+| OpenAI-compatible API endpoint            | `None`                     |
+| `--model-endpoint http://localhost:8000`  |                            | `--device`         | Device for model |
+| inference                                 | `mps`                      | `--device cuda`    |
 
 ### Behavior Control
 
-| Option                     | Description                      | Default | Example                    |
-| -------------------------- | -------------------------------- | ------- | -------------------------- |
-| `--preserve-docstrings`    | Keep original docstrings         | `False` | `--preserve-docstrings`    |
-| `--disable-sample-prompts` | Disable sample prompt generation | `False` | `--disable-sample-prompts` |
-| `--share`                  | Enable Gradio sharing            | `False` | `--share`                  |
+| Option | Description | Default | Example | | -------------------------- |
+-------------------------------- | ------- | -------------------------- | |
+`--preserve-docstrings` | Keep original docstrings | `False` |
+`--preserve-docstrings` | | `--disable-sample-prompts` | Disable sample prompt
+generation | `False` | `--disable-sample-prompts` | | `--share` | Enable Gradio
+sharing | `False` | `--share` |
 
 ### Configuration Files
 
-| Option           | Description                   | Default                  | Example                            |
-| ---------------- | ----------------------------- | ------------------------ | ---------------------------------- |
-| `--env-file`     | Path to .env file             | `None`                   | `--env-file .env`                  |
-| `--log-config`   | Path to logging configuration | `json/log_config.json`   | `--log-config custom_log.json`     |
-| `--model-config` | Path to model configuration   | `json/model_config.json` | `--model-config custom_model.json` |
-| `--log-file`     | Path to log file              | `log/builds/output.log`  | `--log-file custom.log`            |
+| Option                             | Description                    | Default        | Example                       |        | ---------------- |
+| ---------------------------------- | ------------------------------ | -------------- | ----------------------------- | ------ | ---------------- |
+| ---------------------------------- |                                | `--env-file`   | Path to .env file             | `None` |
+| `--env-file .env`                  |                                | `--log-config` | Path to logging configuration |
+| `json/log_config.json`             | `--log-config custom_log.json` |                | `--model-config`              |
+| Path to model configuration        | `json/model_config.json`       |
+| `--model-config custom_model.json` |                                | `--log-file`   | Path to log file              |
+| `log/builds/output.log`            | `--log-file custom.log`        |
 
 ## Detailed Option Reference
 

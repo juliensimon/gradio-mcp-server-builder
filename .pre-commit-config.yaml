@@ -47,9 +47,27 @@ repos:
         types_or: [yaml, json, markdown]
         args: [--prose-wrap=always]
 
-  # Markdown linting (auto-fixes)
+  # Markdown linting and auto-fixing
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.38.0
     hooks:
       - id: markdownlint
         args: [--fix]
+
+  # Python-based markdown formatter (auto-fixes)
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
+    hooks:
+      - id: mdformat
+        args: [--wrap=80]
+
+  # Local hooks for additional markdown formatting
+  - repo: local
+    hooks:
+      - id: markdown-fix
+        name: Markdown auto-fix
+        entry:
+          bash -c 'prettier --write "**/*.md" --prose-wrap=always &&
+          markdownlint --fix .'
+        language: system
+        types: [markdown]

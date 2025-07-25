@@ -73,9 +73,9 @@ task management workflow.
 ### Simple Example Functions
 
 1. **`add_numbers(a: float, b: float)`** - Addition operation
-2. **`multiply_numbers(a: float, b: float)`** - Multiplication operation
-3. **`circle_area(radius: float)`** - Circle area calculation
-4. **`rectangle_area(width: float, height: float)`** - Rectangle area
+1. **`multiply_numbers(a: float, b: float)`** - Multiplication operation
+1. **`circle_area(radius: float)`** - Circle area calculation
+1. **`rectangle_area(width: float, height: float)`** - Rectangle area
    calculation
 
 ### Advanced Example Functions
@@ -83,25 +83,25 @@ task management workflow.
 #### Task Storage (`task_storage.py`)
 
 1. **`create_task(title, description, priority)`** - Create new tasks
-2. **`get_task(task_id)`** - Retrieve specific task
-3. **`list_tasks(status)`** - List filtered tasks
-4. **`update_task_status(task_id, status)`** - Update task status
-5. **`delete_task(task_id)`** - Remove tasks
+1. **`get_task(task_id)`** - Retrieve specific task
+1. **`list_tasks(status)`** - List filtered tasks
+1. **`update_task_status(task_id, status)`** - Update task status
+1. **`delete_task(task_id)`** - Remove tasks
 
 #### Task Analytics (`task_analytics.py`)
 
 6. **`get_task_statistics()`** - Comprehensive task metrics
-7. **`get_productivity_report(days)`** - Productivity analysis
-8. **`get_overdue_tasks()`** - Find stalled tasks
-9. **`export_tasks_csv()`** - Export to CSV format
+1. **`get_productivity_report(days)`** - Productivity analysis
+1. **`get_overdue_tasks()`** - Find stalled tasks
+1. **`export_tasks_csv()`** - Export to CSV format
 
 #### Task Utilities (`task_utilities.py`)
 
 10. **`search_tasks(query)`** - Text-based task search
-11. **`bulk_update_priority(task_ids, priority)`** - Batch priority updates
-12. **`filter_tasks_by_date(date_filter, days)`** - Date-based filtering
-13. **`count_tasks_by_criteria(criteria, value)`** - Counting operations
-14. **`cleanup_completed_tasks(days_old)`** - Data cleanup
+1. *`bulk_update_priority(task_ids, priority)`** - Batch priority updates
+1. *`filter_tasks_by_date(date_filter, days)`** - Date-based filtering
+1. *`count_tasks_by_criteria(criteria, value)`** - Counting operations
+1. *`cleanup_completed_tasks(days_old)`** - Data cleanup
 
 ## 🎯 Testing Different Scenarios
 
@@ -162,19 +162,19 @@ output/
    python main.py input-samples/input-basic/hello_world.py --preserve-docstrings
    ```
 
-2. **Test the generated server:**
+1. **Test the generated server:**
 
    ```bash
    cd output && python server/gradio_server.py
    ```
 
-3. **Test the MCP client:**
+1. **Test the MCP client:**
 
    ```bash
    cd output && python client/mcp_client.py
    ```
 
-4. **Scale up to more complex examples:**
+1. **Scale up to more complex examples:**
 
    ```bash
    python main.py input-samples/input-advanced/*.py --share
