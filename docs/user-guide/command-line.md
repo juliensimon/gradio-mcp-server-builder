@@ -42,13 +42,15 @@ python main.py input/*.py
 
 ### Model Configuration
 
-| Option                                    | Description                | Default            | Example          |     | ------------------ |
-| ----------------------------------------- | -------------------------- | ------------------ | ---------------- | --- | ------------------ |
-| ----------------------------------------- |                            | `--local-model`    | Local Hugging    |
-| Face model name                           | `HuggingFaceTB/SmolLM3-3B` |
-| `--local-model microsoft/DialoGPT-medium` |                            | `--model-endpoint` |
-| OpenAI-compatible API endpoint            | `None`                     |
-| `--model-endpoint http://localhost:8000`  |                            | `--device`         | Device for model |
+| Option                                    | Description                | Default            | Example            |     | ------------------ |     |     |
+| ----------------------------------------- | -------------------------- | ------------------ | ------------------ | --- | ------------------ | --- | --- |
+| ------------------                        | ------------------         | ---                | ------------------ | --- |                    |
+| ------------------                        | ----------------           | ---                | ------------------ |     |                    |
+| ----------------------------------------- |                            | `--local-model`    | Local Hugging      |
+| Face model name                           | `HuggingFaceTB/SmolLM3-3B` |                    |                    |
+| `--local-model microsoft/DialoGPT-medium` |                            | `--model-endpoint` |                    |     |
+| OpenAI-compatible API endpoint            | `None`                     |                    |                    |
+| `--model-endpoint http://localhost:8000`  |                            | `--device`         | Device for model   |     |                    |
 | inference                                 | `mps`                      | `--device cuda`    |
 
 ### Behavior Control
@@ -62,14 +64,17 @@ sharing | `False` | `--share` |
 
 ### Configuration Files
 
-| Option                             | Description                    | Default        | Example                       |        | ---------------- |
-| ---------------------------------- | ------------------------------ | -------------- | ----------------------------- | ------ | ---------------- |
-| ---------------------------------- |                                | `--env-file`   | Path to .env file             | `None` |
-| `--env-file .env`                  |                                | `--log-config` | Path to logging configuration |
-| `json/log_config.json`             | `--log-config custom_log.json` |                | `--model-config`              |
-| Path to model configuration        | `json/model_config.json`       |
-| `--model-config custom_model.json` |                                | `--log-file`   | Path to log file              |
-| `log/builds/output.log`            | `--log-file custom.log`        |
+| Option                             | Description                   | Default                       | Example          |                                    | ----------------  |     |     |
+| ---------------------------------- | ----------------------------- | ----------------------------- | ---------------- | ---------------------------------- | ----------------- | --- | --- |
+| ------------                       | -----------------             | ----------------------------- |
+| ----------------                   | ---                           |                               | --------------   | -----------------------------      |
+| ------                             | ----------------              |                               |                  | ---------------------------------- |                   |
+| `--env-file`                       | Path to .env file             | `None`                        |                  |                                    | `--env-file .env` |     |
+| `--log-config`                     | Path to logging configuration |                               |                  | `json/log_config.json`             |
+| `--log-config custom_log.json`     |                               | `--model-config`              |                  |                                    | Path to model     |
+| configuration                      | `json/model_config.json`      |                               |                  |
+| `--model-config custom_model.json` |                               | `--log-file`                  | Path to log file |                                    |                   |
+| `log/builds/output.log`            | `--log-file custom.log`       |
 
 ## Detailed Option Reference
 

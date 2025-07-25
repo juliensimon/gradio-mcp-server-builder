@@ -277,19 +277,26 @@ The project uses pre-commit hooks to maintain code quality:
 
 Run manually: `pre-commit run --all-files`
 
-### Fixing Long Lines
+### Auto-Fixing Everything
 
-To automatically fix long lines and formatting issues:
+Pre-commit hooks automatically fix all code quality issues:
 
 ```bash
-# Run the automated fix script
-./fix-lines.sh
+# Pre-commit handles everything automatically on every commit
+git add .
+git commit -m "Your changes"  # All auto-fixing happens here
 
-# Or run individual tools
-black --line-length=88 .
-autopep8 --in-place --recursive --max-line-length=88 --aggressive --aggressive .
-prettier --write "**/*.md" --prose-wrap=always
+# Or run manually
+pre-commit run --all-files
 ```
+
+**Auto-fixing tools configured:**
+- **Python**: Black, isort, autopep8, autoflake
+- **Markdown**: mdformat, prettier, markdownlint
+- **General**: trailing whitespace, end-of-file fixes
+- **Other**: JSON, YAML formatting with prettier
+
+
 
 ## Contributing
 
