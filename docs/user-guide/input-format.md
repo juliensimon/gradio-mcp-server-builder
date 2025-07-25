@@ -482,9 +482,7 @@ def convert_units(value: float, from_unit: str, to_unit: str) -> float:
 
 ### Function Naming
 
-- Use descriptive, lowercase names with underscores
-- Avoid abbreviations unless widely understood
-- Be consistent with naming conventions
+Use descriptive, lowercase names with underscores to make your functions easy to understand and maintain. Avoid abbreviations unless they are widely understood in your domain. Be consistent with naming conventions throughout your codebase to ensure readability and maintainability.
 
 ```python
 # Good
@@ -500,25 +498,15 @@ def calc_pmt(p: float, r: float, t: int) -> float:
 
 ### Parameter Design
 
-- Use meaningful parameter names
-- Provide default values when appropriate
-- Use type hints for all parameters
-- Keep parameter lists manageable (5-7 parameters max)
+Use meaningful parameter names that clearly indicate their purpose and expected values. Provide default values when appropriate to make your functions more convenient to use. Use type hints for all parameters to help the builder generate better interfaces and documentation. Keep parameter lists manageable with 5-7 parameters maximum to maintain function clarity and usability.
 
 ### Error Handling
 
-- Validate inputs early
-- Use specific exception types
-- Provide helpful error messages
-- Handle edge cases gracefully
+Validate inputs early in your function to catch problems before processing begins. Use specific exception types that clearly indicate what went wrong, such as `ValueError` for invalid inputs or `TypeError` for incorrect data types. Provide helpful error messages that explain what the user should do to fix the problem. Handle edge cases gracefully by anticipating unusual inputs and providing appropriate responses.
 
 ### Documentation
 
-- Write clear, concise docstrings
-- Include parameter descriptions
-- Document return values
-- Provide usage examples
-- Note any side effects or limitations
+Write clear, concise docstrings that explain what your function does and how to use it. Include parameter descriptions that explain what each parameter expects and any constraints or requirements. Document return values to help users understand what they'll receive from your function. Provide usage examples that demonstrate common use cases and help users get started quickly. Note any side effects or limitations that users should be aware of when using your function.
 
 ## Common Patterns
 
@@ -583,6 +571,8 @@ def configure_service(
 
 ## Next Steps
 
-- **[Command Line Options](command-line.md)** - Complete CLI reference
-- **[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code
-- **[Configuration Guide](../configuration/overview.md)** - Customize behavior 
+**[Command Line Options](command-line.md)** - Complete CLI reference with all available options and configuration flags for customizing the builder's behavior.
+
+**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code, including function detection, signature analysis, and docstring processing.
+
+**[Configuration Guide](../configuration/overview.md)** - Customize behavior and settings to match your specific requirements and deployment environment. 

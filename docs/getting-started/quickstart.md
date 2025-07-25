@@ -4,16 +4,11 @@ Build your first MCP server in under 5 minutes with this step-by-step guide.
 
 ## Prerequisites
 
-Before starting, ensure you have:
-- **Python 3.8+** installed and working
-- **Basic Python knowledge** (functions, decorators, type hints)
-- **The Gradio MCP Server Builder** installed (see [Installation Guide](installation.md))
+Before starting, ensure you have **Python 3.8+** installed and working on your system. You should also have basic Python knowledge including functions, decorators, and type hints. The Gradio MCP Server Builder must be installed - see the [Installation Guide](installation.md) for setup instructions.
 
 **What you'll learn:**
-- How to create MCP-compatible functions
-- How to run the builder
-- How to test your generated server
-- How to use the intelligent test client
+
+You'll learn how to create MCP-compatible functions with proper decorators and type hints. The tutorial covers running the builder to generate your server, testing the generated server through the web interface, and using the intelligent test client for natural language interaction. By the end, you'll understand the complete workflow from function creation to deployment.
 
 ## Your First MCP Server
 
@@ -127,14 +122,7 @@ The builder automatically generates an intelligent test client that uses the `sm
 
 #### What is smolagents?
 
-`smolagents` is a lightweight library for creating intelligent agents that can interact with MCP servers. It provides a simple, intuitive interface for connecting to MCP servers, discovering available tools, and executing function calls. The generated client uses smolagents to create an intelligent agent that can:
-
-- Connect to your MCP server automatically
-- Discover all available tools and their capabilities
-- Understand natural language requests and map them to appropriate tools
-- Execute function calls with proper parameter handling
-- Provide conversational responses with results
-- Handle complex multi-step interactions
+`smolagents` is a lightweight library for creating intelligent agents that can interact with MCP servers. It provides a simple, intuitive interface for connecting to MCP servers, discovering available tools, and executing function calls. The generated client uses smolagents to create an intelligent agent that can connect to your MCP server automatically and discover all available tools and their capabilities. It understands natural language requests and maps them to appropriate tools, executes function calls with proper parameter handling, and provides conversational responses with results. The agent can handle complex multi-step interactions, making it feel like you're chatting with an intelligent assistant rather than using a traditional API.
 
 For a detailed explanation of how the agent client works, see the [Agent Client Guide](../user-guide/agent-client.md).
 
@@ -149,10 +137,7 @@ python client/mcp_client.py
 
 The test client will start and launch a web-based chat interface. You can interact with it using natural language, asking questions like "Calculate the area of a circle with radius 5" or "What functions are available?" The client will automatically understand your requests and use the appropriate tools.
 
-For example, if you have a function called `calculate_area` that takes a `radius` parameter, you can ask:
-- "Calculate the area of a circle with radius 5"
-- "What's the area of a circle with radius 10 meters?"
-- "Compute the area for radius 3.14"
+For example, if you have a function called `calculate_area` that takes a `radius` parameter, you can ask "Calculate the area of a circle with radius 5", "What's the area of a circle with radius 10 meters?", or "Compute the area for radius 3.14". The agent will understand these natural language requests and automatically use the appropriate function.
 
 #### How the Client Works
 
@@ -184,37 +169,17 @@ The generated client includes several advanced features:
 
 #### Integration with Other Tools
 
-The smolagents-based client is designed to work seamlessly with other MCP-compatible tools and frameworks. You can:
-
-- Use it as a reference for integrating your server with other MCP clients
-- Extend it to add custom functionality or testing capabilities
-- Use it as a starting point for building more sophisticated MCP applications
-- Share it with users who want to test your server programmatically
-- Integrate it with other AI frameworks and tools that support MCP
-- Use it as a foundation for building conversational AI applications
+The smolagents-based client is designed to work seamlessly with other MCP-compatible tools and frameworks. You can use it as a reference for integrating your server with other MCP clients, extend it to add custom functionality or testing capabilities, or use it as a starting point for building more sophisticated MCP applications. The client can be shared with users who want to test your server programmatically, integrated with other AI frameworks and tools that support MCP, or used as a foundation for building conversational AI applications.
 
 #### Customizing the Client
 
-The generated client code is fully customizable. You can modify it to:
-
-- Change the language model used by the agent (e.g., use a different Hugging Face model)
-- Customize the agent's behavior and response style
-- Add custom error handling or logging
-- Implement additional testing scenarios
-- Add batch processing capabilities
-- Integrate with other testing frameworks
-- Add custom parameter validation logic
-- Modify the chat interface appearance and functionality
+The generated client code is fully customizable. You can modify it to change the language model used by the agent (e.g., use a different Hugging Face model), customize the agent's behavior and response style, add custom error handling or logging, implement additional testing scenarios, add batch processing capabilities, integrate with other testing frameworks, add custom parameter validation logic, or modify the chat interface appearance and functionality.
 
 ### Sample Prompt Generation
 
 The builder uses intelligent prompt generation to create realistic examples for each function. It analyzes your function's purpose, parameter names, and docstring to generate prompts that users might naturally ask.
 
-The prompt generation considers:
-- Function names and their semantic meaning
-- Parameter names and their expected values
-- Docstring descriptions and examples
-- Common use cases for similar functions
+The prompt generation considers function names and their semantic meaning, parameter names and their expected values, docstring descriptions and examples, and common use cases for similar functions to create realistic and helpful examples.
 
 This feature helps users understand how to interact with your tools and provides a starting point for integration with other MCP clients or AI assistants.
 
@@ -274,11 +239,7 @@ After building a server, you can test it in several ways:
 
 ### Test Coverage
 
-The test suite covers:
-- **Unit Tests**: Individual components like the builder, parser, and generators
-- **Integration Tests**: End-to-end workflows from input files to generated servers
-- **Input Sample Tests**: Testing with various input file formats and configurations
-- **Configuration Tests**: Testing different configuration options and edge cases
+The test suite covers **Unit Tests** for individual components like the builder, parser, and generators, **Integration Tests** for end-to-end workflows from input files to generated servers, **Input Sample Tests** for various input file formats and configurations, and **Configuration Tests** for different configuration options and edge cases.
 
 ### Continuous Integration
 
@@ -287,22 +248,34 @@ The project includes GitHub Actions workflows that automatically run tests on pu
 ## What's Next?
 
 ### For Beginners
-1. **Learn Input Formats**: Read the [Input Format Guide](../user-guide/input-format.md) to understand how to write better MCP functions
-2. **Explore Examples**: Try the sample functions in `input-samples/` to see different patterns
-3. **Improve Docstrings**: Let AI improve your function documentation for better tool discovery
-4. **Test Thoroughly**: Use the [Testing Guide](../user-guide/testing.md) to ensure your server works correctly
+
+**Learn Input Formats** - Read the [Input Format Guide](../user-guide/input-format.md) to understand how to write better MCP functions with proper structure, type hints, and documentation.
+
+**Explore Examples** - Try the sample functions in `input-samples/` to see different patterns and learn from working examples that demonstrate various use cases.
+
+**Improve Docstrings** - Let AI improve your function documentation for better tool discovery. The builder can automatically enhance your docstrings to make them more discoverable by AI assistants.
+
+**Test Thoroughly** - Use the [Testing Guide](../user-guide/testing.md) to ensure your server works correctly across different scenarios and edge cases.
 
 ### For Advanced Users
-1. **Customize Configuration**: Explore [Model Configuration](../configuration/model.md) for advanced AI settings
-2. **Command Line Mastery**: Study the [Command Line Reference](../user-guide/command-line.md) for all options
-3. **Agent Client Deep Dive**: Understand the [Agent Client Architecture](../user-guide/agent-client.md)
-4. **Integration**: Learn how to integrate your MCP server with other tools and frameworks
+
+**Customize Configuration** - Explore [Model Configuration](../configuration/model.md) for advanced AI settings, including local model selection and performance optimization.
+
+**Command Line Mastery** - Study the [Command Line Reference](../user-guide/command-line.md) for all available options and learn how to fine-tune the builder's behavior.
+
+**Agent Client Deep Dive** - Understand the [Agent Client Architecture](../user-guide/agent-client.md) and learn how to customize the intelligent test client for your specific needs.
+
+**Integration** - Learn how to integrate your MCP server with other tools and frameworks, including deployment strategies and production considerations.
 
 ### Common Next Steps
-- **Add Error Handling**: Make your functions robust with proper error handling
-- **Optimize Performance**: Use local models for faster docstring improvement
-- **Deploy**: Share your server with others using Gradio's sharing features
-- **Contribute**: Help improve the tool by reporting issues or contributing code
+
+**Add Error Handling** - Make your functions robust with proper error handling and validation to ensure reliable operation in production environments.
+
+**Optimize Performance** - Use local models for faster docstring improvement and consider performance optimizations for high-traffic scenarios.
+
+**Deploy** - Share your server with others using Gradio's sharing features or deploy it to cloud platforms for public access.
+
+**Contribute** - Help improve the tool by reporting issues, suggesting features, or contributing code to the open-source project.
 
 ## Next Steps
 
@@ -312,33 +285,23 @@ Now that you've successfully built your first server and understand how to test 
 
 ### Common Issues
 
-**"No module named 'mcp'"**
-```bash
-# Install the MCP library
-pip install mcp
-```
+**"No module named 'mcp'"** - This error occurs when the MCP library isn't installed. Install it with `pip install mcp` before running the builder.
 
-**"Port already in use"**
-```bash
-# Use a different port
-python server/gradio_server.py --port 7861
-```
+**"Port already in use"** - If the default port 7860 is occupied, specify a different port when starting the server: `python server/gradio_server.py --port 7861`.
 
-**"Function not found"**
-- Ensure your function has the `@mcp.tool()` decorator
-- Check that the function name matches exactly
-- Verify the file path is correct
+**"Function not found"** - Ensure your function has the `@mcp.tool()` decorator, check that the function name matches exactly in your code, and verify the file path is correct when running the builder.
 
-**"Type error"**
-- Add proper type hints to your function parameters
-- Use `from typing import List, Dict, Optional` for complex types
+**"Type error"** - Add proper type hints to your function parameters. For complex types, import the necessary types with `from typing import List, Dict, Optional`.
 
 ### Getting Help
 
-- **Input Format Issues**: See the [Input Format Guide](../user-guide/input-format.md)
-- **Command Line Options**: Check the [Command Line Reference](../user-guide/command-line.md)
-- **Testing Problems**: Review the [Testing Guide](../user-guide/testing.md)
-- **GitHub Issues**: Report bugs or request features on [GitHub](https://github.com/juliensimon/gradio-mcp-server-builder)
+**Input Format Issues** - See the [Input Format Guide](../user-guide/input-format.md) for detailed information about function structure, decorators, and type requirements.
+
+**Command Line Options** - Check the [Command Line Reference](../user-guide/command-line.md) for complete documentation of all available options and their usage.
+
+**Testing Problems** - Review the [Testing Guide](../user-guide/testing.md) for comprehensive testing strategies and troubleshooting techniques.
+
+**GitHub Issues** - Report bugs or request features on [GitHub](https://github.com/juliensimon/gradio-mcp-server-builder) where the community can help resolve problems and suggest improvements.
 
 ## Need Help?
 

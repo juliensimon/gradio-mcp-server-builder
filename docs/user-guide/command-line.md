@@ -132,10 +132,8 @@ python main.py functions.py --local-model "username/custom-model"
 ```
 
 **Popular Models:**
-- `HuggingFaceTB/SmolLM3-3B` (default, good balance)
-- `microsoft/DialoGPT-medium` (faster, smaller)
-- `gpt2` (very fast, smaller)
-- `gpt2-medium` (better quality, larger)
+
+`HuggingFaceTB/SmolLM3-3B` is the default model that provides a good balance of speed and quality. For faster processing with smaller models, consider `microsoft/DialoGPT-medium` or `gpt2`. If you need better quality and can afford the larger model size, `gpt2-medium` offers improved results.
 
 ### --model-endpoint
 
@@ -185,9 +183,8 @@ python main.py functions.py --device mps
 ```
 
 **Device Support:**
-- **cpu**: Works on all systems, slower
-- **cuda**: NVIDIA GPUs only, fastest
-- **mps**: Apple Silicon Macs only, fast
+
+**CPU** works on all systems but provides slower processing. **CUDA** is available only on NVIDIA GPUs and offers the fastest performance for model inference. **MPS** is exclusive to Apple Silicon Macs and provides fast acceleration without requiring CUDA.
 
 ### --preserve-docstrings
 
@@ -202,12 +199,8 @@ python main.py functions.py --preserve-docstrings
 ```
 
 **Use Cases:**
-- When you have well-written docstrings
-- For faster builds (skips AI processing)
-- When you want to maintain exact wording
-- For testing and development
-- When working with sensitive or proprietary information
-- When you have domain-specific knowledge that AI might miss
+
+Use this option when you have well-written docstrings that you want to preserve exactly. It's also useful for faster builds since it skips AI processing entirely. Choose this option when you want to maintain exact wording, for testing and development scenarios, when working with sensitive or proprietary information, or when you have domain-specific knowledge that AI models might miss or misinterpret.
 
 **Important Note**: Docstrings are crucial for MCP tool discovery. AI improvement can significantly enhance tool discoverability, but always review generated docstrings for accuracy. Poor docstrings can make your tools difficult for AI assistants to find and use effectively.
 
@@ -224,9 +217,8 @@ python main.py functions.py --disable-sample-prompts
 ```
 
 **Benefits:**
-- Faster builds
-- Smaller generated files
-- When you don't need sample prompts
+
+Disabling sample prompts results in faster builds and smaller generated files. This option is ideal when you don't need sample prompts for your use case or when you want to minimize the output size.
 
 ### --share
 
@@ -241,10 +233,8 @@ python main.py functions.py --share
 ```
 
 **Features:**
-- Creates a public URL (e.g., `https://xxx.gradio.live`)
-- Accessible from anywhere on the internet
-- Temporary (expires when server stops)
-- Useful for demos and sharing
+
+The sharing feature creates a public URL (e.g., `https://xxx.gradio.live`) that makes your server accessible from anywhere on the internet. This URL is temporary and expires when the server stops, making it perfect for demos and sharing your work with others.
 
 ### --env-file
 
@@ -427,14 +417,8 @@ python main.py functions.py
 ```
 
 **Supported Environment Variables:**
-- `GRADIO_MCP_OUTPUT_DIR`
-- `GRADIO_MCP_PORT`
-- `GRADIO_MCP_LOCAL_MODEL`
-- `GRADIO_MCP_MODEL_ENDPOINT`
-- `GRADIO_MCP_DEVICE`
-- `GRADIO_MCP_SHARE`
-- `GRADIO_MCP_PRESERVE_DOCSTRINGS`
-- `GRADIO_MCP_DISABLE_SAMPLE_PROMPTS`
+
+The tool supports several environment variables for configuration: `GRADIO_MCP_OUTPUT_DIR` for custom output directories, `GRADIO_MCP_PORT` for server port configuration, `GRADIO_MCP_LOCAL_MODEL` for specifying local models, `GRADIO_MCP_MODEL_ENDPOINT` for API endpoints, `GRADIO_MCP_DEVICE` for device selection, `GRADIO_MCP_SHARE` for sharing configuration, `GRADIO_MCP_PRESERVE_DOCSTRINGS` for docstring preservation, and `GRADIO_MCP_DISABLE_SAMPLE_PROMPTS` for disabling sample prompt generation.
 
 ## Help and Information
 
@@ -457,6 +441,8 @@ python main.py functions.py --log-config config/debug_logging.json
 
 ## Next Steps
 
-- **[Input Format Guide](input-format.md)** - Learn how to structure your input files
-- **[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code
-- **[Configuration Guide](../configuration/overview.md)** - Customize behavior 
+**[Input Format Guide](input-format.md)** - Learn how to structure your input files with proper decorators, type hints, and documentation for optimal results.
+
+**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code, including function detection, signature analysis, and docstring processing.
+
+**[Configuration Guide](../configuration/overview.md)** - Customize behavior and settings to match your specific requirements and deployment environment. 

@@ -7,10 +7,14 @@ A powerful CLI tool to automatically build MCP (Model Context Protocol) servers 
 The Model Context Protocol (MCP) is a standard that enables AI assistants and other tools to discover and use your functions. Think of it as a universal language that lets AI systems understand what your code can do and how to use it.
 
 **Why MCP matters:**
-- **AI Integration**: Make your functions available to ChatGPT, Claude, and other AI assistants
-- **Tool Discovery**: AI systems can automatically find and understand your tools
-- **Standard Protocol**: Works with any MCP-compatible client or framework
-- **No API Design**: Focus on your functions, not API endpoints
+
+**AI Integration** - Make your functions available to ChatGPT, Claude, and other AI assistants. Your tools become part of the AI ecosystem, allowing users to interact with your functionality through natural language.
+
+**Tool Discovery** - AI systems can automatically find and understand your tools. The protocol provides metadata that helps AI assistants determine when and how to use your functions.
+
+**Standard Protocol** - Works with any MCP-compatible client or framework. You're not locked into a specific platform or implementation.
+
+**No API Design** - Focus on your functions, not API endpoints. The protocol handles the communication layer automatically.
 
 ## Overview
 
@@ -67,15 +71,22 @@ The intelligent test client provides advanced testing and integration capabiliti
 ## Quick Reference
 
 ### For Beginners
-- **[Installation](getting-started/installation.md)** - Get the tool running
-- **[Quick Start](getting-started/quickstart.md)** - Build your first server in 5 minutes
-- **[Input Format](user-guide/input-format.md)** - Learn how to write MCP functions
+
+**[Installation](getting-started/installation.md)** - Get the tool running on your system with step-by-step instructions for different platforms and environments.
+
+**[Quick Start](getting-started/quickstart.md)** - Build your first server in 5 minutes with a guided tutorial that covers the complete workflow from function creation to testing.
+
+**[Input Format](user-guide/input-format.md)** - Learn how to write MCP functions with proper decorators, type hints, and docstrings for optimal tool discovery.
 
 ### For Advanced Users
-- **[Command Line Options](user-guide/command-line.md)** - Complete CLI reference
-- **[Configuration](configuration/overview.md)** - Customize behavior and models
-- **[Testing Guide](user-guide/testing.md)** - Comprehensive testing strategies
-- **[Agent Client](user-guide/agent-client.md)** - Understand the intelligent test client
+
+**[Command Line Options](user-guide/command-line.md)** - Complete CLI reference with all available options, configuration flags, and advanced usage patterns.
+
+**[Configuration](configuration/overview.md)** - Customize behavior and models with detailed configuration options for different deployment scenarios.
+
+**[Testing Guide](user-guide/testing.md)** - Comprehensive testing strategies including unit tests, integration tests, and end-to-end validation.
+
+**[Agent Client](user-guide/agent-client.md)** - Understand the intelligent test client architecture and learn how to customize it for your specific needs.
 
 ### Common Commands
 ```bash

@@ -4,17 +4,15 @@ Get the Gradio MCP Server Builder up and running on your system.
 
 ## Prerequisites
 
-Before installing the Gradio MCP Server Builder, ensure you have:
-
-- **Python 3.8+** - The tool is built with modern Python features
-- **Git** - For cloning the repository
-- **pip** - Python package manager
+Before installing the Gradio MCP Server Builder, ensure you have **Python 3.8+** installed on your system. The tool is built with modern Python features and requires a recent Python version. You'll also need **Git** for cloning the repository and **pip** for installing Python packages.
 
 ### System Requirements
 
-- **macOS**: 10.15+ (Catalina) for MPS support
-- **Linux**: Any modern distribution
-- **Windows**: Windows 10+ (limited MPS support)
+**macOS** - Version 10.15+ (Catalina) is required for MPS support, which provides accelerated performance on Apple Silicon Macs.
+
+**Linux** - Any modern distribution should work, with full support for CPU and CUDA acceleration.
+
+**Windows** - Windows 10+ is supported, though with limited MPS support compared to macOS.
 
 ## Installation Methods
 
@@ -48,14 +46,9 @@ pip install -e .
 
 ## Dependencies
 
-The tool automatically installs these key dependencies:
+The tool automatically installs these key dependencies when you run the installation commands. **Gradio** provides the web interface framework for your generated servers. **Transformers** enables Hugging Face model support for local AI processing. **PyTorch** powers local model inference with support for CPU, CUDA, and MPS acceleration.
 
-- **gradio** - Web interface framework
-- **transformers** - Hugging Face model support
-- **torch** - PyTorch for local model inference
-- **requests** - HTTP client for API calls
-- **pydantic** - Data validation
-- **python-dotenv** - Environment variable management
+**Requests** handles HTTP client functionality for API calls to external services. **Pydantic** provides data validation and serialization for your function parameters and return values. **Python-dotenv** manages environment variables for secure configuration handling.
 
 ## Optional Dependencies
 
@@ -86,11 +79,7 @@ python main.py input-samples/input-hello-world/hello_world.py --preserve-docstri
 
 ## Configuration Files
 
-The tool uses several configuration files that are created automatically:
-
-- `json/model_config.json` - Model behavior configuration
-- `json/log_config.json` - Logging configuration
-- `config/examples/` - Example configurations
+The tool uses several configuration files that are created automatically during installation. The `json/model_config.json` file contains model behavior configuration including default models, performance settings, and API endpoints. The `json/log_config.json` file manages logging configuration with different verbosity levels and output formats. The `config/examples/` directory contains example configurations that demonstrate different setup scenarios and can be used as templates for custom configurations.
 
 ## Environment Setup
 

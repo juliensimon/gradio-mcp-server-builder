@@ -126,7 +126,7 @@ The quality of AI-generated docstrings depends heavily on the model used. The bu
 
 **Local Models**: Models like `HuggingFaceTB/SmolLM3-3B` run locally and provide good results for most use cases. They're fast, private, and don't require API keys.
 
-**OpenAI-Compatible Models**: Models like GPT-3.5-turbo or GPT-4 provide excellent docstring quality but require API access and may have usage costs.
+**OpenAI-Compatible Models**: Models with an OpenAI-compatible API (e.g. together.ai, local llama.server, etc.) provide excellent docstring quality but require API access and may have usage costs.
 
 **Custom Models**: You can use specialized models trained on technical documentation for even better results in specific domains.
 
