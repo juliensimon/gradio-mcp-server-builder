@@ -91,6 +91,7 @@ The Gradio MCP Server Builder includes an AI-powered docstring improvement featu
 ### How AI Improvement Works
 
 The AI improvement process analyzes your function's:
+
 - **Function name and signature** to understand its purpose
 - **Parameter types and names** to infer expected inputs
 - **Existing docstring content** (if any) to preserve important information
@@ -102,6 +103,7 @@ The AI then generates improved docstrings that follow best practices for MCP too
 ### When to Use AI Improvement
 
 AI docstring improvement is most beneficial when:
+
 - Your existing docstrings are minimal or unclear
 - You want to ensure consistency across all your tools
 - You're converting existing code to MCP tools
@@ -111,6 +113,7 @@ AI docstring improvement is most beneficial when:
 ### When to Preserve Original Docstrings
 
 There are situations where you should keep your original docstrings:
+
 - Your docstrings are already comprehensive and well-written
 - You have specific domain knowledge that the AI might not capture
 - You want to maintain exact wording for legal or compliance reasons
