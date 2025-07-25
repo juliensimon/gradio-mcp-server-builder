@@ -2,6 +2,16 @@
 
 A powerful CLI tool to automatically build MCP (Model Context Protocol) servers with Gradio from Python function files.
 
+## What is MCP?
+
+The Model Context Protocol (MCP) is a standard that enables AI assistants and other tools to discover and use your functions. Think of it as a universal language that lets AI systems understand what your code can do and how to use it.
+
+**Why MCP matters:**
+- **AI Integration**: Make your functions available to ChatGPT, Claude, and other AI assistants
+- **Tool Discovery**: AI systems can automatically find and understand your tools
+- **Standard Protocol**: Works with any MCP-compatible client or framework
+- **No API Design**: Focus on your functions, not API endpoints
+
 ## Overview
 
 The Gradio MCP Server Builder transforms your Python functions into complete, production-ready MCP servers with beautiful web interfaces. Simply decorate your functions with `@mcp.tool()` and let the builder handle the rest.
@@ -53,6 +63,34 @@ The builder automatically creates interfaces that adapt to your function structu
 Beyond basic server generation, the builder offers several advanced capabilities. Local model support allows you to use Hugging Face models locally for docstring improvement, while API integration connects to OpenAI-compatible endpoints. Custom configuration options let you fine-tune model behavior and logging, and environment variables provide secure configuration management. The tool includes performance optimization with automatic device detection for CPU, CUDA, and MPS.
 
 The intelligent test client provides advanced testing and integration capabilities. It automatically discovers server tools, understands natural language requests, and provides conversational responses. This test client can be customized for specific testing scenarios or extended to integrate with other MCP-compatible frameworks and applications. The agent client guide provides detailed information about its architecture, configuration, and usage patterns.
+
+## Quick Reference
+
+### For Beginners
+- **[Installation](getting-started/installation.md)** - Get the tool running
+- **[Quick Start](getting-started/quickstart.md)** - Build your first server in 5 minutes
+- **[Input Format](user-guide/input-format.md)** - Learn how to write MCP functions
+
+### For Advanced Users
+- **[Command Line Options](user-guide/command-line.md)** - Complete CLI reference
+- **[Configuration](configuration/overview.md)** - Customize behavior and models
+- **[Testing Guide](user-guide/testing.md)** - Comprehensive testing strategies
+- **[Agent Client](user-guide/agent-client.md)** - Understand the intelligent test client
+
+### Common Commands
+```bash
+# Basic build
+python main.py functions.py
+
+# With AI docstring improvement
+python main.py functions.py --local-model "HuggingFaceTB/SmolLM3-3B"
+
+# Custom output and port
+python main.py functions.py --output-dir my_server --port 8080
+
+# Preserve original docstrings
+python main.py functions.py --preserve-docstrings
+```
 
 ## Documentation
 

@@ -2,6 +2,19 @@
 
 Build your first MCP server in under 5 minutes with this step-by-step guide.
 
+## Prerequisites
+
+Before starting, ensure you have:
+- **Python 3.8+** installed and working
+- **Basic Python knowledge** (functions, decorators, type hints)
+- **The Gradio MCP Server Builder** installed (see [Installation Guide](installation.md))
+
+**What you'll learn:**
+- How to create MCP-compatible functions
+- How to run the builder
+- How to test your generated server
+- How to use the intelligent test client
+
 ## Your First MCP Server
 
 This guide walks you through creating a simple MCP server that can add numbers and greet users. By the end, you'll understand the basic workflow and have a working server to experiment with.
@@ -271,9 +284,61 @@ The test suite covers:
 
 The project includes GitHub Actions workflows that automatically run tests on pull requests and commits. This ensures that all changes maintain compatibility and functionality.
 
+## What's Next?
+
+### For Beginners
+1. **Learn Input Formats**: Read the [Input Format Guide](../user-guide/input-format.md) to understand how to write better MCP functions
+2. **Explore Examples**: Try the sample functions in `input-samples/` to see different patterns
+3. **Improve Docstrings**: Let AI improve your function documentation for better tool discovery
+4. **Test Thoroughly**: Use the [Testing Guide](../user-guide/testing.md) to ensure your server works correctly
+
+### For Advanced Users
+1. **Customize Configuration**: Explore [Model Configuration](../configuration/model.md) for advanced AI settings
+2. **Command Line Mastery**: Study the [Command Line Reference](../user-guide/command-line.md) for all options
+3. **Agent Client Deep Dive**: Understand the [Agent Client Architecture](../user-guide/agent-client.md)
+4. **Integration**: Learn how to integrate your MCP server with other tools and frameworks
+
+### Common Next Steps
+- **Add Error Handling**: Make your functions robust with proper error handling
+- **Optimize Performance**: Use local models for faster docstring improvement
+- **Deploy**: Share your server with others using Gradio's sharing features
+- **Contribute**: Help improve the tool by reporting issues or contributing code
+
 ## Next Steps
 
 Now that you've successfully built your first server and understand how to test it, explore the detailed documentation to learn about input formats, configuration options, and advanced features. The input format guide explains how to structure your functions for optimal results. The configuration guide shows how to customize model behavior and logging. The command line reference provides complete details on all available options.
+
+## Troubleshooting
+
+### Common Issues
+
+**"No module named 'mcp'"**
+```bash
+# Install the MCP library
+pip install mcp
+```
+
+**"Port already in use"**
+```bash
+# Use a different port
+python server/gradio_server.py --port 7861
+```
+
+**"Function not found"**
+- Ensure your function has the `@mcp.tool()` decorator
+- Check that the function name matches exactly
+- Verify the file path is correct
+
+**"Type error"**
+- Add proper type hints to your function parameters
+- Use `from typing import List, Dict, Optional` for complex types
+
+### Getting Help
+
+- **Input Format Issues**: See the [Input Format Guide](../user-guide/input-format.md)
+- **Command Line Options**: Check the [Command Line Reference](../user-guide/command-line.md)
+- **Testing Problems**: Review the [Testing Guide](../user-guide/testing.md)
+- **GitHub Issues**: Report bugs or request features on [GitHub](https://github.com/juliensimon/gradio-mcp-server-builder)
 
 ## Need Help?
 
