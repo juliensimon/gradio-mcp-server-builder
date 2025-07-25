@@ -9,7 +9,7 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 **Purpose**: Fast feedback on code changes
 
 **What it does**:
-- Runs on Python 3.9, 3.10, 3.11, 3.12
+- Runs on Python 3.10, 3.11, 3.12
 - Installs development dependencies
 - Runs pre-commit hooks (code formatting, linting)
 - Runs fast tests only (excludes `tests/slow/`)
@@ -64,7 +64,7 @@ Both CI and slow test workflows upload artifacts:
 ## Configuration
 
 ### Python Versions
-- **CI**: 3.9, 3.10, 3.11, 3.12 (matrix)
+- **CI**: 3.10, 3.11, 3.12 (matrix)
 - **Slow Tests**: 3.12 only
 - **Docs**: 3.12 only
 
