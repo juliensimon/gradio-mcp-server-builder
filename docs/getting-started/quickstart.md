@@ -106,11 +106,11 @@ With custom configuration, you can specify different local models, enable Gradio
 
 ## Testing Your Server
 
-The generated server provides multiple ways to test your functions. The web interface offers immediate visual feedback and is perfect for manual testing and demonstrations. The MCP client allows programmatic testing and integration with other tools. You can also import and use your functions directly in Python scripts for automated testing.
+The generated server provides multiple ways to test your functions. The web interface offers immediate visual feedback and is perfect for manual testing and demonstrations. The intelligent test client provides natural language interaction and is ideal for conversational testing and exploration. You can also import and use your functions directly in Python scripts for automated testing.
 
-### Using the MCP Client
+### Using the Test Client
 
-The builder automatically generates an MCP client that uses the `smolagents` library to interact with your server. This client demonstrates how to programmatically interact with your server and provides examples of the types of requests you can make.
+The builder automatically generates an intelligent test client that uses the `smolagents` library to interact with your server. This test client provides natural language interaction, allowing you to test your functions through conversational requests.
 
 #### What is smolagents?
 
@@ -125,18 +125,18 @@ The builder automatically generates an MCP client that uses the `smolagents` lib
 
 For a detailed explanation of how the agent client works, see the [Agent Client Guide](../user-guide/agent-client.md).
 
-#### Running the Generated Client
+#### Running the Test Client
 
-To use the MCP client, navigate to your output directory and run:
+To use the test client, navigate to your output directory and run:
 
 ```bash
 cd output
 python client/mcp_client.py
 ```
 
-The client will start and display a menu of available functions. You can select any function to see sample prompts that demonstrate how to use it. These sample prompts are generated automatically based on your function's name, parameters, and docstring.
+The test client will start and launch a web-based chat interface. You can interact with it using natural language, asking questions like "Calculate the area of a circle with radius 5" or "What functions are available?" The client will automatically understand your requests and use the appropriate tools.
 
-For example, if you have a function called `calculate_area` that takes a `radius` parameter, the client might show prompts like:
+For example, if you have a function called `calculate_area` that takes a `radius` parameter, you can ask:
 - "Calculate the area of a circle with radius 5"
 - "What's the area of a circle with radius 10 meters?"
 - "Compute the area for radius 3.14"
@@ -255,7 +255,7 @@ pytest -k "test_builder"
 After building a server, you can test it in several ways:
 
 1. **Web Interface Testing**: Use the generated Gradio interface to test functions interactively
-2. **MCP Client Testing**: Use the smolagents-based client for programmatic testing
+2. **Test Client Testing**: Use the intelligent test client for natural language interaction and conversational testing
 3. **Direct Function Testing**: Import and test functions directly in Python scripts
 4. **End-to-End Testing**: Run the complete server and test all functionality
 
