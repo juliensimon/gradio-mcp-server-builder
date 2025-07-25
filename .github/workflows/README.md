@@ -21,11 +21,6 @@ This directory contains GitHub Actions workflows for CI/CD automation.
 **Triggers**:
 - Manual trigger (workflow_dispatch)
 - Weekly schedule (Sundays 2 AM UTC)
-- Push to main/master with changes to:
-  - `tests/slow/`
-  - `input-samples/`
-  - `source/`
-  - `main.py`
 
 **Purpose**: Comprehensive testing of server building and E2E scenarios
 
