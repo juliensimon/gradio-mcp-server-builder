@@ -38,6 +38,7 @@ nav:
     - Command Line Options: user-guide/command-line.md
     - Code Parsing and Analysis: user-guide/code-parsing.md
     - Docstrings and MCP Tool Discovery: user-guide/docstrings.md
+    - Testing Guide: user-guide/testing.md
   - Configuration:
     - Overview: configuration/overview.md
     - Model Configuration: configuration/model.md

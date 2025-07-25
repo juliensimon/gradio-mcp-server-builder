@@ -222,9 +222,56 @@ print(greeting)
 
 This approach is useful for automated testing, integration with other Python code, or when you need to call your functions programmatically.
 
+## Testing Your Build
+
+The Gradio MCP Server Builder includes comprehensive testing capabilities to ensure your generated servers work correctly. The project uses pytest for testing and includes several types of tests.
+
+### Running the Builder's Tests
+
+To run the builder's own tests and ensure everything is working correctly:
+
+```bash
+# Run all tests
+pytest
+
+# Run tests with verbose output
+pytest -v
+
+# Run tests with coverage report
+pytest --cov=source
+
+# Run specific test files
+pytest tests/test_builder.py
+pytest tests/test_input_samples.py
+
+# Run tests matching a pattern
+pytest -k "test_builder"
+```
+
+### Testing Generated Servers
+
+After building a server, you can test it in several ways:
+
+1. **Web Interface Testing**: Use the generated Gradio interface to test functions interactively
+2. **MCP Client Testing**: Use the smolagents-based client for programmatic testing
+3. **Direct Function Testing**: Import and test functions directly in Python scripts
+4. **End-to-End Testing**: Run the complete server and test all functionality
+
+### Test Coverage
+
+The test suite covers:
+- **Unit Tests**: Individual components like the builder, parser, and generators
+- **Integration Tests**: End-to-end workflows from input files to generated servers
+- **Input Sample Tests**: Testing with various input file formats and configurations
+- **Configuration Tests**: Testing different configuration options and edge cases
+
+### Continuous Integration
+
+The project includes GitHub Actions workflows that automatically run tests on pull requests and commits. This ensures that all changes maintain compatibility and functionality.
+
 ## Next Steps
 
-Now that you've successfully built your first server, explore the detailed documentation to learn about input formats, configuration options, and advanced features. The input format guide explains how to structure your functions for optimal results. The configuration guide shows how to customize model behavior and logging. The command line reference provides complete details on all available options.
+Now that you've successfully built your first server and understand how to test it, explore the detailed documentation to learn about input formats, configuration options, and advanced features. The input format guide explains how to structure your functions for optimal results. The configuration guide shows how to customize model behavior and logging. The command line reference provides complete details on all available options.
 
 ## Need Help?
 

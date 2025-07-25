@@ -56,7 +56,7 @@ The smolagents-based MCP client provides advanced testing and integration capabi
 
 ## Documentation
 
-The complete documentation provides detailed guides for every aspect of the tool. The installation guide covers setup across different platforms and environments. The quick start guide walks you through building your first MCP server in under five minutes. User guides explain input formats, command line options, and best practices. Configuration guides detail how to customize model behavior, logging, and server settings.
+The complete documentation provides detailed guides for every aspect of the tool. The installation guide covers setup across different platforms and environments. The quick start guide walks you through building your first MCP server in under five minutes. User guides explain input formats, command line options, testing procedures, and best practices. Configuration guides detail how to customize model behavior, logging, and server settings.
 
 ## Contributing
 
