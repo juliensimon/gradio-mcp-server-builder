@@ -229,6 +229,10 @@ log/builds/*_test_*.log
 # output/
 custom-output/
 
+# Test output directories (created during test execution)
+test_output/
+string-output/
+
 # Model cache files
 *.safetensors
 *.bin

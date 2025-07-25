@@ -1,135 +1,206 @@
 # Gradio MCP Server Builder
 
-A powerful CLI tool to automatically build MCP (Model Context Protocol) servers with Gradio from Python function files.
+> **Generate MCP servers with Gradio interfaces from Python functions**
 
-## 🚀 Overview
+You have Python functions that you'd like to expose as web services. Maybe you've built utilities for data processing, calculations, or text analysis. You could build a web interface from scratch, but that takes time and requires web development skills.
 
-Transform your Python functions into complete, production-ready MCP servers with beautiful web interfaces. Simply decorate your functions with `@mcp.tool()` and let the builder handle the rest.
+This tool helps you create MCP (Model Context Protocol) servers with Gradio web interfaces from your existing Python functions. It handles the boilerplate code so you can focus on your core functionality.
 
-## ✨ Key Features
+## What It Does
 
-- **🤖 AI-Powered Docstring Improvement**: Automatically enhance function documentation
-- **🎨 Automatic Interface Generation**: Creates beautiful Gradio interfaces
-- **⚡ MPS Optimization**: Optimized for Mac with Metal Performance Shaders
-- **🔧 Flexible Configuration**: Support for various model endpoints
-- **📦 Complete Package**: Generates server, client, and documentation
+The builder takes your Python functions and generates:
 
-## 🏃‍♂️ Quick Start
+- An MCP server that exposes your functions as tools
+- A Gradio web interface for testing and demonstration
+- Documentation and example usage
+- A client for testing the server
+
+## Example Functions
+
+Here are some typical use cases:
+
+### Math Functions
+```python
+@mcp.tool()
+def calculate_circle_area(radius: float) -> float:
+    """Calculate the area of a circle."""
+    return 3.14159 * radius * radius
+
+@mcp.tool()
+def solve_quadratic(a: float, b: float, c: float) -> str:
+    """Solve a quadratic equation ax² + bx + c = 0."""
+    # Your math logic here
+    return "Solution: x = ..."
+```
+
+### Text Processing
+```python
+@mcp.tool()
+def count_words(text: str) -> int:
+    """Count the number of words in a text."""
+    return len(text.split())
+
+@mcp.tool()
+def analyze_sentiment(text: str) -> str:
+    """Analyze the sentiment of a text (positive/negative/neutral)."""
+    # Your analysis logic here
+    return "This text is positive"
+```
+
+### Data Conversion
+```python
+@mcp.tool()
+def convert_temperature(celsius: float) -> float:
+    """Convert Celsius to Fahrenheit."""
+    return (celsius * 9/5) + 32
+
+@mcp.tool()
+def format_currency(amount: float, currency: str = "USD") -> str:
+    """Format a number as currency."""
+    return f"{currency} {amount:.2f}"
+```
+
+## Getting Started
+
+### Prerequisites
+- Python 3.8+
+- Basic familiarity with Python functions
 
 ### Installation
-
 ```bash
 git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
 pip install -r requirements.txt
 ```
 
-### Your First MCP Server
+### Create Your First Server
 
-1. **Create your functions** (`my_functions.py`):
+1. **Write your functions** in a file called `my_functions.py`:
 ```python
+@mcp.tool()
+def greet_user(name: str) -> str:
+    """Generate a friendly greeting message."""
+    return f"Hello, {name}! Welcome to your first MCP server!"
+
 @mcp.tool()
 def add_numbers(a: float, b: float) -> float:
     """Add two numbers together."""
     return a + b
-
-@mcp.tool()
-def greet_user(name: str) -> str:
-    """Greet a user by name."""
-    return f"Hello, {name}!"
 ```
 
-2. **Build the server**:
+2. **Generate the server**:
 ```bash
 python main.py my_functions.py --preserve-docstrings
 ```
 
-3. **Run your server**:
+3. **Run the generated server**:
 ```bash
 cd output && python server/gradio_server.py
 ```
 
-4. **Test it**: Open http://127.0.0.1:7860 in your browser!
+4. **Test the interface** at http://127.0.0.1:7860
 
-## 📖 Documentation
+## How It Works
 
-📚 **Full Documentation** - Complete guides, examples, and API reference
+### Function Parsing
+The tool parses your Python file and extracts functions decorated with `@mcp.tool()`. It analyzes the function signatures, docstrings, and type hints to understand what your functions do.
 
-📖 **[Online Documentation](https://juliensimon.github.io/gradio-mcp-server-builder/)** - Hosted on GitHub Pages
+### Server Generation
+It generates an MCP server that:
+- Exposes your functions as callable tools
+- Handles parameter validation
+- Provides proper error handling
+- Includes logging and monitoring
 
-### Local Development
+### Interface Creation
+The Gradio interface is automatically created based on your function signatures:
+- Input fields match your function parameters
+- Output displays are formatted appropriately
+- Multiple functions get a tabbed interface
+- The interface is responsive and mobile-friendly
+
+### Documentation
+The tool generates:
+- README with usage examples
+- API documentation
+- Sample client code
+- Configuration files
+
+## Configuration Options
+
+### Basic Options
 ```bash
-# Serve documentation locally
-./serve-docs.sh
+# Preserve original docstrings (don't enhance with AI)
+python main.py functions.py --preserve-docstrings
 
-# Or manually
-mkdocs serve --dev-addr 127.0.0.1:8001
+# Specify output directory
+python main.py functions.py --output-dir my_server
+
+# Enable Gradio sharing (creates public URL)
+python main.py functions.py --share
 ```
 
-Then visit http://127.0.0.1:8001
-
-- **[Installation Guide](docs/getting-started/installation.md)** - Get up and running
-- **[Quick Start Guide](docs/getting-started/quickstart.md)** - Your first MCP server
-- **[User Guide](docs/user-guide/input-format.md)** - Learn the basics
-- **[Configuration Guide](docs/configuration/overview.md)** - Customize behavior
-
-## 🎯 What You Get
-
+### Model Configuration
 ```bash
-python main.py input/functions.py
-```
-
-**Output:**
-- ✅ **MCP Server**: Complete server exposing your functions as tools
-- ✅ **Gradio Interface**: Web-based UI for testing and demonstration
-- ✅ **MCP Client**: Ready-to-use client with sample prompts
-- ✅ **Documentation**: Comprehensive README and requirements
-
-## 🔧 Advanced Usage
-
-```bash
-# Use custom model
+# Use a local Hugging Face model
 python main.py functions.py --local-model "microsoft/DialoGPT-medium"
 
-# Enable sharing (public URL)
-python main.py functions.py --share
-
-# Use OpenAI-compatible endpoint
+# Use an OpenAI-compatible endpoint
 python main.py functions.py --model-endpoint http://localhost:8000
 
-# Custom output directory
-python main.py functions.py --output-dir my_server
+# Load configuration from environment file
+python main.py functions.py --env-file .env
 ```
 
-## 🎨 Generated Interface
+## Limitations and Considerations
 
-The builder automatically creates beautiful interfaces:
+- **Function Complexity**: The tool works best with pure functions that have clear inputs and outputs
+- **Dependencies**: Your functions' dependencies need to be available in the generated environment
+- **Type Hints**: While not required, type hints help the tool generate better interfaces
+- **Docstrings**: Good docstrings improve the generated documentation and AI enhancements
+- **Error Handling**: The tool provides basic error handling, but complex error scenarios may need manual adjustment
 
-- **Single Function**: Clean, focused interface
-- **Multiple Functions**: Tabbed interface for easy navigation
-- **Responsive Design**: Works on desktop and mobile
-- **Real-time Testing**: Try your functions directly in the browser
+## Project Structure
 
-## 🚀 Advanced Features
+```
+output/
+├── server/           # MCP server implementation
+│   ├── gradio_server.py
+│   └── __init__.py
+├── client/           # Test client
+│   └── mcp_client.py
+├── README.md         # Generated documentation
+└── requirements.txt  # Dependencies
+```
 
-- **Local Model Support**: Use Hugging Face models locally
-- **API Integration**: Connect to OpenAI-compatible endpoints
-- **Custom Configuration**: Fine-tune model behavior and logging
-- **Environment Variables**: Secure configuration management
-- **Performance Optimization**: Automatic device detection
+## Examples
 
-## 📚 Learn More
+Check the `input-samples/` directory for complete examples:
+- `input-simple/` - Basic math and geometry functions
+- `input-hello-world/` - Minimal example
+- `input-advanced/` - Complex data processing tasks
 
-- **[Configuration Guide](docs/configuration/overview.md)** - Customize every aspect
+## Documentation
 
-## 🤝 Contributing
+- **[Installation Guide](docs/getting-started/installation.md)** - Detailed setup
+- **[Quick Start Guide](docs/getting-started/quickstart.md)** - Step-by-step tutorial
+- **[User Guide](docs/user-guide/input-format.md)** - Function format requirements
+- **[Configuration Guide](docs/configuration/overview.md)** - Advanced configuration
 
-We welcome contributions! See our [GitHub repository](https://github.com/juliensimon/gradio-mcp-server-builder) for details.
+### Local Documentation
+```bash
+./serve-docs.sh
+```
+Then visit http://127.0.0.1:8001
 
-## 📄 License
+## Contributing
 
-This project is licensed under CC BY-NC 4.0. See [LICENSE](LICENSE) for details.
+We welcome contributions. Please check the existing issues and discussions before submitting changes.
+
+## License
+
+This project is licensed under CC BY-NC 4.0. You're free to use it for personal and educational projects, but commercial use requires permission.
 
 ---
 
-**Ready to build your first MCP server?** Start with the [Quick Start Guide](docs/getting-started/quickstart.md)! 
+**Next Steps**: Start with the [Quick Start Guide](docs/getting-started/quickstart.md) to build your first server. 
