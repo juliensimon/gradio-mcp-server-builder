@@ -267,9 +267,7 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
         if not inputs:
             inputs_str = "inputs=None"
         else:
-            inputs_str = f'''inputs=[
-        {',\\n        '.join(inputs)}
-    ]'''
+            inputs_str = "inputs=[\n        " + ",\n        ".join(inputs) + "\n    ]"
 
         return '''# Create the Gradio interface
 demo = gr.Interface(
@@ -339,9 +337,11 @@ if __name__ == "__main__":
             if not inputs:
                 inputs_str = "inputs=None"
             else:
-                inputs_str = f'''inputs=[
-                    {',\\n                    '.join(inputs)}
-                ]'''
+                inputs_str = (
+                    "inputs=[\n                    "
+                    + ",\n                    ".join(inputs)
+                    + "\n                ]"
+                )
 
             tab_interface = f'''        with gr.Tab("{
                 func.name.replace('_', ' ').title()}"):

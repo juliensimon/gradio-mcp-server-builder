@@ -53,6 +53,7 @@ class GradioGenerator:
             else:
                 examples.append('"hello"')
 
+        inputs_str = ",\n            ".join(inputs)
         return f'''
 import gradio as gr
 from server.mcp_server import {func.name}
@@ -61,7 +62,7 @@ def interface():
     return gr.Interface(
         fn={func.name},
         inputs=[
-            {',\\n            '.join(inputs)},
+            {inputs_str},
         ],
         outputs=gr.Textbox(label="Result"),
         title="{func.name.replace('_', ' ').title()}",
@@ -109,12 +110,13 @@ if __name__ == "__main__":
                 else:
                     examples.append('"hello"')
 
+            inputs_str = ",\n                    ".join(inputs)
             tab_interface = f'''
         with gr.Tab("{func.name.replace('_', ' ').title()}"):
             gr.Interface(
                 fn={func.name},
                 inputs=[
-                    {',\\n                    '.join(inputs)},
+                    {inputs_str},
                 ],
                 outputs=gr.Textbox(label="Result"),
                 description="""{improved_docstrings[func.name]}""",
