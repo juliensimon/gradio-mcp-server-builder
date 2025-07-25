@@ -582,4 +582,5 @@ def configure_service(
 ## Next Steps
 
 - **[Command Line Options](command-line.md)** - Complete CLI reference
+- **[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code
 - **[Configuration Guide](../configuration/overview.md)** - Customize behavior 

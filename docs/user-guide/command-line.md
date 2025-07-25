@@ -454,4 +454,5 @@ python main.py functions.py --log-config config/debug_logging.json
 ## Next Steps
 
 - **[Input Format Guide](input-format.md)** - Learn how to structure your input files
+- **[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code
 - **[Configuration Guide](../configuration/overview.md)** - Customize behavior 

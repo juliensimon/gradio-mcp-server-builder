@@ -1,10 +1,10 @@
 site_name: Gradio MCP Server Builder
 site_description: A CLI tool to automatically build MCP (Model Context Protocol) servers with Gradio from Python function files
 site_author: Julien Simon
-site_url: https://github.com/julien/gradio-mcp-server-builder
+site_url: https://github.com/juliensimon/gradio-mcp-server-builder
 
-repo_name: julien/gradio-mcp-server-builder
-repo_url: https://github.com/julien/gradio-mcp-server-builder
+repo_name: juliensimon/gradio-mcp-server-builder
+repo_url: https://github.com/juliensimon/gradio-mcp-server-builder
 edit_uri: edit/main/docs/
 
 theme:
@@ -86,6 +86,7 @@ nav:
   - User Guide:
     - Input File Format: user-guide/input-format.md
     - Command Line Options: user-guide/command-line.md
+    - Code Parsing and Analysis: user-guide/code-parsing.md
   - Configuration:
     - Overview: configuration/overview.md
     - Model Configuration: configuration/model.md

@@ -19,7 +19,7 @@ Transform your Python functions into complete, production-ready MCP servers with
 ### Installation
 
 ```bash
-git clone https://github.com/julien/gradio-mcp-server-builder.git
+git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
 pip install -r requirements.txt
 ```
@@ -55,6 +55,8 @@ cd output && python server/gradio_server.py
 
 📚 **Full Documentation** - Complete guides, examples, and API reference
 
+📖 **[Online Documentation](https://juliensimon.github.io/gradio-mcp-server-builder/)** - Hosted on GitHub Pages
+
 ### Local Development
 ```bash
 # Serve documentation locally
@@ -70,7 +72,6 @@ Then visit http://127.0.0.1:8001
 - **[Quick Start Guide](docs/getting-started/quickstart.md)** - Your first MCP server
 - **[User Guide](docs/user-guide/input-format.md)** - Learn the basics
 - **[Configuration Guide](docs/configuration/overview.md)** - Customize behavior
-- **[Examples](docs/examples/basic-examples.md)** - See it in action
 
 ## 🎯 What You Get
 
@@ -120,13 +121,10 @@ The builder automatically creates beautiful interfaces:
 ## 📚 Learn More
 
 - **[Configuration Guide](docs/configuration/overview.md)** - Customize every aspect
-- **[Advanced Topics](docs/advanced/custom-models.md)** - Deep dive into features
-- **[API Reference](docs/api/builder.md)** - Programmatic usage
-- **[Examples](docs/examples/basic-examples.md)** - Real-world examples
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](docs/contributing/development.md) for details.
+We welcome contributions! See our [GitHub repository](https://github.com/juliensimon/gradio-mcp-server-builder) for details.
 
 ## 📄 License
 

@@ -22,7 +22,7 @@ Before installing the Gradio MCP Server Builder, ensure you have:
 
 ```bash
 # Clone the repository
-git clone https://github.com/julien/gradio-mcp-server-builder.git
+git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
 
 # Install dependencies
@@ -39,7 +39,7 @@ pip install gradio-mcp-server-builder
 
 ```bash
 # Clone the repository
-git clone https://github.com/julien/gradio-mcp-server-builder.git
+git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
 
 # Install in development mode
@@ -151,7 +151,7 @@ pip install -r requirements.txt
 
 ### Getting Help
 
-- Open an issue on [GitHub](https://github.com/julien/gradio-mcp-server-builder/issues)
+- Open an issue on [GitHub](https://github.com/juliensimon/gradio-mcp-server-builder/issues)
 - Review the [Configuration Guide](../configuration/overview.md)
 
 ## Next Steps
