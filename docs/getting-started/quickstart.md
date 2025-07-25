@@ -22,11 +22,11 @@ def greet_user(name: str) -> str:
     return f"Hello, {name}!"
 ```
 
-The decorator tells the builder that this function should be exposed as an MCP tool. The type hints help the builder understand the expected input and output types, which it uses to generate appropriate interface components.
+The decorator tells the builder that this function should be exposed as an MCP tool. The type hints help the builder understand the expected input and output types, which it uses to generate appropriate interface components. The docstrings are crucial for MCP tool discovery—they help AI assistants and other systems understand what your tools do and when to use them.
 
 ### Step 2: Build the Server
 
-Run the builder with your input file. The `--preserve-docstrings` flag keeps your original docstrings instead of improving them with AI, which speeds up the build process for this quick start.
+Run the builder with your input file. The `--preserve-docstrings` flag keeps your original docstrings instead of improving them with AI, which speeds up the build process for this quick start. For production use, consider letting the AI improve your docstrings for better MCP tool discovery, but always review the results for accuracy.
 
 ```bash
 python main.py my_functions.py --preserve-docstrings

@@ -206,6 +206,10 @@ python main.py functions.py --preserve-docstrings
 - For faster builds (skips AI processing)
 - When you want to maintain exact wording
 - For testing and development
+- When working with sensitive or proprietary information
+- When you have domain-specific knowledge that AI might miss
+
+**Important Note**: Docstrings are crucial for MCP tool discovery. AI improvement can significantly enhance tool discoverability, but always review generated docstrings for accuracy. Poor docstrings can make your tools difficult for AI assistants to find and use effectively.
 
 ### --disable-sample-prompts
 

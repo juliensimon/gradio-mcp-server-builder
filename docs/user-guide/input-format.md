@@ -235,6 +235,8 @@ def complex_return(
 
 ## Docstrings
 
+Docstrings are critical for MCP tool discovery and usage. They serve as the primary interface that AI assistants and other systems use to understand your tools. For comprehensive guidance on writing effective docstrings, see the [Docstrings and MCP Tool Discovery](docstrings.md) guide.
+
 ### Basic Docstring
 
 ```python
