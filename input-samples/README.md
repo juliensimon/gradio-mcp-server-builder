@@ -98,10 +98,10 @@ task management workflow.
 #### Task Utilities (`task_utilities.py`)
 
 10. **`search_tasks(query)`** - Text-based task search
-1. lk_update_priority(task_ids, priority)\`\*\* - Batch priority updates
-1. lter_tasks_by_date(date_filter, days)\`\*\* - Date-based filtering
-1. unt_tasks_by_criteria(criteria, value)\`\*\* - Counting operations
-1. eanup_completed_tasks(days_old)\`\*\* - Data cleanup
+1. ate_priority(task_ids, priority)\`\*\* - Batch priority updates
+1. asks_by_date(date_filter, days)\`\*\* - Date-based filtering
+1. ks_by_criteria(criteria, value)\`\*\* - Counting operations
+1. ompleted_tasks(days_old)\`\*\* - Data cleanup
 
 ## 🎯 Testing Different Scenarios
 

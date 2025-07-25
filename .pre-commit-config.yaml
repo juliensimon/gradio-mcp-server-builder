@@ -47,19 +47,19 @@ repos:
         types_or: [yaml, json, markdown]
         args: [--prose-wrap=always]
 
-  # Markdown linting and auto-fixing
-  - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.38.0
-    hooks:
-      - id: markdownlint
-        args: [--fix]
-
   # Python-based markdown formatter (auto-fixes)
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.17
     hooks:
       - id: mdformat
         args: [--wrap=80]
+
+  # Markdown linting and auto-fixing
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
 
   # Local hooks for additional markdown formatting
   - repo: local

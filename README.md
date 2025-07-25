@@ -291,12 +291,11 @@ pre-commit run --all-files
 ```
 
 **Auto-fixing tools configured:**
+
 - **Python**: Black, isort, autopep8, autoflake
 - **Markdown**: mdformat, prettier, markdownlint
 - **General**: trailing whitespace, end-of-file fixes
 - **Other**: JSON, YAML formatting with prettier
-
-
 
 ## Contributing
 
