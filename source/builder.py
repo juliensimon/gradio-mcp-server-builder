@@ -88,8 +88,7 @@ class GradioMCPBuilder:
                                 )
 
                     self.logger.debug(
-                        f"Found {len(result['mcp_functions'])} MCP functions, {len(result.get('helper_functions', [
-                        ]))} helper functions, and {len(result.get('module_constants', []))} constants in {input_file.name}"
+                        f"Found {len(result['mcp_functions'])} MCP functions, {len(result.get('helper_functions', []))} helper functions, and {len(result.get('module_constants', []))} constants in {input_file.name}"
                     )
                 except Exception as e:
                     self.logger.error(f"Failed to parse {input_file}: {e}")

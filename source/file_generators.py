@@ -28,9 +28,7 @@ class ServerGenerator:
     ) -> str:
         """Generate the main server file with Gradio interface."""
         self.logger.debug(
-            f"Generating server for {
-                len(mcp_functions)} functions and {
-                len(helper_functions)} helper functions"
+            f"Generating server for {len(mcp_functions)} functions and {len(helper_functions)} helper functions"
         )
 
         # Generate helper function definitions first (use original source)
@@ -130,8 +128,7 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
         if func_def_line is None:
             # If we can't find the function definition, return the original source
             self.logger.warning(
-                f"Could not find function definition for {
-                    func.name}, using original source"
+                f"Could not find function definition for {func.name}, using original source"
             )
             return func.source_code
 
@@ -263,7 +260,8 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
                 inputs.append(f'gr.Checkbox(label="{param_name}", value=False)')
             else:  # str or other
                 inputs.append(
-                    f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
+                    f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")'
+                )
 
         # Handle functions with no parameters
         if not inputs:
@@ -327,7 +325,8 @@ if __name__ == "__main__":
                     inputs.append(f'gr.Checkbox(label="{param_name}", value=False)')
                 else:  # str or other
                     inputs.append(
-                        f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
+                        f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")'
+                    )
 
             # Handle functions with no parameters
             if not inputs:

@@ -131,9 +131,7 @@ class MCPParser:
                                     ):
                                         module_constants.append(constant_def)
                                         self.logger.debug(
-                                            f"found module constant: {
-                                                target.id} = {
-                                                len(constant_def)} chars"
+                                            f"found module constant: {target.id} = {len(constant_def)} chars"
                                         )
                             except Exception as e:
                                 self.logger.warning(
@@ -184,9 +182,7 @@ class MCPParser:
                             helper_func.module_imports = module_imports
                             helper_functions.append(helper_func)
                             self.logger.debug(
-                                f"found helper function: {
-                                    node.name} at line {
-                                    node.lineno}"
+                                f"found helper function: {node.name} at line {node.lineno}"
                             )
                         except Exception as e:
                             self.logger.warning(
@@ -194,8 +190,7 @@ class MCPParser:
                             )
 
             self.logger.info(
-                f"successfully parsed {file_path.name}: {
-                    mcp_function_count} mcp functions found"
+                f"successfully parsed {file_path.name}: {mcp_function_count} mcp functions found"
             )
 
             return {

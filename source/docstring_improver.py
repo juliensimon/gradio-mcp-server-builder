@@ -199,11 +199,9 @@ class DocstringImprover:
         # Create a basic docstring
         if params:
             param_section = "\n\nArgs:\n    " + "\n    ".join(params)
-            return f"{function_name.replace('_', ' ').title()} function.{
-                param_section}\n\nReturns:\n    Operation result"
+            return f"{function_name.replace('_', ' ').title()} function.{param_section}\n\nReturns:\n    Operation result"
         else:
-            return f"{function_name.replace('_', ' ').title(
-            )} function that performs the specified operation."
+            return f"{function_name.replace('_', ' ').title()} function that performs the specified operation."
 
     def improve_function_docstring(
         self, function_name: str, current_docstring: str, signature: str
@@ -407,7 +405,7 @@ class DocstringImprover:
 
             # Decode and extract the generated part
             full_response = self._tokenizer.decode(outputs[0], skip_special_tokens=True)
-            generated_text = full_response[len(prompt):].strip()
+            generated_text = full_response[len(prompt) :].strip()
 
             self.logger.debug(f"Generated text (length: {len(generated_text)})")
             return generated_text

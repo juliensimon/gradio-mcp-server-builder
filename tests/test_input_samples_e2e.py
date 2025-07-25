@@ -225,10 +225,7 @@ class TestEndToEndInputSamples:
                     result_data = response.json()
                     print(f"✅ MCP function call successful: {result_data}")
                 else:
-                    print(
-                        f"⚠️ MCP function call returned status {
-                            response.status_code}"
-                    )
+                    print(f"⚠️ MCP function call returned status {response.status_code}")
             except Exception as e:
                 print(f"⚠️ MCP function call error: {e}")
 
