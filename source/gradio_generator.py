@@ -61,7 +61,7 @@ def interface():
     return gr.Interface(
         fn={func.name},
         inputs=[
-            {',\n            '.join(inputs)},
+            {',\\n            '.join(inputs)},
         ],
         outputs=gr.Textbox(label="Result"),
         title="{func.name.replace('_', ' ').title()}",
@@ -114,7 +114,7 @@ if __name__ == "__main__":
             gr.Interface(
                 fn={func.name},
                 inputs=[
-                    {',\n                    '.join(inputs)},
+                    {',\\n                    '.join(inputs)},
                 ],
                 outputs=gr.Textbox(label="Result"),
                 description="""{improved_docstrings[func.name]}""",

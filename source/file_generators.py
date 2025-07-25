@@ -268,7 +268,7 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
             inputs_str = "inputs=None"
         else:
             inputs_str = f'''inputs=[
-        {',\n        '.join(inputs)}
+        {',\\n        '.join(inputs)}
     ]'''
 
         return '''# Create the Gradio interface
@@ -340,7 +340,7 @@ if __name__ == "__main__":
                 inputs_str = "inputs=None"
             else:
                 inputs_str = f'''inputs=[
-                    {',\n                    '.join(inputs)}
+                    {',\\n                    '.join(inputs)}
                 ]'''
 
             tab_interface = f'''        with gr.Tab("{
