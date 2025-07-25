@@ -53,7 +53,18 @@ cd output && python server/gradio_server.py
 
 ## 📖 Documentation
 
-📚 **[Full Documentation](https://julien.github.io/gradio-mcp-server-builder/)** - Complete guides, examples, and API reference
+📚 **Full Documentation** - Complete guides, examples, and API reference
+
+### Local Development
+```bash
+# Serve documentation locally
+./serve-docs.sh
+
+# Or manually
+mkdocs serve --dev-addr 127.0.0.1:8001
+```
+
+Then visit http://127.0.0.1:8001
 
 - **[Installation Guide](docs/getting-started/installation.md)** - Get up and running
 - **[Quick Start Guide](docs/getting-started/quickstart.md)** - Your first MCP server
