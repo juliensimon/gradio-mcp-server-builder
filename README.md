@@ -1,258 +1,126 @@
 # Gradio MCP Server Builder
 
-A CLI tool to automatically build MCP (Model Context Protocol) servers with Gradio from Python function files.
+A powerful CLI tool to automatically build MCP (Model Context Protocol) servers with Gradio from Python function files.
 
-## Overview
+## 🚀 Overview
 
-This tool takes Python files containing functions decorated with `@mcp.tool()` and automatically generates:
+Transform your Python functions into complete, production-ready MCP servers with beautiful web interfaces. Simply decorate your functions with `@mcp.tool()` and let the builder handle the rest.
 
-- **MCP Server**: A complete MCP server that exposes your functions as tools
-- **Gradio Interface**: A web-based UI (single interface or tabbed interface based on function count)
-- **Test Client**: A test client with sample prompts for each function
-- **Unit Tests**: Comprehensive unit tests for all functions
-- **Documentation**: README and requirements files
+## ✨ Key Features
 
-## Features
+- **🤖 AI-Powered Docstring Improvement**: Automatically enhance function documentation
+- **🎨 Automatic Interface Generation**: Creates beautiful Gradio interfaces
+- **⚡ MPS Optimization**: Optimized for Mac with Metal Performance Shaders
+- **🔧 Flexible Configuration**: Support for various model endpoints
+- **📦 Complete Package**: Generates server, client, and documentation
 
-- **AI-Powered Docstring Improvement**: Uses local Hugging Face models or OpenAI-compatible endpoints to improve function docstrings
-- **Automatic Interface Generation**: Creates Gradio interfaces (single or tabbed) based on the number of functions
-- **MPS Optimization**: Automatically optimizes for Mac with MPS when available
-- **Flexible Configuration**: Support for various model endpoints and configuration options
-- **Environment Variable Support**: Load configuration from `.env` files
-- **Comprehensive Testing**: Generates unit tests and test clients
+## 🏃‍♂️ Quick Start
 
-## Installation
+### Installation
 
-1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/julien/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
-```
-
-2. Install dependencies:
-```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+### Your First MCP Server
 
-### Basic Usage
-
-```bash
-python main.py input/sample-input.py
-```
-
-This will:
-- Parse the input file for functions with `@mcp.tool()` decorators
-- Improve docstrings using the default local model
-- Generate a complete MCP server with Gradio interface
-- Create test files and documentation
-
-### Advanced Usage
-
-```bash
-python main.py input/file1.py input/file2.py \
-    --share \
-    --model-endpoint http://localhost:8000 \
-    --preserve-docstrings \
-    --local-model custom-model \
-    --output-dir custom-output \
-    --env-file .env
-```
-
-### Command Line Options
-
-- `input_files`: One or more Python files containing MCP functions
-- `--share`: Enable Gradio sharing for public access
-- `--model-endpoint`: Use an OpenAI-compatible model endpoint instead of local model
-- `--preserve-docstrings`: Keep original docstrings (default: improve them)
-- `--local-model`: Specify local Hugging Face model (default: HuggingFaceTB/SmolLM3-3B)
-- `--output-dir`: Output directory for generated files (default: output)
-- `--env-file`: Path to .env file for parameter passing
-
-## Input File Format
-
-Your input files should contain functions decorated with `@mcp.tool()`:
-
+1. **Create your functions** (`my_functions.py`):
 ```python
 @mcp.tool()
-def add_floats(a: float, b: float) -> float:
-    """
-    Add two floating point numbers.
-    
-    Args:
-        a: First floating point number
-        b: Second floating point number
-        
-    Returns:
-        The sum of a and b
-    """
+def add_numbers(a: float, b: float) -> float:
+    """Add two numbers together."""
     return a + b
 
 @mcp.tool()
-def multiply_floats(a: float, b: float) -> float:
-    """Multiply two floating point numbers."""
-    return a * b
+def greet_user(name: str) -> str:
+    """Greet a user by name."""
+    return f"Hello, {name}!"
 ```
 
-## Output Structure
-
-The tool generates the following structure:
-
-```
-output/
-├── server/           # MCP server files
-│   ├── gradio_server.py
-│   └── __init__.py
-├── client/           # MCP client
-│   └── mcp_client.py
-├── README.md         # Generated documentation
-└── requirements.txt  # Python dependencies
-```
-
-## Running the Generated Server
-
-1. Navigate to the output directory:
+2. **Build the server**:
 ```bash
-cd output
+python main.py my_functions.py --preserve-docstrings
 ```
 
-2. Install the generated requirements:
+3. **Run your server**:
 ```bash
-pip install -r requirements.txt
+cd output && python server/gradio_server.py
 ```
 
-3. Run the MCP server:
-```bash
-python server/mcp_server.py
-```
+4. **Test it**: Open http://127.0.0.1:7860 in your browser!
 
-4. Run the Gradio interface:
-```bash
-python server/gradio_interface.py
-```
+## 📖 Documentation
 
-## Testing
+📚 **[Full Documentation](https://julien.github.io/gradio-mcp-server-builder/)** - Complete guides, examples, and API reference
 
-### Run the CLI tool tests:
-```bash
-pytest tests/
-```
+- **[Installation Guide](docs/getting-started/installation.md)** - Get up and running
+- **[Quick Start Guide](docs/getting-started/quickstart.md)** - Your first MCP server
+- **[User Guide](docs/user-guide/input-format.md)** - Learn the basics
+- **[Configuration Guide](docs/configuration/overview.md)** - Customize behavior
+- **[Examples](docs/examples/basic-examples.md)** - See it in action
 
-### Test the generated client:
-```bash
-cd output
-python client/test_client.py
-```
-
-## Configuration
-
-### Environment Variables
-
-Create a `.env` file to configure the tool:
-
-```env
-# Model configuration
-OPENAI_API_KEY=your-api-key
-MODEL_ENDPOINT=http://localhost:8000
-LOCAL_MODEL=custom-model
-
-# Gradio configuration
-GRADIO_SHARE=true
-
-# Output configuration
-OUTPUT_DIR=custom-output
-```
-
-### Model Options
-
-**Local Models**: The tool supports local Hugging Face models for docstring improvement. Default is `HuggingFaceTB/SmolLM3-3B`.
-
-**OpenAI-Compatible Endpoints**: You can use any OpenAI-compatible API endpoint by setting the `--model-endpoint` parameter.
-
-**MPS Optimization**: On Mac with MPS support, the tool automatically optimizes inference performance.
-
-## Examples
-
-### Single Function
-If your input file has one function, a simple Gradio interface is created.
-
-### Multiple Functions
-If your input file has multiple functions, a tabbed interface is created with each function in its own tab.
-
-### Sample Input
-See `input/sample-input.py` for an example with arithmetic functions.
-
-## Development
-
-### Project Structure
-
-```
-gradio-mcp-server-builder/
-├── source/           # Main source code
-│   ├── cli.py       # CLI interface
-│   ├── config.py    # Configuration management
-│   ├── parser.py    # Python file parser
-│   ├── docstring_improver.py  # AI docstring improvement
-│   ├── gradio_generator.py    # Gradio interface generation
-│   ├── builder.py   # Main builder orchestration
-│   └── file_generators.py     # File generation components
-├── tests/           # Unit tests
-├── input/           # Sample input files
-├── main.py          # Entry point
-├── requirements.txt # Dependencies
-└── README.md        # This file
-```
-
-### Adding New Features
-
-1. **New File Generators**: Add new classes to `file_generators.py`
-2. **New CLI Options**: Update `cli.py` and `config.py`
-3. **New Model Support**: Extend `docstring_improver.py`
-
-### Testing
-
-The project uses pytest for testing. Run tests with:
+## 🎯 What You Get
 
 ```bash
-pytest tests/ -v
+python main.py input/functions.py
 ```
 
-For coverage:
+**Output:**
+- ✅ **MCP Server**: Complete server exposing your functions as tools
+- ✅ **Gradio Interface**: Web-based UI for testing and demonstration
+- ✅ **MCP Client**: Ready-to-use client with sample prompts
+- ✅ **Documentation**: Comprehensive README and requirements
+
+## 🔧 Advanced Usage
 
 ```bash
-pytest tests/ --cov=source --cov-report=html
+# Use custom model
+python main.py functions.py --local-model "microsoft/DialoGPT-medium"
+
+# Enable sharing (public URL)
+python main.py functions.py --share
+
+# Use OpenAI-compatible endpoint
+python main.py functions.py --model-endpoint http://localhost:8000
+
+# Custom output directory
+python main.py functions.py --output-dir my_server
 ```
 
-## Contributing
+## 🎨 Generated Interface
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Run the test suite
-6. Submit a pull request
+The builder automatically creates beautiful interfaces:
 
-## License
+- **Single Function**: Clean, focused interface
+- **Multiple Functions**: Tabbed interface for easy navigation
+- **Responsive Design**: Works on desktop and mobile
+- **Real-time Testing**: Try your functions directly in the browser
 
-This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
+## 🚀 Advanced Features
 
-**You are free to:**
-- Share — copy and redistribute the material in any medium or format
-- Adapt — remix, transform, and build upon the material
+- **Local Model Support**: Use Hugging Face models locally
+- **API Integration**: Connect to OpenAI-compatible endpoints
+- **Custom Configuration**: Fine-tune model behavior and logging
+- **Environment Variables**: Secure configuration management
+- **Performance Optimization**: Automatic device detection
 
-**Under the following terms:**
-- **Attribution** — You must give appropriate credit and indicate if changes were made
-- **NonCommercial** — You may not use the material for commercial purposes
+## 📚 Learn More
 
-See the [LICENSE](LICENSE) file for the full license text, or visit https://creativecommons.org/licenses/by-nc/4.0/ for more details.
+- **[Configuration Guide](docs/configuration/overview.md)** - Customize every aspect
+- **[Advanced Topics](docs/advanced/custom-models.md)** - Deep dive into features
+- **[API Reference](docs/api/builder.md)** - Programmatic usage
+- **[Examples](docs/examples/basic-examples.md)** - Real-world examples
 
-## Author
+## 🤝 Contributing
 
-**Julien Simon** - [julien@julien.org](mailto:julien@julien.org)
+We welcome contributions! See our [Contributing Guide](docs/contributing/development.md) for details.
 
-## Acknowledgments
+## 📄 License
 
-- Built with [Gradio](https://gradio.app/) for web interfaces
-- Uses [MCP](https://modelcontextprotocol.io/) for tool communication
-- Powered by Hugging Face Transformers for local AI inference 
+This project is licensed under CC BY-NC 4.0. See [LICENSE](LICENSE) for details.
+
+---
+
+**Ready to build your first MCP server?** Start with the [Quick Start Guide](docs/getting-started/quickstart.md)! 
