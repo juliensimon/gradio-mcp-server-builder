@@ -1,6 +1,7 @@
 # Command Line Options
 
-Complete reference for all command line options available in the Gradio MCP Server Builder.
+Complete reference for all command line options available in the Gradio MCP
+Server Builder.
 
 ## Basic Syntax
 
@@ -12,9 +13,9 @@ python main.py [input_files] [options]
 
 ### Positional Arguments
 
-| Argument | Description | Required |
-|----------|-------------|----------|
-| `input_files` | One or more Python files containing MCP functions | Yes |
+| Argument      | Description                                       | Required |
+| ------------- | ------------------------------------------------- | -------- |
+| `input_files` | One or more Python files containing MCP functions | Yes      |
 
 ### Examples
 
@@ -33,35 +34,35 @@ python main.py input/*.py
 
 ### Output Configuration
 
-| Option | Description | Default | Example |
-|--------|-------------|---------|---------|
+| Option         | Description                          | Default  | Example                  |
+| -------------- | ------------------------------------ | -------- | ------------------------ |
 | `--output-dir` | Output directory for generated files | `output` | `--output-dir my_server` |
-| `--port` | Port for the generated server | `7860` | `--port 8080` |
+| `--port`       | Port for the generated server        | `7860`   | `--port 8080`            |
 
 ### Model Configuration
 
-| Option | Description | Default | Example |
-|--------|-------------|---------|---------|
-| `--local-model` | Local Hugging Face model name | `HuggingFaceTB/SmolLM3-3B` | `--local-model microsoft/DialoGPT-medium` |
-| `--model-endpoint` | OpenAI-compatible API endpoint | `None` | `--model-endpoint http://localhost:8000` |
-| `--device` | Device for model inference | `mps` | `--device cuda` |
+| Option             | Description                    | Default                    | Example                                   |
+| ------------------ | ------------------------------ | -------------------------- | ----------------------------------------- |
+| `--local-model`    | Local Hugging Face model name  | `HuggingFaceTB/SmolLM3-3B` | `--local-model microsoft/DialoGPT-medium` |
+| `--model-endpoint` | OpenAI-compatible API endpoint | `None`                     | `--model-endpoint http://localhost:8000`  |
+| `--device`         | Device for model inference     | `mps`                      | `--device cuda`                           |
 
 ### Behavior Control
 
-| Option | Description | Default | Example |
-|--------|-------------|---------|---------|
-| `--preserve-docstrings` | Keep original docstrings | `False` | `--preserve-docstrings` |
+| Option                     | Description                      | Default | Example                    |
+| -------------------------- | -------------------------------- | ------- | -------------------------- |
+| `--preserve-docstrings`    | Keep original docstrings         | `False` | `--preserve-docstrings`    |
 | `--disable-sample-prompts` | Disable sample prompt generation | `False` | `--disable-sample-prompts` |
-| `--share` | Enable Gradio sharing | `False` | `--share` |
+| `--share`                  | Enable Gradio sharing            | `False` | `--share`                  |
 
 ### Configuration Files
 
-| Option | Description | Default | Example |
-|--------|-------------|---------|---------|
-| `--env-file` | Path to .env file | `None` | `--env-file .env` |
-| `--log-config` | Path to logging configuration | `json/log_config.json` | `--log-config custom_log.json` |
-| `--model-config` | Path to model configuration | `json/model_config.json` | `--model-config custom_model.json` |
-| `--log-file` | Path to log file | `log/builds/output.log` | `--log-file custom.log` |
+| Option           | Description                   | Default                  | Example                            |
+| ---------------- | ----------------------------- | ------------------------ | ---------------------------------- |
+| `--env-file`     | Path to .env file             | `None`                   | `--env-file .env`                  |
+| `--log-config`   | Path to logging configuration | `json/log_config.json`   | `--log-config custom_log.json`     |
+| `--model-config` | Path to model configuration   | `json/model_config.json` | `--model-config custom_model.json` |
+| `--log-file`     | Path to log file              | `log/builds/output.log`  | `--log-file custom.log`            |
 
 ## Detailed Option Reference
 
@@ -84,6 +85,7 @@ python main.py functions.py --output-dir /Users/me/projects/my_server
 ```
 
 **Generated Structure:**
+
 ```
 my_custom_server/
 ├── server/
@@ -133,7 +135,10 @@ python main.py functions.py --local-model "username/custom-model"
 
 **Popular Models:**
 
-`HuggingFaceTB/SmolLM3-3B` is the default model that provides a good balance of speed and quality. For faster processing with smaller models, consider `microsoft/DialoGPT-medium` or `gpt2`. If you need better quality and can afford the larger model size, `gpt2-medium` offers improved results.
+`HuggingFaceTB/SmolLM3-3B` is the default model that provides a good balance of
+speed and quality. For faster processing with smaller models, consider
+`microsoft/DialoGPT-medium` or `gpt2`. If you need better quality and can afford
+the larger model size, `gpt2-medium` offers improved results.
 
 ### --model-endpoint
 
@@ -153,8 +158,8 @@ python main.py functions.py --model-endpoint http://localhost:11434/v1
 python main.py functions.py --model-endpoint https://api.example.com/v1
 ```
 
-**Environment Variables:**
-When using API endpoints, you may need to set environment variables:
+**Environment Variables:** When using API endpoints, you may need to set
+environment variables:
 
 ```bash
 # For OpenAI
@@ -184,7 +189,10 @@ python main.py functions.py --device mps
 
 **Device Support:**
 
-**CPU** works on all systems but provides slower processing. **CUDA** is available only on NVIDIA GPUs and offers the fastest performance for model inference. **MPS** is exclusive to Apple Silicon Macs and provides fast acceleration without requiring CUDA.
+**CPU** works on all systems but provides slower processing. **CUDA** is
+available only on NVIDIA GPUs and offers the fastest performance for model
+inference. **MPS** is exclusive to Apple Silicon Macs and provides fast
+acceleration without requiring CUDA.
 
 ### --preserve-docstrings
 
@@ -200,9 +208,17 @@ python main.py functions.py --preserve-docstrings
 
 **Use Cases:**
 
-Use this option when you have well-written docstrings that you want to preserve exactly. It's also useful for faster builds since it skips AI processing entirely. Choose this option when you want to maintain exact wording, for testing and development scenarios, when working with sensitive or proprietary information, or when you have domain-specific knowledge that AI models might miss or misinterpret.
+Use this option when you have well-written docstrings that you want to preserve
+exactly. It's also useful for faster builds since it skips AI processing
+entirely. Choose this option when you want to maintain exact wording, for
+testing and development scenarios, when working with sensitive or proprietary
+information, or when you have domain-specific knowledge that AI models might
+miss or misinterpret.
 
-**Important Note**: Docstrings are crucial for MCP tool discovery. AI improvement can significantly enhance tool discoverability, but always review generated docstrings for accuracy. Poor docstrings can make your tools difficult for AI assistants to find and use effectively.
+**Important Note**: Docstrings are crucial for MCP tool discovery. AI
+improvement can significantly enhance tool discoverability, but always review
+generated docstrings for accuracy. Poor docstrings can make your tools difficult
+for AI assistants to find and use effectively.
 
 ### --disable-sample-prompts
 
@@ -218,7 +234,9 @@ python main.py functions.py --disable-sample-prompts
 
 **Benefits:**
 
-Disabling sample prompts results in faster builds and smaller generated files. This option is ideal when you don't need sample prompts for your use case or when you want to minimize the output size.
+Disabling sample prompts results in faster builds and smaller generated files.
+This option is ideal when you don't need sample prompts for your use case or
+when you want to minimize the output size.
 
 ### --share
 
@@ -234,7 +252,10 @@ python main.py functions.py --share
 
 **Features:**
 
-The sharing feature creates a public URL (e.g., `https://xxx.gradio.live`) that makes your server accessible from anywhere on the internet. This URL is temporary and expires when the server stops, making it perfect for demos and sharing your work with others.
+The sharing feature creates a public URL (e.g., `https://xxx.gradio.live`) that
+makes your server accessible from anywhere on the internet. This URL is
+temporary and expires when the server stops, making it perfect for demos and
+sharing your work with others.
 
 ### --env-file
 
@@ -252,6 +273,7 @@ python main.py functions.py --env-file config.env
 ```
 
 **Example .env file:**
+
 ```env
 # Model configuration
 MODEL_ENDPOINT=http://localhost:8000
@@ -282,29 +304,30 @@ python main.py functions.py --log-config config/production_logging.json
 ```
 
 **Example logging config:**
+
 ```json
 {
-    "version": 1,
-    "disable_existing_loggers": false,
-    "formatters": {
-        "detailed": {
-            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-        }
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "DEBUG",
-            "formatter": "detailed"
-        }
-    },
-    "loggers": {
-        "gradio_mcp_builder": {
-            "level": "DEBUG",
-            "handlers": ["console"],
-            "propagate": false
-        }
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "detailed": {
+      "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
     }
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "DEBUG",
+      "formatter": "detailed"
+    }
+  },
+  "loggers": {
+    "gradio_mcp_builder": {
+      "level": "DEBUG",
+      "handlers": ["console"],
+      "propagate": false
+    }
+  }
 }
 ```
 
@@ -324,21 +347,22 @@ python main.py functions.py --model-config config/precise_model.json
 ```
 
 **Example model config:**
+
 ```json
 {
-    "local_model": {
-        "default_model": "HuggingFaceTB/SmolLM3-3B",
-        "generation_params": {
-            "max_new_tokens": 300,
-            "temperature": 0.7,
-            "do_sample": true
-        }
-    },
-    "prompts": {
-        "docstring_improvement": {
-            "user_prompt_template": "Improve this docstring..."
-        }
+  "local_model": {
+    "default_model": "HuggingFaceTB/SmolLM3-3B",
+    "generation_params": {
+      "max_new_tokens": 300,
+      "temperature": 0.7,
+      "do_sample": true
     }
+  },
+  "prompts": {
+    "docstring_improvement": {
+      "user_prompt_template": "Improve this docstring..."
+    }
+  }
 }
 ```
 
@@ -418,7 +442,13 @@ python main.py functions.py
 
 **Supported Environment Variables:**
 
-The tool supports several environment variables for configuration: `GRADIO_MCP_OUTPUT_DIR` for custom output directories, `GRADIO_MCP_PORT` for server port configuration, `GRADIO_MCP_LOCAL_MODEL` for specifying local models, `GRADIO_MCP_MODEL_ENDPOINT` for API endpoints, `GRADIO_MCP_DEVICE` for device selection, `GRADIO_MCP_SHARE` for sharing configuration, `GRADIO_MCP_PRESERVE_DOCSTRINGS` for docstring preservation, and `GRADIO_MCP_DISABLE_SAMPLE_PROMPTS` for disabling sample prompt generation.
+The tool supports several environment variables for configuration:
+`GRADIO_MCP_OUTPUT_DIR` for custom output directories, `GRADIO_MCP_PORT` for
+server port configuration, `GRADIO_MCP_LOCAL_MODEL` for specifying local models,
+`GRADIO_MCP_MODEL_ENDPOINT` for API endpoints, `GRADIO_MCP_DEVICE` for device
+selection, `GRADIO_MCP_SHARE` for sharing configuration,
+`GRADIO_MCP_PRESERVE_DOCSTRINGS` for docstring preservation, and
+`GRADIO_MCP_DISABLE_SAMPLE_PROMPTS` for disabling sample prompt generation.
 
 ## Help and Information
 
@@ -441,8 +471,12 @@ python main.py functions.py --log-config config/debug_logging.json
 
 ## Next Steps
 
-**[Input Format Guide](input-format.md)** - Learn how to structure your input files with proper decorators, type hints, and documentation for optimal results.
+**[Input Format Guide](input-format.md)** - Learn how to structure your input
+files with proper decorators, type hints, and documentation for optimal results.
 
-**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code, including function detection, signature analysis, and docstring processing.
+**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool
+analyzes your code, including function detection, signature analysis, and
+docstring processing.
 
-**[Configuration Guide](../configuration/overview.md)** - Customize behavior and settings to match your specific requirements and deployment environment. 
+**[Configuration Guide](../configuration/overview.md)** - Customize behavior and
+settings to match your specific requirements and deployment environment.

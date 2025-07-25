@@ -1,74 +1,74 @@
 {
-    "version": 1,
-    "disable_existing_loggers": false,
-    "formatters": {
-        "detailed": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S"
-        },
-        "simple": {
-            "format": "%(levelname)s - %(message)s"
-        },
-        "minimal": {
-            "format": "%(message)s"
-        }
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "detailed": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",
+      "datefmt": "%Y-%m-%d %H:%M:%S"
     },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "INFO",
-            "formatter": "minimal",
-            "stream": "ext://sys.stdout"
-        },
-        "file": {
-            "class": "logging.FileHandler",
-            "level": "DEBUG",
-            "formatter": "detailed",
-            "filename": "gradio_mcp_builder.log",
-            "mode": "a"
-        },
-        "error_file": {
-            "class": "logging.FileHandler",
-            "level": "ERROR",
-            "formatter": "detailed",
-            "filename": "gradio_mcp_builder_errors.log",
-            "mode": "a"
-        }
+    "simple": {
+      "format": "%(levelname)s - %(message)s"
     },
-    "loggers": {
-        "gradio_mcp_builder": {
-            "level": "DEBUG",
-            "handlers": ["console", "file", "error_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.cli": {
-            "level": "INFO",
-            "handlers": ["console", "file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.parser": {
-            "level": "DEBUG",
-            "handlers": ["file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.builder": {
-            "level": "INFO",
-            "handlers": ["console", "file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.docstring_improver": {
-            "level": "INFO",
-            "handlers": ["console", "file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.generators": {
-            "level": "DEBUG",
-            "handlers": ["file"],
-            "propagate": false
-        }
-    },
-    "root": {
-        "level": "WARNING",
-        "handlers": ["console"]
+    "minimal": {
+      "format": "%(message)s"
     }
-} 
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "INFO",
+      "formatter": "minimal",
+      "stream": "ext://sys.stdout"
+    },
+    "file": {
+      "class": "logging.FileHandler",
+      "level": "DEBUG",
+      "formatter": "detailed",
+      "filename": "gradio_mcp_builder.log",
+      "mode": "a"
+    },
+    "error_file": {
+      "class": "logging.FileHandler",
+      "level": "ERROR",
+      "formatter": "detailed",
+      "filename": "gradio_mcp_builder_errors.log",
+      "mode": "a"
+    }
+  },
+  "loggers": {
+    "gradio_mcp_builder": {
+      "level": "DEBUG",
+      "handlers": ["console", "file", "error_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.cli": {
+      "level": "INFO",
+      "handlers": ["console", "file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.parser": {
+      "level": "DEBUG",
+      "handlers": ["file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.builder": {
+      "level": "INFO",
+      "handlers": ["console", "file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.docstring_improver": {
+      "level": "INFO",
+      "handlers": ["console", "file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.generators": {
+      "level": "DEBUG",
+      "handlers": ["file"],
+      "propagate": false
+    }
+  },
+  "root": {
+    "level": "WARNING",
+    "handlers": ["console"]
+  }
+}

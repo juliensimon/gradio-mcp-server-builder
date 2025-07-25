@@ -3,17 +3,17 @@
 Unit tests for the GradioGenerator class.
 """
 
-import pytest
 import sys
 from pathlib import Path
 from unittest.mock import MagicMock
 
+import pytest
+
+from source.config import Config
+from source.gradio_generator import GradioGenerator
+
 # Add source to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "source"))
-
-from source.gradio_generator import GradioGenerator
-from source.config import Config
-from source.parser import MCPFunction
 
 
 class TestGradioGenerator:
@@ -44,7 +44,7 @@ class TestGradioGenerator:
         assert "gr.Interface" in result
         assert "test_function" in result
         assert "Test function that greets someone" in result
-        assert "if __name__ == \"__main__\":" in result
+        assert 'if __name__ == "__main__":' in result
         assert ".launch(" in result
 
     def test_generate_gradio_interface_multiple(self):
@@ -64,7 +64,7 @@ class TestGradioGenerator:
         functions = [mock_func1, mock_func2]
         improved_docstrings = {
             "function_one": "Adds two numbers together.",
-            "function_two": "Processes text input."
+            "function_two": "Processes text input.",
         }
 
         result = generator.generate_gradio_interface(functions, improved_docstrings)
@@ -101,7 +101,9 @@ class TestGradioGenerator:
         mock_func.name = "test_function"
         mock_func.signature = "(arg: str) -> str"
 
-        result = generator._generate_tabbed_interface([mock_func], {"test_function": "Test docstring"})
+        result = generator._generate_tabbed_interface(
+            [mock_func], {"test_function": "Test docstring"}
+        )
 
         assert "share=True" in result
 
@@ -150,7 +152,9 @@ class TestGradioGenerator:
         config = Config(input_files=[Path("test.py")])
         generator = GradioGenerator(config)
 
-        params = generator._extract_params_from_signature("(name: str, age: int, height: float, active: bool) -> str")
+        params = generator._extract_params_from_signature(
+            "(name: str, age: int, height: float, active: bool) -> str"
+        )
 
         assert len(params) == 4
         assert params[0] == ("name", "str")
@@ -176,7 +180,7 @@ class TestGradioGenerator:
 
         assert len(params) == 2
         assert params[0] == ("name", "str")  # defaults to str
-        assert params[1] == ("age", "str")   # defaults to str
+        assert params[1] == ("age", "str")  # defaults to str
 
     def test_title_case_conversion(self):
         """Test function name to title case conversion."""
@@ -188,7 +192,9 @@ class TestGradioGenerator:
         mock_func.name = "calculate_area_of_circle"
         mock_func.signature = "(radius: float) -> float"
 
-        result = generator._generate_tabbed_interface([mock_func], {"calculate_area_of_circle": "Calculates area"})
+        result = generator._generate_tabbed_interface(
+            [mock_func], {"calculate_area_of_circle": "Calculates area"}
+        )
 
         assert "Calculate Area Of Circle" in result
 
@@ -202,11 +208,15 @@ class TestGradioGenerator:
         mock_func.signature = "(arg: str) -> str"
 
         # Test single interface
-        single_result = generator._generate_single_interface(mock_func, "Test docstring")
+        single_result = generator._generate_single_interface(
+            mock_func, "Test docstring"
+        )
         assert "import gradio as gr" in single_result
 
         # Test tabbed interface
-        tabbed_result = generator._generate_tabbed_interface([mock_func], {"test_function": "Test docstring"})
+        tabbed_result = generator._generate_tabbed_interface(
+            [mock_func], {"test_function": "Test docstring"}
+        )
         assert "import gradio as gr" in tabbed_result
 
     def test_interface_function_imports(self):
@@ -223,15 +233,19 @@ class TestGradioGenerator:
         mock_func2.signature = "(arg: int) -> int"
 
         # Test single function import
-        single_result = generator._generate_single_interface(mock_func1, "Test docstring")
+        single_result = generator._generate_single_interface(
+            mock_func1, "Test docstring"
+        )
         assert "from server.mcp_server import function_one" in single_result
 
         # Test multiple function imports
         tabbed_result = generator._generate_tabbed_interface(
             [mock_func1, mock_func2],
-            {"function_one": "Test 1", "function_two": "Test 2"}
+            {"function_one": "Test 1", "function_two": "Test 2"},
         )
-        assert "from server.mcp_server import function_one, function_two" in tabbed_result
+        assert (
+            "from server.mcp_server import function_one, function_two" in tabbed_result
+        )
 
     def test_input_generation_for_different_types(self):
         """Test that different parameter types generate appropriate Gradio inputs."""
@@ -273,5 +287,5 @@ class TestGradioGenerator:
         assert "gr.Checkbox" in result
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pytest.main([__file__])

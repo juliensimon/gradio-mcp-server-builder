@@ -1,14 +1,22 @@
 # Testing Guide
 
-The Gradio MCP Server Builder includes comprehensive testing capabilities to ensure reliability and functionality. This guide covers testing the builder itself, testing generated servers, and best practices for maintaining quality.
+The Gradio MCP Server Builder includes comprehensive testing capabilities to
+ensure reliability and functionality. This guide covers testing the builder
+itself, testing generated servers, and best practices for maintaining quality.
 
 ## Overview
 
-Testing is a crucial part of the development workflow. The project uses pytest as the primary testing framework and includes several types of tests to ensure comprehensive coverage. Understanding how to run and interpret these tests helps you verify that your builds are working correctly and that any customizations maintain compatibility.
+Testing is a crucial part of the development workflow. The project uses pytest
+as the primary testing framework and includes several types of tests to ensure
+comprehensive coverage. Understanding how to run and interpret these tests helps
+you verify that your builds are working correctly and that any customizations
+maintain compatibility.
 
 ## Testing the Builder
 
-The builder itself includes an extensive test suite that validates all components and workflows. These tests ensure that the tool works correctly across different scenarios and configurations.
+The builder itself includes an extensive test suite that validates all
+components and workflows. These tests ensure that the tool works correctly
+across different scenarios and configurations.
 
 ### Prerequisites
 
@@ -19,6 +27,7 @@ pip install -r requirements.txt
 ```
 
 The requirements include pytest and related testing libraries:
+
 - `pytest>=7.0.0` - The main testing framework
 - `pytest-cov>=4.0.0` - For coverage reporting
 - `pytest-mock>=3.10.0` - For mocking and patching
@@ -114,6 +123,7 @@ open htmlcov/index.html
 ```
 
 The coverage report shows:
+
 - **Line Coverage**: Percentage of code lines executed
 - **Branch Coverage**: Percentage of code branches taken
 - **Missing Lines**: Specific lines that weren't tested
@@ -132,13 +142,15 @@ LOG_LEVEL=DEBUG pytest -v
 
 ## Testing Generated Servers
 
-After building a server, you should test it thoroughly to ensure it works as expected. The builder provides multiple testing approaches.
+After building a server, you should test it thoroughly to ensure it works as
+expected. The builder provides multiple testing approaches.
 
 ### Web Interface Testing
 
 The generated Gradio interface provides immediate visual testing:
 
 1. **Start the server**:
+
    ```bash
    cd output
    python server/gradio_server.py
@@ -163,6 +175,7 @@ python client/mcp_client.py
 ```
 
 Test scenarios:
+
 - **Natural language requests**: "Calculate the area of a circle with radius 5"
 - **Parameter validation**: Test with invalid inputs
 - **Error handling**: Verify graceful error responses
@@ -308,16 +321,19 @@ Common test issues and solutions:
 ### Test Failures
 
 **Import Errors**: Ensure all dependencies are installed
+
 ```bash
 pip install -r requirements.txt
 ```
 
 **Permission Errors**: Check file permissions
+
 ```bash
 chmod +x tests/
 ```
 
 **Timeout Errors**: Increase timeout for slow tests
+
 ```bash
 pytest --timeout=300
 ```
@@ -325,11 +341,13 @@ pytest --timeout=300
 ### Coverage Issues
 
 **Low Coverage**: Add tests for uncovered code
+
 ```bash
 pytest --cov=source --cov-report=term-missing
 ```
 
 **Missing Dependencies**: Install development dependencies
+
 ```bash
 pip install pytest-cov pytest-mock
 ```
@@ -337,11 +355,13 @@ pip install pytest-cov pytest-mock
 ### Environment Issues
 
 **Path Problems**: Ensure Python path includes project root
+
 ```bash
 export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 ```
 
 **Version Conflicts**: Use virtual environments
+
 ```bash
 python -m venv test_env
 source test_env/bin/activate
@@ -380,7 +400,7 @@ Use mocks to test external dependencies:
 def mock_model_endpoint(monkeypatch):
     def mock_response(*args, **kwargs):
         return {"choices": [{"message": {"content": "Mocked response"}}]}
-    
+
     monkeypatch.setattr("requests.post", mock_response)
 ```
 
@@ -399,6 +419,9 @@ def test_add_numbers_property(a, b):
 
 ## Conclusion
 
-Comprehensive testing ensures that your Gradio MCP Server Builder installations work correctly and that generated servers meet your requirements. Regular testing helps catch issues early and maintains code quality.
+Comprehensive testing ensures that your Gradio MCP Server Builder installations
+work correctly and that generated servers meet your requirements. Regular
+testing helps catch issues early and maintains code quality.
 
-For more information about specific test scenarios or troubleshooting, refer to the project's GitHub repository or create an issue for support. 
+For more information about specific test scenarios or troubleshooting, refer to
+the project's GitHub repository or create an issue for support.

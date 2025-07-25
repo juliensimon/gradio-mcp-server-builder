@@ -1,6 +1,8 @@
 # Model Configuration Guide
 
-The Gradio MCP Builder supports extensive model configuration through the `model_config.json` file. This allows you to fine-tune model behavior, prompts, and performance parameters without modifying code.
+The Gradio MCP Builder supports extensive model configuration through the
+`model_config.json` file. This allows you to fine-tune model behavior, prompts,
+and performance parameters without modifying code.
 
 ## Configuration File Structure
 
@@ -28,7 +30,7 @@ Configure parameters for local Hugging Face models:
     "device_specific": {
       "cpu": {
         "torch_dtype": "float32",
-        "device_map": {"": "cpu"}
+        "device_map": { "": "cpu" }
       },
       "mps": {
         "torch_dtype": "float16",
@@ -44,6 +46,7 @@ Configure parameters for local Hugging Face models:
 ```
 
 **Key Parameters:**
+
 - **`max_new_tokens`**: Maximum tokens to generate (higher = longer responses)
 - **`temperature`**: Creativity level (0.1 = conservative, 1.0+ = creative)
 - **`top_p`**: Nucleus sampling threshold (0.9-0.95 recommended)
@@ -78,16 +81,12 @@ Configure parameters for OpenAI-compatible API endpoints:
 
 Customize prompt templates and text cleanup:
 
-```json
+````json
 {
   "prompts": {
     "docstring_improvement": {
       "user_prompt_template": "Generate ONLY a clean docstring for this function...",
-      "cleanup_patterns": [
-        "^```.*",
-        "^Here's?.*",
-        "^The function.*"
-      ]
+      "cleanup_patterns": ["^```.*", "^Here's?.*", "^The function.*"]
     },
     "test_prompt_generation": {
       "user_prompt_template": "Generate {num_prompts} different test prompts...",
@@ -95,11 +94,13 @@ Customize prompt templates and text cleanup:
     }
   }
 }
-```
+````
 
 **Template Variables:**
+
 - **Docstring prompts**: `{function_name}`, `{signature}`, `{current_docstring}`
-- **Test prompt generation**: `{function_name}`, `{signature}`, `{docstring}`, `{num_prompts}`
+- **Test prompt generation**: `{function_name}`, `{signature}`, `{docstring}`,
+  `{num_prompts}`
 
 ### 4. Performance Configuration (`performance`)
 
@@ -230,18 +231,22 @@ Model configuration activities are logged:
 2. **Adjust gradually**: Make small changes to temperature/top_p first
 3. **Test different models**: Try various Hugging Face models for your use case
 4. **Monitor logs**: Check logs to see which parameters are being applied
-5. **Balance creativity vs consistency**: Higher temperature = more creative but less predictable
+5. **Balance creativity vs consistency**: Higher temperature = more creative but
+   less predictable
 
 ## Troubleshooting
 
 - **Model loading issues**: Check `torch_dtype` and `device_map` settings
-- **Generation quality**: Adjust `temperature`, `top_p`, and `repetition_penalty`
-- **Performance**: Modify `max_new_tokens` and enable `gradient_checkpointing` for large models
+- **Generation quality**: Adjust `temperature`, `top_p`, and
+  `repetition_penalty`
+- **Performance**: Modify `max_new_tokens` and enable `gradient_checkpointing`
+  for large models
 - **API timeouts**: Increase `timeout` in `request_params`
 
 ## Example Configurations
 
 ### For Code Documentation
+
 ```json
 {
   "local_model": {
@@ -255,6 +260,7 @@ Model configuration activities are logged:
 ```
 
 ### For Creative Descriptions
+
 ```json
 {
   "local_model": {
@@ -267,4 +273,5 @@ Model configuration activities are logged:
 }
 ```
 
-The model configuration system provides complete control over AI model behavior while maintaining ease of use and sensible defaults. 
+The model configuration system provides complete control over AI model behavior
+while maintaining ease of use and sensible defaults.

@@ -6,30 +6,31 @@ Copyright (c) 2025 Julien Simon <julien@julien.org>
 Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
 """
 
-import gradio as gr
 import json
+
+import gradio as gr
+
 
 def greet(name: str) -> str:
     """Generate a friendly greeting message.
     name: The name of the person to greet
     A personalized greeting message"""
-    return f"Hello, {name}! Welcome to the MCP server!" 
+    return f"Hello, {name}! Welcome to the MCP server!"
+
 
 # Create the Gradio interface
 demo = gr.Interface(
     fn=greet,
-    inputs=[
-        gr.Textbox(label="name", placeholder="Enter name...")
-    ],
+    inputs=[gr.Textbox(label="name", placeholder="Enter name...")],
     outputs=gr.Textbox(label="Result"),
     title="Greet",
     description="""Generate a friendly greeting message.
 
 Args:
     name: The name of the person to greet
-    
+
 Returns:
-    A personalized greeting message"""
+    A personalized greeting message""",
 )
 
 # Launch the interface and MCP server
@@ -37,22 +38,19 @@ if __name__ == "__main__":
     # Load server configuration
     import json
     import os
-    
+
     config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
     try:
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             config = json.load(f)
         server_port = config.get("server_port", 7860)
     except (FileNotFoundError, json.JSONDecodeError):
         server_port = 7860
         print(f"Warning: Could not load config.json, using default port {server_port}")
-    
+
     print(f"🚀 Starting MCP server on port {server_port}")
     print(f"🔨 MCP SSE endpoint: http://127.0.0.1:{server_port}/gradio_api/mcp/sse")
-    
+
     demo.launch(
-        server_name="127.0.0.1",
-        server_port=server_port,
-        mcp_server=True, 
-        share=False
+        server_name="127.0.0.1", server_port=server_port, mcp_server=True, share=False
     )

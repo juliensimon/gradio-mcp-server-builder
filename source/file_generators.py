@@ -2,55 +2,67 @@
 File generators for MCP server components.
 """
 
-import inspect
-from pathlib import Path
-from typing import List, Dict, Any
+from typing import Dict, List
 
 from .config import Config
-from .parser import MCPFunction
 from .logging_config import get_logger
+from .parser import MCPFunction
 
 
 class ServerGenerator:
     """Generates the main server file with Gradio interface."""
-    
+
     def __init__(self, config: Config):
         """Initialize the server generator."""
         self.config = config
         self.logger = get_logger("generators")
-        
+
         self.logger.debug("Initialized ServerGenerator")
-    
-    def generate_server(self, mcp_functions: List[MCPFunction], helper_functions: List[MCPFunction], module_constants: List[str], improved_docstrings: Dict[str, str]) -> str:
+
+    def generate_server(
+        self,
+        mcp_functions: List[MCPFunction],
+        helper_functions: List[MCPFunction],
+        module_constants: List[str],
+        improved_docstrings: Dict[str, str],
+    ) -> str:
         """Generate the main server file with Gradio interface."""
-        self.logger.debug(f"Generating server for {len(mcp_functions)} functions and {len(helper_functions)} helper functions")
-        
+        self.logger.debug(
+            f"Generating server for {
+                len(mcp_functions)} functions and {
+                len(helper_functions)} helper functions"
+        )
+
         # Generate helper function definitions first (use original source)
         function_definitions = []
         for func in helper_functions:
             # For helper functions, use the original source code directly
             func_def = func.source_code
             function_definitions.append(func_def)
-        
+
         # Generate MCP function definitions
         for func in mcp_functions:
-            func_def = self._generate_function_definition(func, improved_docstrings[func.name])
+            func_def = self._generate_function_definition(
+                func, improved_docstrings[func.name]
+            )
             function_definitions.append(func_def)
-        
+
         # Generate imports
         imports = self._generate_imports(mcp_functions, helper_functions)
-        
+
         # Generate module constants
         constants_section = ""
         if module_constants:
-            constants_section = "\n# Module constants\n" + "\n".join(module_constants) + "\n"
-        
+            constants_section = (
+                "\n# Module constants\n" + "\n".join(module_constants) + "\n"
+            )
+
         # Generate Gradio interface
         if len(mcp_functions) == 1:
             interface_code = self._generate_single_interface(mcp_functions[0])
         else:
             interface_code = self._generate_tabbed_interface(mcp_functions)
-        
+
         # Combine everything
         code = f'''"""
 Gradio MCP Server
@@ -66,68 +78,81 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
 
 {interface_code}
 '''
-        
+
         self.logger.debug(f"Generated server code ({len(code)} characters)")
         return code
-    
-    def _generate_imports(self, mcp_functions: List[MCPFunction], helper_functions: List[MCPFunction]) -> str:
+
+    def _generate_imports(
+        self, mcp_functions: List[MCPFunction], helper_functions: List[MCPFunction]
+    ) -> str:
         """Generate necessary imports."""
-        imports = set(['import json', 'import gradio as gr'])
-        
+        imports = set(["import json", "import gradio as gr"])
+
         # Extract imports from parsed functions
         all_functions = mcp_functions + helper_functions
         for func in all_functions:
-            if hasattr(func, 'module_imports'):
+            if hasattr(func, "module_imports"):
                 for imp in func.module_imports:
                     # Skip local module imports that won't be available
-                    if not (imp.startswith('from task_') or 
-                           imp.startswith('import task_') or
-                           'task_storage' in imp or
-                           'task_analytics' in imp or
-                           'task_utilities' in imp):
+                    if not (
+                        imp.startswith("from task_")
+                        or imp.startswith("import task_")
+                        or "task_storage" in imp
+                        or "task_analytics" in imp
+                        or "task_utilities" in imp
+                    ):
                         imports.add(imp)
-        
+
         # Clean up and deduplicate imports
         cleaned_imports = set()
         for imp in imports:
             # Remove duplicates and normalize
             if imp.strip() and imp not in cleaned_imports:
                 cleaned_imports.add(imp.strip())
-        
-        return '\n'.join(sorted(cleaned_imports))
-    
-    def _generate_function_definition(self, func: MCPFunction, improved_docstring: str) -> str:
+
+        return "\n".join(sorted(cleaned_imports))
+
+    def _generate_function_definition(
+        self, func: MCPFunction, improved_docstring: str
+    ) -> str:
         """Generate a function definition with improved docstring."""
         # Get the function source code
-        source_lines = func.source_code.split('\n')
+        source_lines = func.source_code.split("\n")
         result_lines = []
-        
+
         # Find the function definition line (skip decorators)
         func_def_line = None
         for i, line in enumerate(source_lines):
-            if line.strip().startswith('def ') and func.name in line:
+            if line.strip().startswith("def ") and func.name in line:
                 func_def_line = i
                 break
-        
+
         if func_def_line is None:
             # If we can't find the function definition, return the original source
-            self.logger.warning(f"Could not find function definition for {func.name}, using original source")
+            self.logger.warning(
+                f"Could not find function definition for {
+                    func.name}, using original source"
+            )
             return func.source_code
-        
+
         # Start from the function definition (skip decorators)
         result_lines.append(source_lines[func_def_line])
-        
+
         # Add the improved docstring (with validation)
-        indent = len(source_lines[func_def_line]) - len(source_lines[func_def_line].lstrip())
-        indent_str = ' ' * (indent + 4)
-        
+        indent = len(source_lines[func_def_line]) - len(
+            source_lines[func_def_line].lstrip()
+        )
+        indent_str = " " * (indent + 4)
+
         # Validate and clean the improved docstring
-        cleaned_docstring = self._validate_and_clean_docstring(improved_docstring, func.name)
+        cleaned_docstring = self._validate_and_clean_docstring(
+            improved_docstring, func.name
+        )
         result_lines.append(f'{indent_str}"""{cleaned_docstring}"""')
-        
+
         # Skip original docstring and find the function body
         i = func_def_line + 1
-        
+
         # Skip original docstring
         docstring_count = 0
         while i < len(source_lines):
@@ -138,75 +163,95 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
                     i += 1
                     break
             i += 1
-        
+
         # Add remaining function body, filtering out cross-module imports
         while i < len(source_lines):
             line = source_lines[i]
             line_stripped = line.strip()
             # Skip cross-module imports that are now in the same file
-            if (line_stripped and 
-                not line_stripped.startswith('from task_') and
-                not line_stripped.startswith('import task_') and
-                'task_storage' not in line_stripped and
-                'task_analytics' not in line_stripped and
-                'task_utilities' not in line_stripped):
+            if (
+                line_stripped
+                and not line_stripped.startswith("from task_")
+                and not line_stripped.startswith("import task_")
+                and "task_storage" not in line_stripped
+                and "task_analytics" not in line_stripped
+                and "task_utilities" not in line_stripped
+            ):
                 result_lines.append(line)
             i += 1
-        
-        return '\n'.join(result_lines)
-    
+
+        return "\n".join(result_lines)
+
     def _validate_and_clean_docstring(self, docstring: str, func_name: str) -> str:
         """Validate and clean an AI-generated docstring to ensure it's safe."""
         if not docstring or not docstring.strip():
             return f"Function {func_name} - performs the specified operation."
-        
+
         # Split into lines for processing
-        lines = docstring.split('\n')
+        lines = docstring.split("\n")
         cleaned_lines = []
-        
+
         for line in lines:
             line_stripped = line.strip()
-            
+
             # Skip lines that look like Python code
-            if (line_stripped.startswith(('def ', 'class ', 'import ', 'from ', 'if ', 'for ', 'while ', 'try:', 'except:', 'with ')) or
-                line_stripped.endswith((':')) or
-                'isinstance(' in line_stripped or
-                'raise ' in line_stripped or
-                'return ' in line_stripped or
-                'print(' in line_stripped or
-                'len(' in line_stripped or
-                line_stripped.startswith('"""') or
-                line_stripped.endswith('"""') or
-                line_stripped.startswith("'''") or
-                line_stripped.endswith("'''")):
+            if (
+                line_stripped.startswith(
+                    (
+                        "def ",
+                        "class ",
+                        "import ",
+                        "from ",
+                        "if ",
+                        "for ",
+                        "while ",
+                        "try:",
+                        "except:",
+                        "with ",
+                    )
+                )
+                or line_stripped.endswith((":"))
+                or "isinstance(" in line_stripped
+                or "raise " in line_stripped
+                or "return " in line_stripped
+                or "print(" in line_stripped
+                or "len(" in line_stripped
+                or line_stripped.startswith('"""')
+                or line_stripped.endswith('"""')
+                or line_stripped.startswith("'''")
+                or line_stripped.endswith("'''")
+            ):
                 continue
-            
+
             # Skip lines with obvious code patterns
-            if ('=' in line_stripped and not line_stripped.startswith('Args:') and 
-                not line_stripped.startswith('Returns:') and 
-                not ':' in line_stripped.split('=')[0]):
+            if (
+                "=" in line_stripped
+                and not line_stripped.startswith("Args:")
+                and not line_stripped.startswith("Returns:")
+                and ":" not in line_stripped.split("=")[0]
+            ):
                 continue
-            
+
             # Keep documentation-style lines
             if line_stripped:
                 cleaned_lines.append(line.rstrip())
-        
+
         # Reconstruct the docstring
-        cleaned_docstring = '\n'.join(cleaned_lines).strip()
-        
+        cleaned_docstring = "\n".join(cleaned_lines).strip()
+
         # If we ended up with no content, provide a default
         if not cleaned_docstring:
             return f"Function {func_name} - performs the specified operation."
-        
+
         # Remove any remaining triple quotes that might break the docstring
-        cleaned_docstring = cleaned_docstring.replace('"""', '').replace("'''", '')
-        
+        cleaned_docstring = cleaned_docstring.replace('"""', "").replace("'''", "")
+
         return cleaned_docstring
-    
+
     def _generate_single_interface(self, func: MCPFunction) -> str:
         """Generate a single Gradio interface."""
         params = self._parse_signature_params(func.signature)
-        
+
         # Generate input components
         inputs = []
         for param_name, param_type in params:
@@ -217,8 +262,9 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
             elif param_type == "bool":
                 inputs.append(f'gr.Checkbox(label="{param_name}", value=False)')
             else:  # str or other
-                inputs.append(f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
-        
+                inputs.append(
+                    f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
+
         # Handle functions with no parameters
         if not inputs:
             inputs_str = "inputs=None"
@@ -226,7 +272,7 @@ Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
             inputs_str = f'''inputs=[
         {',\n        '.join(inputs)}
     ]'''
-        
+
         return f'''# Create the Gradio interface
 demo = gr.Interface(
     fn={func.name},
@@ -241,7 +287,7 @@ if __name__ == "__main__":
     # Load server configuration
     import json
     import os
-    
+
     config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
     try:
         with open(config_file, 'r') as f:
@@ -249,37 +295,40 @@ if __name__ == "__main__":
         server_port = config.get("server_port", {self.config.port})
     except (FileNotFoundError, json.JSONDecodeError):
         server_port = {self.config.port}
-        print(f"Warning: Could not load config.json, using default port {{server_port}}")
-    
-    print(f"🚀 Starting MCP server on port {{server_port}}")
-    print(f"🔨 MCP SSE endpoint: http://127.0.0.1:{{server_port}}/gradio_api/mcp/sse")
-    
+        print(f"Warning: Could not load config.json, using default port {server_port} ")
+
+    print(f"🚀 Starting MCP server on port {server_port} ")
+    print(f"🔨 MCP SSE endpoint: http://127.0.0.1:{server_port} /gradio_api/mcp/sse")
+
     demo.launch(
         server_name="127.0.0.1",
         server_port=server_port,
-        mcp_server=True, 
+        mcp_server=True,
         share={self.config.share}
     )'''
-    
+
     def _generate_tabbed_interface(self, functions: List[MCPFunction]) -> str:
         """Generate a tabbed Gradio interface for multiple functions."""
         tab_interfaces = []
-        
+
         for func in functions:
             params = self._parse_signature_params(func.signature)
-            
+
             # Generate input components
             inputs = []
             for param_name, param_type in params:
                 if param_type == "float":
                     inputs.append(f'gr.Number(label="{param_name}", value=1.0)')
                 elif param_type == "int":
-                    inputs.append(f'gr.Number(label="{param_name}", value=1, precision=0)')
+                    inputs.append(
+                        f'gr.Number(label="{param_name}", value=1, precision=0)'
+                    )
                 elif param_type == "bool":
                     inputs.append(f'gr.Checkbox(label="{param_name}", value=False)')
                 else:  # str or other
-                    inputs.append(f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
-            
+                    inputs.append(
+                        f'gr.Textbox(label="{param_name}", placeholder="Enter {param_name}...")')
+
             # Handle functions with no parameters
             if not inputs:
                 inputs_str = "inputs=None"
@@ -287,8 +336,9 @@ if __name__ == "__main__":
                 inputs_str = f'''inputs=[
                     {',\n                    '.join(inputs)}
                 ]'''
-            
-            tab_interface = f'''        with gr.Tab("{func.name.replace('_', ' ').title()}"):
+
+            tab_interface = f'''        with gr.Tab("{
+                func.name.replace('_', ' ').title()}"):
             gr.Interface(
                 fn={func.name},
                 {inputs_str},
@@ -297,12 +347,12 @@ if __name__ == "__main__":
                 description="""{func.docstring}"""
             )'''
             tab_interfaces.append(tab_interface)
-        
-        return f'''# Create the tabbed Gradio interface
+
+        return f"""# Create the tabbed Gradio interface
 with gr.Blocks() as demo:
     gr.Markdown("# MCP Server Interface")
     gr.Markdown("Multiple function interface for MCP server")
-    
+
     with gr.Tabs():
 {chr(10).join(tab_interfaces)}
 
@@ -311,7 +361,7 @@ if __name__ == "__main__":
     # Load server configuration
     import json
     import os
-    
+
     config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
     try:
         with open(config_file, 'r') as f:
@@ -319,45 +369,45 @@ if __name__ == "__main__":
         server_port = config.get("server_port", {self.config.port})
     except (FileNotFoundError, json.JSONDecodeError):
         server_port = {self.config.port}
-        print(f"Warning: Could not load config.json, using default port {{server_port}}")
-    
-    print(f"🚀 Starting MCP server on port {{server_port}}")
-    print(f"🔨 MCP SSE endpoint: http://127.0.0.1:{{server_port}}/gradio_api/mcp/sse")
-    
+        print(f"Warning: Could not load config.json, using default port {server_port} ")
+
+    print(f"🚀 Starting MCP server on port {server_port} ")
+    print(f"🔨 MCP SSE endpoint: http://127.0.0.1:{server_port} /gradio_api/mcp/sse")
+
     demo.launch(
         server_name="127.0.0.1",
         server_port=server_port,
-        mcp_server=True, 
+        mcp_server=True,
         share={self.config.share}
-    )'''
-    
+    )"""
+
     def _parse_signature_params(self, signature: str):
         """Parse parameters from signature string."""
         # Parse signature like "(a: float, b: float) -> float"
-        if not signature.startswith('('):
+        if not signature.startswith("("):
             return []
-        
+
         # Extract parameter part
-        param_part = signature.split(')')[0][1:]  # Remove '(' and everything after ')'
-        
+        param_part = signature.split(")")[0][1:]  # Remove '(' and everything after ')'
+
         params = []
         if param_part.strip():
-            for param in param_part.split(','):
+            for param in param_part.split(","):
                 param = param.strip()
-                if ':' in param:
-                    name, type_str = param.split(':', 1)
+                if ":" in param:
+                    name, type_str = param.split(":", 1)
                     name = name.strip()
                     type_str = type_str.strip()
                     params.append((name, type_str))
                 else:
-                    params.append((param, 'str'))  # Default to str
-        
+                    params.append((param, "str"))  # Default to str
+
         return params
-    
+
     def generate_init_file(self, mcp_functions: List[MCPFunction]) -> str:
         """Generate __init__.py for the server package."""
         function_names = [func.name for func in mcp_functions]
-        
+
         return f'''"""
 MCP Server with Gradio Interface
 
@@ -372,54 +422,57 @@ __all__ = [{', '.join([f'"{name}"' for name in function_names])}]
 
 class ClientGenerator:
     """Generates MCP client files."""
-    
+
     def __init__(self, config: Config):
         self.config = config
-    
+
     def _parse_signature_params(self, signature: str):
         """Parse parameters from signature string."""
         # Parse signature like "(a: float, b: float) -> float"
-        if not signature.startswith('('):
+        if not signature.startswith("("):
             return []
-        
+
         # Extract parameter part
-        param_part = signature.split(')')[0][1:]  # Remove '(' and everything after ')'
-        
+        param_part = signature.split(")")[0][1:]  # Remove '(' and everything after ')'
+
         params = []
         if param_part.strip():
-            for param in param_part.split(','):
+            for param in param_part.split(","):
                 param = param.strip()
-                if ':' in param:
-                    name, type_str = param.split(':', 1)
+                if ":" in param:
+                    name, type_str = param.split(":", 1)
                     name = name.strip()
                     type_str = type_str.strip()
                     params.append((name, type_str))
                 else:
-                    params.append((param, 'str'))  # Default to str
-        
+                    params.append((param, "str"))  # Default to str
+
         return params
-    
-    def generate_client(self, mcp_functions: List[MCPFunction], test_prompts: Dict[str, List[str]]) -> str:
+
+    def generate_client(
+        self, mcp_functions: List[MCPFunction], test_prompts: Dict[str, List[str]]
+    ) -> str:
         """Generate the smolagents-based MCP client."""
         # Generate sample prompts if not disabled
         examples_list = []
         if not self.config.disable_sample_prompts:
             examples = []
-            
+
             for func in mcp_functions:
-                # Create one natural language prompt per function based on its description
+                # Create one natural language prompt per function based on its
+                # description
                 example = self._create_function_example(func)
                 examples.append(example)
-            
+
             # Add a general "what tools" prompt if we have multiple functions
             if len(mcp_functions) > 1:
                 examples.append("What tools do you have available?")
-            
+
             examples_list = examples
-        
+
         # Create function descriptions for the title/description
         func_names = [func.name for func in mcp_functions]
-        
+
         code = f'''"""
 Modern MCP Client using smolagents with local model
 
@@ -441,20 +494,20 @@ from smolagents import ToolCallingAgent, MCPClient, TransformersModel
 
 def create_agent_interface(mcp_url: str, model_name: str = "{self.config.local_model}") -> gr.ChatInterface:
     """Create a Gradio chat interface with MCP tools via smolagents."""
-    
+
     try:
         # Connect to MCP server
-        mcp_client = MCPClient({{"url": mcp_url, "transport": "sse"}})
+        mcp_client = MCPClient({"url": mcp_url, "transport": "sse"} )
         tools = mcp_client.get_tools()
-        
-        print(f"Connected to MCP server at {{mcp_url}}")
-        print(f"Available tools: {{[tool.name for tool in tools]}}")
-        
+
+        print(f"Connected to MCP server at {mcp_url} ")
+        print(f"Available tools: {[tool.name for tool in tools]} ")
+
         # Initialize the local language model using smolagents TransformersModel
         print("Initializing local model for agent...")
-        device_map = "auto" if "{self.config.device}" != "cpu" else {{"": "cpu"}}
+        device_map = "auto" if "{self.config.device}" != "cpu" else {"": "cpu"}
         torch_dtype = "float32" if "{self.config.device}" == "cpu" else "float16"
-        
+
         model = TransformersModel(
             model_id=model_name,
             device_map=device_map,
@@ -463,55 +516,54 @@ def create_agent_interface(mcp_url: str, model_name: str = "{self.config.local_m
             temperature=0.7,
             do_sample=True
         )
-            
+
         # Create the agent with MCP tools
         agent = ToolCallingAgent(
-            tools=[*tools], 
+            tools=[*tools],
             model=model,
             max_steps=3
         )
-        
+
         def chat_fn(message, history):
             """Process chat messages through the agent."""
             try:
                 result = agent.run(message)
                 return str(result)
             except Exception as e:
-                return f"Error: {{str(e)}}"
-        
+                return f"Error: {str(e)} "
+
         # Create function list for title
         func_names = [tool.name for tool in tools]
         func_list = ", ".join(func_names[:3])
         if len(func_names) > 3:
-            func_list += f" and {{len(func_names) - 3}} more"
-        
+            func_list += f" and {len(func_names) - 3}  more"
+
         # Prepare examples
         examples = {examples_list}
-        
+
         # Create the Gradio interface
         demo = gr.ChatInterface(
             fn=chat_fn,
             type="messages",
             examples=examples,
-            title=f"MCP Agent - {{func_list}}" if func_names else "MCP Agent",
+            title=f"MCP Agent - {func_list} " if func_names else "MCP Agent",
             description="An intelligent agent that can use MCP tools to help you. Ask questions or request actions using the available tools.",
             theme=gr.themes.Soft(),
             css="""
-            .gradio-container {{
-                max-width: 800px !important;
+            .gradio-container {max - width: 800px !important;
                 margin: auto !important;
-            }}
+            }
             """
         )
-        
+
         return demo, mcp_client
-        
+
     except Exception as e:
-        print(f"Failed to initialize MCP client: {{e}}")
+        print(f"Failed to initialize MCP client: {e} ")
         # Return a fallback interface
         def fallback_fn(message, history):
-            return f"MCP client initialization failed: {{str(e)}}"
-            
+            return f"MCP client initialization failed: {str(e)} "
+
         demo = gr.ChatInterface(
             fn=fallback_fn,
             type="messages",
@@ -525,7 +577,7 @@ def main():
     """Main function to launch the MCP agent interface."""
     # Load configuration to get server URL and port
     import json
-    
+
     config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
     try:
         with open(config_file, 'r') as f:
@@ -536,16 +588,16 @@ def main():
         mcp_server_url = "http://127.0.0.1:7860/gradio_api/mcp/sse"
         client_port = 7861
         print(f"Warning: Could not load config.json, using default configuration")
-    
+
     print(f"Starting MCP Agent client...")
-    print(f"MCP Server URL: {{mcp_server_url}}")
-    print(f"Client Port: {{client_port}}")
+    print(f"MCP Server URL: {mcp_server_url} ")
+    print(f"Client Port: {client_port} ")
     print(f"Local Model: {self.config.local_model}")
     print(f"Device: {self.config.device}")
-    
+
     try:
         demo, mcp_client = create_agent_interface(mcp_server_url, "{self.config.local_model}")
-        
+
         # Launch the interface
         demo.launch(
             server_name="127.0.0.1",
@@ -553,7 +605,7 @@ def main():
             share=False,
             show_error=True
         )
-        
+
     finally:
         # Cleanup MCP client connection
         if 'mcp_client' in locals() and mcp_client:
@@ -568,40 +620,40 @@ if __name__ == "__main__":
     main()
 '''
         return code
-    
+
     def _create_function_example(self, func: MCPFunction) -> str:
         """Create a single, accurate example prompt for an MCP function."""
         # Parse the function signature to understand parameters
         params = self._parse_signature_params(func.signature)
-        
+
         # Clean function name for natural language
-        function_name = func.name.replace('_', ' ')
-        
+        function_name = func.name.replace("_", " ")
+
         # Get the first line of docstring for context
         docstring = func.docstring or f"Performs {function_name} operation"
-        first_line = docstring.split('\n')[0].strip()
-        
+        first_line = docstring.split("\n")[0].strip()
+
         # Create example based on parameters and function purpose
         if params:
             # For functions with parameters, create specific realistic examples
             param_names = [param[0] for param in params]
             param_types = [param[1] for param in params]
-            
+
             # Handle common parameter patterns
-            if 'name' in param_names:
+            if "name" in param_names:
                 return f"Can you {function_name} for Alice?"
-            elif 'text' in param_names or 'message' in param_names:
+            elif "text" in param_names or "message" in param_names:
                 return f"Please {function_name}: 'Hello world'"
-            elif any('num' in p or p in ['x', 'y', 'a', 'b'] for p in param_names):
-                if len(params) == 2 and all(t in ['int', 'float'] for t in param_types):
+            elif any("num" in p or p in ["x", "y", "a", "b"] for p in param_names):
+                if len(params) == 2 and all(t in ["int", "float"] for t in param_types):
                     return f"Can you {function_name} 10 and 5?"
                 else:
                     return f"Please {function_name} the number 42"
-            elif 'file' in param_names or 'path' in param_names:
+            elif "file" in param_names or "path" in param_names:
                 return f"Can you {function_name} this file: 'example.txt'?"
-            elif 'url' in param_names:
+            elif "url" in param_names:
                 return f"Please {function_name} from: 'https://example.com'"
-            elif 'data' in param_names or 'content' in param_names:
+            elif "data" in param_names or "content" in param_names:
                 return f"Can you {function_name} this data for me?"
             else:
                 # Generic example with first parameter
@@ -609,64 +661,67 @@ if __name__ == "__main__":
                 return f"Can you {function_name} with {param_name}='example'?"
         else:
             # For parameterless functions
-            if any(word in func.name.lower() for word in ['get', 'list', 'show', 'display']):
+            if any(
+                word in func.name.lower() for word in ["get", "list", "show", "display"]
+            ):
                 return f"Can you {function_name}?"
-            elif any(word in func.name.lower() for word in ['start', 'run', 'execute']):
+            elif any(word in func.name.lower() for word in ["start", "run", "execute"]):
                 return f"Please {function_name}"
             else:
                 return f"Can you {function_name} for me?"
 
-    def _generate_intelligent_prompts(self, mcp_functions: List[MCPFunction]) -> List[str]:
+    def _generate_intelligent_prompts(
+        self, mcp_functions: List[MCPFunction]
+    ) -> List[str]:
         """Generate intelligent sample prompts based on MCP tool descriptions."""
         examples = []
-        
+
         for func in mcp_functions:
             # Parse the function signature to understand parameters
             params = self._parse_signature_params(func.signature)
-            
+
             # Generate natural language prompts based on function name and docstring
-            function_name = func.name.replace('_', ' ')
-            
+            function_name = func.name.replace("_", " ")
+
             # Extract key info from docstring
             docstring = func.docstring or f"Performs {function_name} operation"
-            first_line = docstring.split('\n')[0].strip()
-            
+            first_line = docstring.split("\n")[0].strip()
+
             # Generate different types of prompts
             if params:
                 # For functions with parameters, create specific examples
                 param_names = [param[0] for param in params]
-                
-                if 'name' in param_names:
+
+                if "name" in param_names:
                     examples.append(f"Can you {function_name} for John?")
-                elif 'text' in param_names or 'message' in param_names:
+                elif "text" in param_names or "message" in param_names:
                     examples.append(f"Please {function_name} this text: 'Hello world'")
-                elif 'number' in param_names or any('num' in p for p, _ in params):
+                elif "number" in param_names or any("num" in p for p, _ in params):
                     examples.append(f"{function_name.capitalize()} the number 42")
-                elif len(params) == 2 and all(t in ['int', 'float'] for _, t in params):
+                elif len(params) == 2 and all(t in ["int", "float"] for _, t in params):
                     examples.append(f"{function_name.capitalize()} 10 and 5")
                 else:
                     # Generic parameter-based prompt
-                    param_example = ', '.join([f"{p}='example'" for p, _ in params[:2]])
+                    param_example = ", ".join([f"{p}='example'" for p, _ in params[:2]])
                     examples.append(f"Use {function_name} with {param_example}")
             else:
                 # For parameterless functions
                 examples.append(f"Please {function_name}")
-            
+
             # Add a question-style prompt
-            if 'get' in func.name or 'list' in func.name or 'show' in func.name:
+            if "get" in func.name or "list" in func.name or "show" in func.name:
                 examples.append(f"What {function_name} do you have?")
-            elif 'calculate' in func.name or 'compute' in func.name:
+            elif "calculate" in func.name or "compute" in func.name:
                 examples.append(f"Can you {function_name} something for me?")
-            elif 'create' in func.name or 'add' in func.name:
+            elif "create" in func.name or "add" in func.name:
                 examples.append(f"Help me {function_name} something new")
-        
+
         # Add some general prompts if we have functions
         if mcp_functions:
-            examples.extend([
-                "What tools do you have available?",
-                "Show me what you can do"
-            ])
-        
+            examples.extend(
+                ["What tools do you have available?", "Show me what you can do"]
+            )
+
         # Remove duplicates while preserving order
         seen = set()
         unique_examples = []
@@ -674,10 +729,9 @@ if __name__ == "__main__":
             if example not in seen:
                 seen.add(example)
                 unique_examples.append(example)
-        
+
         return unique_examples
 
-    
     def generate_init_file(self) -> str:
         """Generate __init__.py for the client package."""
         return '''"""
@@ -690,49 +744,54 @@ __all__ = ["test_mcp_server", "main"]
 '''
 
 
-
-
-
 class DocumentationGenerator:
     """Generates documentation files."""
-    
+
     def __init__(self, config: Config):
         self.config = config
-    
+
     def _parse_signature_params(self, signature: str):
         """Parse parameters from signature string."""
         # Parse signature like "(a: float, b: float) -> float"
-        if not signature.startswith('('):
+        if not signature.startswith("("):
             return []
-        
+
         # Extract parameter part
-        param_part = signature.split(')')[0][1:]  # Remove '(' and everything after ')'
-        
+        param_part = signature.split(")")[0][1:]  # Remove '(' and everything after ')'
+
         params = []
         if param_part.strip():
-            for param in param_part.split(','):
+            for param in param_part.split(","):
                 param = param.strip()
-                if ':' in param:
-                    name, type_str = param.split(':', 1)
+                if ":" in param:
+                    name, type_str = param.split(":", 1)
                     name = name.strip()
                     type_str = type_str.strip()
                     params.append((name, type_str))
                 else:
-                    params.append((param, 'str'))  # Default to str
-        
+                    params.append((param, "str"))  # Default to str
+
         return params
-    
-    def generate_readme(self, mcp_functions: List[MCPFunction], improved_docstrings: Dict[str, str], test_prompts: Dict[str, List[str]]) -> str:
+
+    def generate_readme(
+        self,
+        mcp_functions: List[MCPFunction],
+        improved_docstrings: Dict[str, str],
+        test_prompts: Dict[str, List[str]],
+    ) -> str:
         """Generate README.md file."""
         # Generate function documentation
         function_docs = []
         for func in mcp_functions:
-            doc = self._generate_function_documentation(func, improved_docstrings[func.name], test_prompts.get(func.name, []))
+            doc = self._generate_function_documentation(
+                func, improved_docstrings[func.name], test_prompts.get(func.name, [])
+            )
             function_docs.append(doc)
-        
-        code = f'''# MCP Server with Gradio Interface
 
-This project provides an MCP (Model Context Protocol) server with a Gradio web interface for {len(mcp_functions)} functions.
+        code = f"""# MCP Server with Gradio Interface
+
+This project provides an MCP (Model Context Protocol) server with a Gradio web interface for {
+            len(mcp_functions)} functions.
 
 ## Overview
 
@@ -819,15 +878,17 @@ This generated project inherits the CC BY-NC 4.0 license from gradio-mcp-server-
 - **NonCommercial** — You may not use the material for commercial purposes
 
 For more details, visit: https://creativecommons.org/licenses/by-nc/4.0/
-'''
+"""
         return code
-    
-    def _generate_function_documentation(self, func: MCPFunction, improved_docstring: str, prompts: List[str]) -> str:
+
+    def _generate_function_documentation(
+        self, func: MCPFunction, improved_docstring: str, prompts: List[str]
+    ) -> str:
         """Generate documentation for a single function."""
         params = self._parse_signature_params(func.signature)
         param_names = [name for name, _ in params]
-        
-        return f'''
+
+        return f"""
 ### {func.name}
 
 **Signature:** `{func.name}({', '.join(param_names)})`
@@ -842,60 +903,66 @@ For more details, visit: https://creativecommons.org/licenses/by-nc/4.0/
 {chr(10).join(f'- {prompt}' for prompt in prompts)}
 
 ---
-'''
-    
+"""
+
     def _generate_parameter_docs(self, func: MCPFunction) -> str:
         """Generate parameter documentation."""
         params = self._parse_signature_params(func.signature)
-        
+
         docs = []
         for param_name, param_type in params:
             docs.append(f"- `{param_name}` ({param_type}): Parameter description")
-        
+
         return chr(10).join(docs)
-    
-    def _generate_tools_table(self, mcp_functions: List[MCPFunction], improved_docstrings: Dict[str, str]) -> str:
+
+    def _generate_tools_table(
+        self, mcp_functions: List[MCPFunction], improved_docstrings: Dict[str, str]
+    ) -> str:
         """Generate a table of available tools."""
         table = "| Function | Description |\n"
         table += "|----------|-------------|\n"
-        
+
         for func in mcp_functions:
             # Truncate description for table
-            desc = improved_docstrings[func.name][:50] + "..." if len(improved_docstrings[func.name]) > 50 else improved_docstrings[func.name]
+            desc = (
+                improved_docstrings[func.name][:50] + "..."
+                if len(improved_docstrings[func.name]) > 50
+                else improved_docstrings[func.name]
+            )
             table += f"| `{func.name}` | {desc} |\n"
-        
+
         return table
 
 
 class RequirementsGenerator:
     """Generates requirements.txt file."""
-    
+
     def __init__(self, config: Config):
         self.config = config
-    
+
     def _parse_signature_params(self, signature: str):
         """Parse parameters from signature string."""
         # Parse signature like "(a: float, b: float) -> float"
-        if not signature.startswith('('):
+        if not signature.startswith("("):
             return []
-        
+
         # Extract parameter part
-        param_part = signature.split(')')[0][1:]  # Remove '(' and everything after ')'
-        
+        param_part = signature.split(")")[0][1:]  # Remove '(' and everything after ')'
+
         params = []
         if param_part.strip():
-            for param in param_part.split(','):
+            for param in param_part.split(","):
                 param = param.strip()
-                if ':' in param:
-                    name, type_str = param.split(':', 1)
+                if ":" in param:
+                    name, type_str = param.split(":", 1)
                     name = name.strip()
                     type_str = type_str.strip()
                     params.append((name, type_str))
                 else:
-                    params.append((param, 'str'))  # Default to str
-        
+                    params.append((param, "str"))  # Default to str
+
         return params
-    
+
     def generate_requirements(self) -> str:
         """Generate requirements.txt content."""
         requirements = [
@@ -905,27 +972,31 @@ class RequirementsGenerator:
             "python-dotenv>=1.0.0",
             "smolagents>=0.1.0",  # For intelligent MCP client
         ]
-        
+
         # Add model-specific requirements (now always needed for client)
-        requirements.extend([
-            "transformers>=4.30.0",
-            "torch>=2.0.0",
-            "accelerate>=0.20.0",
-        ])
-        
+        requirements.extend(
+            [
+                "transformers>=4.30.0",
+                "torch>=2.0.0",
+                "accelerate>=0.20.0",
+            ]
+        )
+
         # Add OpenAI as optional for fallback
         if not self.config.use_local_model:
             requirements.append("openai>=1.0.0")
-        
+
         # Add common additional requirements
         # Note: In a more sophisticated implementation, we could analyze
         # the MCP functions to determine specific requirements
-        requirements.extend([
-            "numpy>=1.20.0",  # Common for numerical functions
-            "json5>=0.9.0",   # For enhanced JSON support
-        ])
-        
+        requirements.extend(
+            [
+                "numpy>=1.20.0",  # Common for numerical functions
+                "json5>=0.9.0",  # For enhanced JSON support
+            ]
+        )
+
         # Remove duplicates and sort
         requirements = sorted(list(set(requirements)))
-        
-        return chr(10).join(requirements) 
+
+        return chr(10).join(requirements)

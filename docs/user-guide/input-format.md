@@ -4,7 +4,8 @@ Learn how to structure your Python files for the Gradio MCP Server Builder.
 
 ## File Structure
 
-Your input files should be standard Python files with functions decorated with `@mcp.tool()`.
+Your input files should be standard Python files with functions decorated with
+`@mcp.tool()`.
 
 ### Basic Structure
 
@@ -165,7 +166,7 @@ def variable_args(
     result = base
     for num in numbers:
         result += num
-    
+
     return {
         "result": result,
         "count": len(numbers),
@@ -221,7 +222,7 @@ def complex_return(
     """Return complex data structure."""
     if not data:
         return {"error": None, "stats": None, "data": []}
-    
+
     return {
         "error": None,
         "stats": {
@@ -235,7 +236,10 @@ def complex_return(
 
 ## Docstrings
 
-Docstrings are critical for MCP tool discovery and usage. They serve as the primary interface that AI assistants and other systems use to understand your tools. For comprehensive guidance on writing effective docstrings, see the [Docstrings and MCP Tool Discovery](docstrings.md) guide.
+Docstrings are critical for MCP tool discovery and usage. They serve as the
+primary interface that AI assistants and other systems use to understand your
+tools. For comprehensive guidance on writing effective docstrings, see the
+[Docstrings and MCP Tool Discovery](docstrings.md) guide.
 
 ### Basic Docstring
 
@@ -256,23 +260,23 @@ def detailed_docstring(
 ) -> Dict[str, Union[float, str]]:
     """
     Calculate the area and circumference of a circle.
-    
+
     This function takes a radius and calculates both the area and
     circumference of a circle with that radius.
-    
+
     Args:
         radius: The radius of the circle (must be positive)
         units: The units of measurement (default: "meters")
-        
+
     Returns:
         A dictionary containing:
             - area: The area of the circle
             - circumference: The circumference of the circle
             - units: The units used
-            
+
     Raises:
         ValueError: If radius is negative or zero
-        
+
     Example:
         >>> result = calculate_circle(5.0, "cm")
         >>> print(result)
@@ -280,11 +284,11 @@ def detailed_docstring(
     """
     if radius <= 0:
         raise ValueError("Radius must be positive")
-    
+
     import math
     area = math.pi * radius ** 2
     circumference = 2 * math.pi * radius
-    
+
     return {
         "area": round(area, 2),
         "circumference": round(circumference, 2),
@@ -302,10 +306,10 @@ def safe_operation(a: float, b: float, operation: str) -> float:
     """Perform safe mathematical operations."""
     if operation == "divide" and b == 0:
         raise ValueError("Cannot divide by zero")
-    
+
     if operation == "sqrt" and a < 0:
         raise ValueError("Cannot calculate square root of negative number")
-    
+
     if operation == "add":
         return a + b
     elif operation == "subtract":
@@ -338,10 +342,10 @@ def validate_and_process(data: Dict) -> Dict:
     # Validation
     if "name" not in data:
         raise ValidationError("Name is required")
-    
+
     if "age" in data and (data["age"] < 0 or data["age"] > 150):
         raise ValidationError("Age must be between 0 and 150")
-    
+
     # Processing
     try:
         result = {
@@ -415,7 +419,7 @@ class Config:
     timeout: int = 30
     retries: int = 3
     formats: List[str] = None
-    
+
     def __post_init__(self):
         if self.formats is None:
             self.formats = ["json", "csv"]
@@ -466,7 +470,7 @@ def convert_units(value: float, from_unit: str, to_unit: str) -> float:
         ("kg", "lbs"): 2.20462,
         ("celsius", "fahrenheit"): lambda x: (x * 9/5) + 32
     }
-    
+
     key = (from_unit, to_unit)
     if key in conversions:
         conversion = conversions[key]
@@ -482,7 +486,10 @@ def convert_units(value: float, from_unit: str, to_unit: str) -> float:
 
 ### Function Naming
 
-Use descriptive, lowercase names with underscores to make your functions easy to understand and maintain. Avoid abbreviations unless they are widely understood in your domain. Be consistent with naming conventions throughout your codebase to ensure readability and maintainability.
+Use descriptive, lowercase names with underscores to make your functions easy to
+understand and maintain. Avoid abbreviations unless they are widely understood
+in your domain. Be consistent with naming conventions throughout your codebase
+to ensure readability and maintainability.
 
 ```python
 # Good
@@ -498,15 +505,29 @@ def calc_pmt(p: float, r: float, t: int) -> float:
 
 ### Parameter Design
 
-Use meaningful parameter names that clearly indicate their purpose and expected values. Provide default values when appropriate to make your functions more convenient to use. Use type hints for all parameters to help the builder generate better interfaces and documentation. Keep parameter lists manageable with 5-7 parameters maximum to maintain function clarity and usability.
+Use meaningful parameter names that clearly indicate their purpose and expected
+values. Provide default values when appropriate to make your functions more
+convenient to use. Use type hints for all parameters to help the builder
+generate better interfaces and documentation. Keep parameter lists manageable
+with 5-7 parameters maximum to maintain function clarity and usability.
 
 ### Error Handling
 
-Validate inputs early in your function to catch problems before processing begins. Use specific exception types that clearly indicate what went wrong, such as `ValueError` for invalid inputs or `TypeError` for incorrect data types. Provide helpful error messages that explain what the user should do to fix the problem. Handle edge cases gracefully by anticipating unusual inputs and providing appropriate responses.
+Validate inputs early in your function to catch problems before processing
+begins. Use specific exception types that clearly indicate what went wrong, such
+as `ValueError` for invalid inputs or `TypeError` for incorrect data types.
+Provide helpful error messages that explain what the user should do to fix the
+problem. Handle edge cases gracefully by anticipating unusual inputs and
+providing appropriate responses.
 
 ### Documentation
 
-Write clear, concise docstrings that explain what your function does and how to use it. Include parameter descriptions that explain what each parameter expects and any constraints or requirements. Document return values to help users understand what they'll receive from your function. Provide usage examples that demonstrate common use cases and help users get started quickly. Note any side effects or limitations that users should be aware of when using your function.
+Write clear, concise docstrings that explain what your function does and how to
+use it. Include parameter descriptions that explain what each parameter expects
+and any constraints or requirements. Document return values to help users
+understand what they'll receive from your function. Provide usage examples that
+demonstrate common use cases and help users get started quickly. Note any side
+effects or limitations that users should be aware of when using your function.
 
 ## Common Patterns
 
@@ -521,14 +542,14 @@ def process_user_data(user_data: Dict) -> Dict:
     for field in required_fields:
         if field not in user_data:
             raise ValueError(f"Missing required field: {field}")
-    
+
     # Validate data types and ranges
     if not isinstance(user_data["age"], int) or user_data["age"] < 0:
         raise ValueError("Age must be a positive integer")
-    
+
     if not validate_email(user_data["email"]):
         raise ValueError("Invalid email format")
-    
+
     # Process data
     return {
         "name": user_data["name"].title(),
@@ -551,16 +572,16 @@ def configure_service(
     # Validate service name
     if not service_name or len(service_name) < 3:
         raise ValueError("Service name must be at least 3 characters")
-    
+
     # Validate environment
     valid_environments = ["development", "staging", "production"]
     if environment not in valid_environments:
         raise ValueError(f"Environment must be one of: {valid_environments}")
-    
+
     # Apply configuration
     base_config = DEFAULT_CONFIG.copy()
     base_config.update(config)
-    
+
     return {
         "service": service_name,
         "environment": environment,
@@ -571,8 +592,13 @@ def configure_service(
 
 ## Next Steps
 
-**[Command Line Options](command-line.md)** - Complete CLI reference with all available options and configuration flags for customizing the builder's behavior.
+**[Command Line Options](command-line.md)** - Complete CLI reference with all
+available options and configuration flags for customizing the builder's
+behavior.
 
-**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool analyzes your code, including function detection, signature analysis, and docstring processing.
+**[Code Parsing and Analysis](code-parsing.md)** - Understand how the tool
+analyzes your code, including function detection, signature analysis, and
+docstring processing.
 
-**[Configuration Guide](../configuration/overview.md)** - Customize behavior and settings to match your specific requirements and deployment environment. 
+**[Configuration Guide](../configuration/overview.md)** - Customize behavior and
+settings to match your specific requirements and deployment environment.

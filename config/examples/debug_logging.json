@@ -1,80 +1,80 @@
 {
-    "version": 1,
-    "disable_existing_loggers": false,
-    "formatters": {
-        "detailed": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S.%f"
-        },
-        "simple": {
-            "format": "%(levelname)s - %(message)s"
-        },
-        "debug": {
-            "format": "[%(asctime)s] %(name)s.%(funcName)s:%(lineno)d - %(levelname)s - %(message)s",
-            "datefmt": "%H:%M:%S"
-        }
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "detailed": {
+      "format": "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s() - %(message)s",
+      "datefmt": "%Y-%m-%d %H:%M:%S.%f"
     },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "level": "DEBUG",
-            "formatter": "debug",
-            "stream": "ext://sys.stdout"
-        },
-        "debug_file": {
-            "class": "logging.FileHandler",
-            "level": "DEBUG",
-            "formatter": "detailed",
-            "filename": "debug.log",
-            "mode": "w"
-        },
-        "error_file": {
-            "class": "logging.FileHandler",
-            "level": "ERROR",
-            "formatter": "detailed",
-            "filename": "errors.log",
-            "mode": "a"
-        }
+    "simple": {
+      "format": "%(levelname)s - %(message)s"
     },
-    "loggers": {
-        "gradio_mcp_builder": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file", "error_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.cli": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.parser": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.builder": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.docstring_improver": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.model_config": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        },
-        "gradio_mcp_builder.generators": {
-            "level": "DEBUG",
-            "handlers": ["console", "debug_file"],
-            "propagate": false
-        }
-    },
-    "root": {
-        "level": "DEBUG",
-        "handlers": ["console"]
+    "debug": {
+      "format": "[%(asctime)s] %(name)s.%(funcName)s:%(lineno)d - %(levelname)s - %(message)s",
+      "datefmt": "%H:%M:%S"
     }
-} 
+  },
+  "handlers": {
+    "console": {
+      "class": "logging.StreamHandler",
+      "level": "DEBUG",
+      "formatter": "debug",
+      "stream": "ext://sys.stdout"
+    },
+    "debug_file": {
+      "class": "logging.FileHandler",
+      "level": "DEBUG",
+      "formatter": "detailed",
+      "filename": "debug.log",
+      "mode": "w"
+    },
+    "error_file": {
+      "class": "logging.FileHandler",
+      "level": "ERROR",
+      "formatter": "detailed",
+      "filename": "errors.log",
+      "mode": "a"
+    }
+  },
+  "loggers": {
+    "gradio_mcp_builder": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file", "error_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.cli": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.parser": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.builder": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.docstring_improver": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.model_config": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    },
+    "gradio_mcp_builder.generators": {
+      "level": "DEBUG",
+      "handlers": ["console", "debug_file"],
+      "propagate": false
+    }
+  },
+  "root": {
+    "level": "DEBUG",
+    "handlers": ["console"]
+  }
+}

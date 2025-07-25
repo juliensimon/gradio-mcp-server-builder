@@ -6,49 +6,44 @@ Copyright (c) 2025 Julien Simon <julien@julien.org>
 Licensed under CC BY-NC 4.0: https://creativecommons.org/licenses/by-nc/4.0/
 """
 
-import gradio as gr
 import os
-import torch
-from typing import Optional
 
-from smolagents import ToolCallingAgent, MCPClient, TransformersModel
-
+import gradio as gr
+from smolagents import MCPClient, ToolCallingAgent, TransformersModel
 
 # Using smolagents.TransformersModel - no custom model class needed
 
 
-def create_agent_interface(mcp_url: str, model_name: str = "HuggingFaceTB/SmolLM3-3B") -> gr.ChatInterface:
+def create_agent_interface(
+    mcp_url: str, model_name: str = "HuggingFaceTB/SmolLM3-3B"
+) -> gr.ChatInterface:
     """Create a Gradio chat interface with MCP tools via smolagents."""
-    
+
     try:
         # Connect to MCP server
         mcp_client = MCPClient({"url": mcp_url, "transport": "sse"})
         tools = mcp_client.get_tools()
-        
+
         print(f"Connected to MCP server at {mcp_url}")
         print(f"Available tools: {[tool.name for tool in tools]}")
-        
+
         # Initialize the local language model using smolagents TransformersModel
         print("Initializing local model for agent...")
         device_map = "auto" if "mps" != "cpu" else {"": "cpu"}
         torch_dtype = "float32" if "mps" == "cpu" else "float16"
-        
+
         model = TransformersModel(
             model_id=model_name,
             device_map=device_map,
             torch_dtype=torch_dtype,
             max_new_tokens=512,
             temperature=0.7,
-            do_sample=True
+            do_sample=True,
         )
-            
+
         # Create the agent with MCP tools
-        agent = ToolCallingAgent(
-            tools=[*tools], 
-            model=model,
-            max_steps=3
-        )
-        
+        agent = ToolCallingAgent(tools=[*tools], model=model, max_steps=3)
+
         def chat_fn(message, history):
             """Process chat messages through the agent."""
             try:
@@ -56,16 +51,16 @@ def create_agent_interface(mcp_url: str, model_name: str = "HuggingFaceTB/SmolLM
                 return str(result)
             except Exception as e:
                 return f"Error: {str(e)}"
-        
+
         # Create function list for title
         func_names = [tool.name for tool in tools]
         func_list = ", ".join(func_names[:3])
         if len(func_names) > 3:
             func_list += f" and {len(func_names) - 3} more"
-        
+
         # Prepare examples
-        examples = ['Can you greet for Alice?']
-        
+        examples = ["Can you greet for Alice?"]
+
         # Create the Gradio interface
         demo = gr.ChatInterface(
             fn=chat_fn,
@@ -79,22 +74,23 @@ def create_agent_interface(mcp_url: str, model_name: str = "HuggingFaceTB/SmolLM
                 max-width: 800px !important;
                 margin: auto !important;
             }
-            """
+            """,
         )
-        
+
         return demo, mcp_client
-        
+
     except Exception as e:
         print(f"Failed to initialize MCP client: {e}")
+
         # Return a fallback interface
         def fallback_fn(message, history):
             return f"MCP client initialization failed: {str(e)}"
-            
+
         demo = gr.ChatInterface(
             fn=fallback_fn,
             type="messages",
             title="MCP Agent (Connection Failed)",
-            description="Failed to connect to MCP server. Please check the server URL and try again."
+            description="Failed to connect to MCP server. Please check the server URL and try again.",
         )
         return demo, None
 
@@ -103,42 +99,46 @@ def main():
     """Main function to launch the MCP agent interface."""
     # Load configuration to get server URL and port
     import json
-    
+
     config_file = os.path.join(os.path.dirname(__file__), "..", "config.json")
     try:
-        with open(config_file, 'r') as f:
+        with open(config_file, "r") as f:
             config = json.load(f)
-        mcp_server_url = config.get("mcp_sse_endpoint", "http://127.0.0.1:7860/gradio_api/mcp/sse")
+        mcp_server_url = config.get(
+            "mcp_sse_endpoint", "http://127.0.0.1:7860/gradio_api/mcp/sse"
+        )
         client_port = config.get("client_port", 7861)
     except (FileNotFoundError, json.JSONDecodeError):
         mcp_server_url = "http://127.0.0.1:7860/gradio_api/mcp/sse"
         client_port = 7861
         print(f"Warning: Could not load config.json, using default configuration")
-    
+
     print(f"Starting MCP Agent client...")
     print(f"MCP Server URL: {mcp_server_url}")
     print(f"Client Port: {client_port}")
     print(f"Local Model: HuggingFaceTB/SmolLM3-3B")
     print(f"Device: mps")
-    
+
     try:
-        demo, mcp_client = create_agent_interface(mcp_server_url, "HuggingFaceTB/SmolLM3-3B")
-        
+        demo, mcp_client = create_agent_interface(
+            mcp_server_url, "HuggingFaceTB/SmolLM3-3B"
+        )
+
         # Launch the interface
         demo.launch(
             server_name="127.0.0.1",
             server_port=client_port,
             share=False,
-            show_error=True
+            show_error=True,
         )
-        
+
     finally:
         # Cleanup MCP client connection
-        if 'mcp_client' in locals() and mcp_client:
+        if "mcp_client" in locals() and mcp_client:
             try:
                 mcp_client.disconnect()
                 print("MCP client disconnected")
-            except:
+            except BaseException:
                 pass
 
 

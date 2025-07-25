@@ -1,94 +1,94 @@
 {
-    "local_model": {
-        "default_model": "HuggingFaceTB/SmolLM3-3B",
-        "generation_params": {
-            "max_new_tokens": 400,
-            "temperature": 0.9,
-            "do_sample": true,
-            "top_p": 0.95,
-            "top_k": 40,
-            "repetition_penalty": 1.2,
-            "num_return_sequences": 1,
-            "early_stopping": true,
-            "length_penalty": 1.0
-        },
-        "tokenizer_params": {
-            "max_length": 512,
-            "truncation": true,
-            "padding": true,
-            "return_tensors": "pt"
-        },
-        "model_loading": {
-            "torch_dtype": "auto",
-            "low_cpu_mem_usage": true,
-            "trust_remote_code": false,
-            "cache_dir": null
-        },
-        "device_specific": {
-            "cpu": {
-                "torch_dtype": "float32",
-                "device_map": {"": "cpu"}
-            },
-            "mps": {
-                "torch_dtype": "float16",
-                "device_map": null
-            },
-            "cuda": {
-                "torch_dtype": "float16",
-                "device_map": "auto"
-            }
-        }
+  "local_model": {
+    "default_model": "HuggingFaceTB/SmolLM3-3B",
+    "generation_params": {
+      "max_new_tokens": 400,
+      "temperature": 0.9,
+      "do_sample": true,
+      "top_p": 0.95,
+      "top_k": 40,
+      "repetition_penalty": 1.2,
+      "num_return_sequences": 1,
+      "early_stopping": true,
+      "length_penalty": 1.0
     },
-    "api_model": {
-        "default_model": "gpt-4",
-        "generation_params": {
-            "max_tokens": 400,
-            "temperature": 0.8,
-            "top_p": 0.95,
-            "frequency_penalty": 0.1,
-            "presence_penalty": 0.1,
-            "n": 1,
-            "stream": false
-        },
-        "request_params": {
-            "timeout": 45,
-            "max_retries": 3,
-            "retry_delay": 2.0
-        }
+    "tokenizer_params": {
+      "max_length": 512,
+      "truncation": true,
+      "padding": true,
+      "return_tensors": "pt"
     },
-    "prompts": {
-        "docstring_improvement": {
-            "system_prompt": "You are an expert Python developer who writes comprehensive, detailed docstrings for MCP functions. Focus on clarity, examples, and edge cases.",
-            "user_prompt_template": "Generate a comprehensive docstring for this function. Be detailed and include examples where helpful.\n\nFunction: {function_name}\nSignature: {signature}\nCurrent docstring: {current_docstring}\n\nCreate a detailed docstring that explains:\n- What the function does (with examples if helpful)\n- Parameters and their types with descriptions\n- Return value and type with examples\n- Any exceptions or edge cases\n- Usage examples if appropriate\n\nDocstring:",
-            "max_lines": 20,
-            "cleanup_patterns": [
-                "^```.*",
-                "^Here's?.*",
-                "^The function.*",
-                "^Revised.*",
-                "def .*"
-            ]
-        },
-        "test_prompt_generation": {
-            "system_prompt": "You are a helpful assistant that generates creative, varied test prompts for MCP functions.",
-            "user_prompt_template": "Generate {num_prompts} diverse, creative test prompts that a user might ask to invoke this MCP function. Make them realistic but varied in style and complexity.\n\nFunction: {function_name}\nSignature: {signature}\nDocstring: {docstring}\n\nGenerate {num_prompts} natural language prompts that would trigger this function. Include simple requests, complex scenarios, and edge cases:",
-            "num_prompts": 7,
-            "fallback_template": "Test {function_name} with creative and varied inputs"
-        }
+    "model_loading": {
+      "torch_dtype": "auto",
+      "low_cpu_mem_usage": true,
+      "trust_remote_code": false,
+      "cache_dir": null
     },
-    "performance": {
-        "batch_size": 1,
-        "gradient_checkpointing": false,
-        "use_cache": true,
-        "attention_implementation": "eager"
-    },
-    "fallback": {
-        "docstring_template": "Performs {function_name} operation with detailed parameter handling and comprehensive error checking.",
-        "test_prompt_template": "Test {function_name} with diverse, creative scenarios and edge cases",
-        "error_handling": {
-            "max_retries": 3,
-            "fallback_on_error": true,
-            "log_errors": true
-        }
+    "device_specific": {
+      "cpu": {
+        "torch_dtype": "float32",
+        "device_map": { "": "cpu" }
+      },
+      "mps": {
+        "torch_dtype": "float16",
+        "device_map": null
+      },
+      "cuda": {
+        "torch_dtype": "float16",
+        "device_map": "auto"
+      }
     }
-} 
+  },
+  "api_model": {
+    "default_model": "gpt-4",
+    "generation_params": {
+      "max_tokens": 400,
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "frequency_penalty": 0.1,
+      "presence_penalty": 0.1,
+      "n": 1,
+      "stream": false
+    },
+    "request_params": {
+      "timeout": 45,
+      "max_retries": 3,
+      "retry_delay": 2.0
+    }
+  },
+  "prompts": {
+    "docstring_improvement": {
+      "system_prompt": "You are an expert Python developer who writes comprehensive, detailed docstrings for MCP functions. Focus on clarity, examples, and edge cases.",
+      "user_prompt_template": "Generate a comprehensive docstring for this function. Be detailed and include examples where helpful.\n\nFunction: {function_name}\nSignature: {signature}\nCurrent docstring: {current_docstring}\n\nCreate a detailed docstring that explains:\n- What the function does (with examples if helpful)\n- Parameters and their types with descriptions\n- Return value and type with examples\n- Any exceptions or edge cases\n- Usage examples if appropriate\n\nDocstring:",
+      "max_lines": 20,
+      "cleanup_patterns": [
+        "^```.*",
+        "^Here's?.*",
+        "^The function.*",
+        "^Revised.*",
+        "def .*"
+      ]
+    },
+    "test_prompt_generation": {
+      "system_prompt": "You are a helpful assistant that generates creative, varied test prompts for MCP functions.",
+      "user_prompt_template": "Generate {num_prompts} diverse, creative test prompts that a user might ask to invoke this MCP function. Make them realistic but varied in style and complexity.\n\nFunction: {function_name}\nSignature: {signature}\nDocstring: {docstring}\n\nGenerate {num_prompts} natural language prompts that would trigger this function. Include simple requests, complex scenarios, and edge cases:",
+      "num_prompts": 7,
+      "fallback_template": "Test {function_name} with creative and varied inputs"
+    }
+  },
+  "performance": {
+    "batch_size": 1,
+    "gradient_checkpointing": false,
+    "use_cache": true,
+    "attention_implementation": "eager"
+  },
+  "fallback": {
+    "docstring_template": "Performs {function_name} operation with detailed parameter handling and comprehensive error checking.",
+    "test_prompt_template": "Test {function_name} with diverse, creative scenarios and edge cases",
+    "error_handling": {
+      "max_retries": 3,
+      "fallback_on_error": true,
+      "log_errors": true
+    }
+  }
+}

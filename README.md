@@ -2,9 +2,14 @@
 
 > **Generate MCP servers with Gradio interfaces from Python functions**
 
-You have Python functions that you'd like to expose as web services. Maybe you've built utilities for data processing, calculations, or text analysis. You could build a web interface from scratch, but that takes time and requires web development skills.
+You have Python functions that you'd like to expose as web services. Maybe
+you've built utilities for data processing, calculations, or text analysis. You
+could build a web interface from scratch, but that takes time and requires web
+development skills.
 
-This tool helps you create MCP (Model Context Protocol) servers with Gradio web interfaces from your existing Python functions. It handles the boilerplate code so you can focus on your core functionality.
+This tool helps you create MCP (Model Context Protocol) servers with Gradio web
+interfaces from your existing Python functions. It handles the boilerplate code
+so you can focus on your core functionality.
 
 ## What It Does
 
@@ -20,6 +25,7 @@ The builder takes your Python functions and generates:
 Here are some typical use cases:
 
 ### Math Functions
+
 ```python
 @mcp.tool()
 def calculate_circle_area(radius: float) -> float:
@@ -34,6 +40,7 @@ def solve_quadratic(a: float, b: float, c: float) -> str:
 ```
 
 ### Text Processing
+
 ```python
 @mcp.tool()
 def count_words(text: str) -> int:
@@ -48,6 +55,7 @@ def analyze_sentiment(text: str) -> str:
 ```
 
 ### Data Conversion
+
 ```python
 @mcp.tool()
 def convert_temperature(celsius: float) -> float:
@@ -63,11 +71,13 @@ def format_currency(amount: float, currency: str = "USD") -> str:
 ## Getting Started
 
 ### Prerequisites
+
 - Python 3.8+
 - Basic familiarity with Python functions
 - Virtual environment (recommended to avoid dependency conflicts)
 
 ### Installation
+
 ```bash
 git clone https://github.com/juliensimon/gradio-mcp-server-builder.git
 cd gradio-mcp-server-builder
@@ -83,6 +93,7 @@ pip install -r requirements.txt
 ### Create Your First Server
 
 1. **Write your functions** in a file called `my_functions.py`:
+
 ```python
 @mcp.tool()
 def greet_user(name: str) -> str:
@@ -96,40 +107,52 @@ def add_numbers(a: float, b: float) -> float:
 ```
 
 2. **Generate the server**:
+
 ```bash
 python main.py my_functions.py --preserve-docstrings
 ```
 
 3. **Run the generated server**:
+
 ```bash
 cd output && python server/gradio_server.py
 ```
 
-4. **Test the interface** at http://127.0.0.1:7860
+4. **Test the interface** at <http://127.0.0.1:7860>
 
-**Note**: When you're done working with the project, you can deactivate the virtual environment with `deactivate`.
+**Note**: When you're done working with the project, you can deactivate the
+virtual environment with `deactivate`.
 
 ## How It Works
 
 ### Function Parsing
-The tool parses your Python file and extracts functions decorated with `@mcp.tool()`. It analyzes the function signatures, docstrings, and type hints to understand what your functions do.
+
+The tool parses your Python file and extracts functions decorated with
+`@mcp.tool()`. It analyzes the function signatures, docstrings, and type hints
+to understand what your functions do.
 
 ### Server Generation
+
 It generates an MCP server that:
+
 - Exposes your functions as callable tools
 - Handles parameter validation
 - Provides proper error handling
 - Includes logging and monitoring
 
 ### Interface Creation
+
 The Gradio interface is automatically created based on your function signatures:
+
 - Input fields match your function parameters
 - Output displays are formatted appropriately
 - Multiple functions get a tabbed interface
 - The interface is responsive and mobile-friendly
 
 ### Documentation
+
 The tool generates:
+
 - README with usage examples
 - API documentation
 - Sample client code
@@ -138,6 +161,7 @@ The tool generates:
 ## Configuration Options
 
 ### Basic Options
+
 ```bash
 # Preserve original docstrings (don't enhance with AI)
 python main.py functions.py --preserve-docstrings
@@ -150,6 +174,7 @@ python main.py functions.py --share
 ```
 
 ### Model Configuration
+
 ```bash
 # Use a local Hugging Face model
 python main.py functions.py --local-model "microsoft/DialoGPT-medium"
@@ -163,11 +188,16 @@ python main.py functions.py --env-file .env
 
 ## Limitations and Considerations
 
-- **Function Complexity**: The tool works best with pure functions that have clear inputs and outputs
-- **Dependencies**: Your functions' dependencies need to be available in the generated environment
-- **Type Hints**: While not required, type hints help the tool generate better interfaces
-- **Docstrings**: Good docstrings improve the generated documentation and AI enhancements
-- **Error Handling**: The tool provides basic error handling, but complex error scenarios may need manual adjustment
+- **Function Complexity**: The tool works best with pure functions that have
+  clear inputs and outputs
+- **Dependencies**: Your functions' dependencies need to be available in the
+  generated environment
+- **Type Hints**: While not required, type hints help the tool generate better
+  interfaces
+- **Docstrings**: Good docstrings improve the generated documentation and AI
+  enhancements
+- **Error Handling**: The tool provides basic error handling, but complex error
+  scenarios may need manual adjustment
 
 ## Project Structure
 
@@ -185,31 +215,101 @@ output/
 ## Examples
 
 Check the `input-samples/` directory for complete examples:
+
 - `input-simple/` - Basic math and geometry functions
 - `input-hello-world/` - Minimal example
 - `input-advanced/` - Complex data processing tasks
 
 ## Documentation
 
-- **[Installation Guide](docs/getting-started/installation.md)** - Detailed setup
-- **[Quick Start Guide](docs/getting-started/quickstart.md)** - Step-by-step tutorial
-- **[User Guide](docs/user-guide/input-format.md)** - Function format requirements
-- **[Configuration Guide](docs/configuration/overview.md)** - Advanced configuration
+- **[Installation Guide](docs/getting-started/installation.md)** - Detailed
+  setup
+- **[Quick Start Guide](docs/getting-started/quickstart.md)** - Step-by-step
+  tutorial
+- **[User Guide](docs/user-guide/input-format.md)** - Function format
+  requirements
+- **[Configuration Guide](docs/configuration/overview.md)** - Advanced
+  configuration
 
 ### Local Documentation
+
 ```bash
 ./serve-docs.sh
 ```
-Then visit http://127.0.0.1:8001
+
+Then visit <http://127.0.0.1:8001>
+
+## Development Setup
+
+For contributors and developers:
+
+### Quick Setup
+
+```bash
+# Run the development setup script
+./setup-dev.sh
+```
+
+### Manual Setup
+
+```bash
+# Create and activate virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Install pre-commit hooks
+pre-commit install
+```
+
+### Code Quality
+
+The project uses pre-commit hooks to maintain code quality:
+
+- **Black**: Code formatting
+- **isort**: Import sorting
+- **autopep8**: Auto-fix PEP 8 violations
+- **flake8**: Linting
+- **prettier**: Format markdown, JSON, YAML
+- **markdownlint**: Markdown linting
+
+Run manually: `pre-commit run --all-files`
+
+### Fixing Long Lines
+
+To automatically fix long lines and formatting issues:
+
+```bash
+# Run the automated fix script
+./fix-lines.sh
+
+# Or run individual tools
+black --line-length=88 .
+autopep8 --in-place --recursive --max-line-length=88 --aggressive --aggressive .
+prettier --write "**/*.md" --prose-wrap=always
+```
 
 ## Contributing
 
-We welcome contributions. Please check the existing issues and discussions before submitting changes.
+We welcome contributions. Please check the existing issues and discussions
+before submitting changes.
+
+**Before submitting a pull request:**
+
+1. Set up the development environment
+2. Ensure all pre-commit hooks pass
+3. Add tests for new functionality
+4. Update documentation as needed
 
 ## License
 
-This project is licensed under CC BY-NC 4.0. You're free to use it for personal and educational projects, but commercial use requires permission.
+This project is licensed under CC BY-NC 4.0. You're free to use it for personal
+and educational projects, but commercial use requires permission.
 
 ---
 
-**Next Steps**: Start with the [Quick Start Guide](docs/getting-started/quickstart.md) to build your first server. 
+**Next Steps**: Start with the
+[Quick Start Guide](docs/getting-started/quickstart.md) to build your first
+server.

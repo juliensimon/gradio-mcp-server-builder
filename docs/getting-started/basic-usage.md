@@ -36,21 +36,21 @@ python main.py input/functions.py \
 
 ## Command Line Options
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `input_files` | One or more Python files containing MCP functions | Required |
-| `--share` | Enable Gradio sharing for public access | `False` |
-| `--model-endpoint` | Use an OpenAI-compatible model endpoint | `None` (local model) |
-| `--preserve-docstrings` | Keep original docstrings | `False` (improve them) |
-| `--local-model` | Specify local Hugging Face model | `HuggingFaceTB/SmolLM3-3B` |
-| `--output-dir` | Output directory for generated files | `output` |
-| `--env-file` | Path to .env file for parameter passing | `None` |
-| `--device` | Device for model inference (cpu/mps/cuda) | `mps` |
-| `--port` | Port for the generated server | `7860` |
-| `--disable-sample-prompts` | Disable sample prompt generation | `False` |
-| `--log-config` | Path to logging configuration file | `json/log_config.json` |
-| `--model-config` | Path to model configuration file | `json/model_config.json` |
-| `--log-file` | Path to log file | `log/builds/output.log` |
+| Option                     | Description                                       | Default                    |
+| -------------------------- | ------------------------------------------------- | -------------------------- |
+| `input_files`              | One or more Python files containing MCP functions | Required                   |
+| `--share`                  | Enable Gradio sharing for public access           | `False`                    |
+| `--model-endpoint`         | Use an OpenAI-compatible model endpoint           | `None` (local model)       |
+| `--preserve-docstrings`    | Keep original docstrings                          | `False` (improve them)     |
+| `--local-model`            | Specify local Hugging Face model                  | `HuggingFaceTB/SmolLM3-3B` |
+| `--output-dir`             | Output directory for generated files              | `output`                   |
+| `--env-file`               | Path to .env file for parameter passing           | `None`                     |
+| `--device`                 | Device for model inference (cpu/mps/cuda)         | `mps`                      |
+| `--port`                   | Port for the generated server                     | `7860`                     |
+| `--disable-sample-prompts` | Disable sample prompt generation                  | `False`                    |
+| `--log-config`             | Path to logging configuration file                | `json/log_config.json`     |
+| `--model-config`           | Path to model configuration file                  | `json/model_config.json`   |
+| `--log-file`               | Path to log file                                  | `log/builds/output.log`    |
 
 ## Input File Format
 
@@ -63,11 +63,11 @@ Your input files should contain functions decorated with `@mcp.tool()`:
 def add_floats(a: float, b: float) -> float:
     """
     Add two floating point numbers.
-    
+
     Args:
         a: First floating point number
         b: Second floating point number
-        
+
     Returns:
         The sum of a and b
     """
@@ -146,11 +146,11 @@ Include docstrings for all functions:
 def calculate_bmi(weight: float, height: float) -> float:
     """
     Calculate Body Mass Index.
-    
+
     Args:
         weight: Weight in kilograms
         height: Height in meters
-        
+
     Returns:
         BMI value
     """
@@ -265,9 +265,9 @@ python server/gradio_server.py
 
 ### Access the Interface
 
-- **Local**: http://127.0.0.1:7860
-- **Network**: http://0.0.0.0:7860 (if configured)
-- **Public**: https://xxx.gradio.live (if using --share)
+- **Local**: <http://127.0.0.1:7860>
+- **Network**: <http://0.0.0.0:7860> (if configured)
+- **Public**: <https://xxx.gradio.live> (if using --share)
 
 ### Test the Client
 
@@ -302,6 +302,8 @@ python main.py input/functions.py --env-file .env
 
 ## Next Steps
 
-- **[Input Format Guide](../user-guide/input-format.md)** - Detailed input specifications
-- **[Command Line Options](../user-guide/command-line.md)** - Complete option reference
-- **[Configuration Guide](../configuration/overview.md)** - Customize behavior 
+- **[Input Format Guide](../user-guide/input-format.md)** - Detailed input
+  specifications
+- **[Command Line Options](../user-guide/command-line.md)** - Complete option
+  reference
+- **[Configuration Guide](../configuration/overview.md)** - Customize behavior

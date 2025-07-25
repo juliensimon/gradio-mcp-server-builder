@@ -1,0 +1,14 @@
+# Include all production dependencies
+-r requirements.txt
+
+# Development dependencies
+pre-commit>=4.0.0
+black>=23.0.0
+isort>=5.0.0
+flake8>=6.0.0
+autopep8>=2.0.0
+autoflake>=2.0.0
+mypy>=1.0.0
+bandit>=1.7.0
+markdownlint-cli>=0.38.0
+prettier>=3.0.0

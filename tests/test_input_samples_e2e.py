@@ -4,17 +4,17 @@ End-to-end test suite for all input samples.
 Tests complete workflow: build -> launch -> test live servers and clients.
 """
 
-import pytest
+import json
+import shutil
 import subprocess
 import sys
-import threading
-import time
 import tempfile
-import shutil
-import requests
-import json
+import time
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List
+
+import pytest
+import requests
 
 
 @pytest.fixture(scope="session")
@@ -24,6 +24,7 @@ def temp_output_dir():
     yield temp_dir
     if temp_dir.exists():
         shutil.rmtree(temp_dir)
+
 
 @pytest.fixture(scope="session")
 def project_root():
@@ -45,7 +46,9 @@ class ServerProcess:
         try:
             # Start server as subprocess
             cmd = [
-                sys.executable, "-c", f"""
+                sys.executable,
+                "-c",
+                f"""
 import sys
 sys.path.insert(0, '{self.server_path.parent}')
 import gradio_server
@@ -56,14 +59,14 @@ gradio_server.demo.launch(
     quiet=True,
     mcp_server=True
 )
-"""
+""",
             ]
 
             self.process = subprocess.Popen(
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                cwd=self.server_path.parent.parent
+                cwd=self.server_path.parent.parent,
             )
 
             # Wait for server to start
@@ -99,30 +102,31 @@ gradio_server.demo.launch(
         try:
             response = requests.get(f"{self.base_url}/", timeout=2)
             return response.status_code == 200
-        except:
+        except BaseException:
             return False
 
 
 class TestEndToEndInputSamples:
     """End-to-end test for all input sample examples."""
 
-    def build_sample(self, sample_files: List[str], output_dir: Path, project_root: Path) -> subprocess.CompletedProcess:
+    def build_sample(
+        self, sample_files: List[str], output_dir: Path, project_root: Path
+    ) -> subprocess.CompletedProcess:
         """Build a sample using the CLI."""
         cmd = [
-            sys.executable, "main.py",
+            sys.executable,
+            "main.py",
             *sample_files,
             "--preserve-docstrings",
             "--disable-sample-prompts",
-            "--output-dir", str(output_dir),
-            "--log-file", f"log/builds/e2e_test_{int(time.time())}.log"
+            "--output-dir",
+            str(output_dir),
+            "--log-file",
+            f"log/builds/e2e_test_{int(time.time())}.log",
         ]
 
         return subprocess.run(
-            cmd,
-            cwd=project_root,
-            capture_output=True,
-            text=True,
-            timeout=120
+            cmd, cwd=project_root, capture_output=True, text=True, timeout=120
         )
 
     def test_e2e_basic_hello_world(self, temp_output_dir, project_root):
@@ -163,19 +167,25 @@ class TestEndToEndInputSamples:
                 # SSE endpoint should respond, even if it's a streaming response
                 response = requests.get(mcp_url, timeout=3, stream=True)
                 # For SSE, we expect 200 status and text/event-stream content type
-                assert response.status_code == 200, f"MCP SSE endpoint returned {response.status_code}"
-                content_type = response.headers.get('content-type', '')
+                assert (
+                    response.status_code == 200
+                ), f"MCP SSE endpoint returned {response.status_code}"
+                content_type = response.headers.get("content-type", "")
                 print(f"✅ MCP SSE endpoint accessible (content-type: {content_type})")
 
                 # Try to read the first chunk to ensure it's responding
                 chunk_received = False
                 try:
-                    for chunk in response.iter_content(chunk_size=1024, decode_unicode=True):
+                    for chunk in response.iter_content(
+                        chunk_size=1024, decode_unicode=True
+                    ):
                         if chunk:
                             chunk_received = True
-                            print(f"✅ MCP SSE endpoint streaming data: {chunk[:100]}...")
+                            print(
+                                f"✅ MCP SSE endpoint streaming data: {chunk[:100]}..."
+                            )
                             break
-                except:
+                except BaseException:
                     pass  # Reading might timeout, which is normal for SSE
 
                 if not chunk_received:
@@ -183,7 +193,9 @@ class TestEndToEndInputSamples:
 
             except requests.exceptions.ReadTimeout:
                 # SSE connections can timeout while waiting for events, this is normal
-                print("✅ MCP SSE endpoint opened (timed out waiting for events - normal)")
+                print(
+                    "✅ MCP SSE endpoint opened (timed out waiting for events - normal)"
+                )
             except Exception as e:
                 print(f"❌ MCP SSE endpoint error: {e}")
                 # Continue testing even if SSE has issues
@@ -197,7 +209,9 @@ class TestEndToEndInputSamples:
                     tools_data = response.json()
                     print(f"✅ MCP tools endpoint returned {len(tools_data)} tools")
                 else:
-                    print(f"⚠️ MCP tools endpoint returned status {response.status_code}")
+                    print(
+                        f"⚠️ MCP tools endpoint returned status {response.status_code}"
+                    )
             except Exception as e:
                 print(f"⚠️ MCP tools endpoint error: {e}")
 
@@ -205,16 +219,16 @@ class TestEndToEndInputSamples:
             print("Testing MCP function call...")
             try:
                 call_url = f"{server.base_url}/gradio_api/mcp/call"
-                call_payload = {
-                    "name": "greet",
-                    "arguments": {"name": "MCP Test User"}
-                }
+                call_payload = {"name": "greet", "arguments": {"name": "MCP Test User"}}
                 response = requests.post(call_url, json=call_payload, timeout=5)
                 if response.status_code == 200:
                     result_data = response.json()
                     print(f"✅ MCP function call successful: {result_data}")
                 else:
-                    print(f"⚠️ MCP function call returned status {response.status_code}")
+                    print(
+                        f"⚠️ MCP function call returned status {
+                            response.status_code}"
+                    )
             except Exception as e:
                 print(f"⚠️ MCP function call error: {e}")
 
@@ -222,6 +236,7 @@ class TestEndToEndInputSamples:
             sys.path.insert(0, str(server_file.parent))
             try:
                 import gradio_server
+
                 result = gradio_server.greet("E2E Test")
                 assert isinstance(result, str)
                 assert "E2E Test" in result
@@ -230,10 +245,8 @@ class TestEndToEndInputSamples:
             finally:
                 if str(server_file.parent) in sys.path:
                     sys.path.remove(str(server_file.parent))
-                if 'gradio_server' in sys.modules:
-                    del sys.modules['gradio_server']
-
-
+                if "gradio_server" in sys.modules:
+                    del sys.modules["gradio_server"]
 
         finally:
             server.stop()
@@ -248,7 +261,7 @@ class TestEndToEndInputSamples:
         # 1. Build the server and client
         sample_files = [
             "input-samples/input-simple/math_operations.py",
-            "input-samples/input-simple/geometry.py"
+            "input-samples/input-simple/geometry.py",
         ]
         build_dir = temp_output_dir / "e2e_simple"
 
@@ -271,7 +284,9 @@ class TestEndToEndInputSamples:
             mcp_url = f"{server.base_url}/gradio_api/mcp/sse"
             try:
                 response = requests.get(mcp_url, timeout=3, stream=True)
-                assert response.status_code == 200, f"MCP SSE endpoint returned {response.status_code}"
+                assert (
+                    response.status_code == 200
+                ), f"MCP SSE endpoint returned {response.status_code}"
                 print("✅ MCP SSE endpoint accessible")
             except requests.exceptions.ReadTimeout:
                 print("✅ MCP SSE endpoint opened (timeout normal)")
@@ -294,6 +309,7 @@ class TestEndToEndInputSamples:
 
                 # Test geometry functions
                 import math
+
                 result3 = gradio_server.circle_area(3)
                 expected = math.pi * 9
                 assert abs(result3 - expected) < 0.001, f"circle_area failed: {result3}"
@@ -305,14 +321,17 @@ class TestEndToEndInputSamples:
 
                 # Verify it's using Blocks (tabbed interface)
                 import gradio as gr
-                assert isinstance(gradio_server.demo, gr.Blocks), "Should use Blocks for multiple functions"
+
+                assert isinstance(
+                    gradio_server.demo, gr.Blocks
+                ), "Should use Blocks for multiple functions"
                 print("✅ Using Blocks interface for multiple functions")
 
             finally:
                 if str(server_file.parent) in sys.path:
                     sys.path.remove(str(server_file.parent))
-                if 'gradio_server' in sys.modules:
-                    del sys.modules['gradio_server']
+                if "gradio_server" in sys.modules:
+                    del sys.modules["gradio_server"]
 
         finally:
             server.stop()
@@ -328,7 +347,7 @@ class TestEndToEndInputSamples:
         sample_files = [
             "input-samples/input-advanced/task_storage.py",
             "input-samples/input-advanced/task_analytics.py",
-            "input-samples/input-advanced/task_utilities.py"
+            "input-samples/input-advanced/task_utilities.py",
         ]
         build_dir = temp_output_dir / "e2e_advanced"
 
@@ -351,7 +370,9 @@ class TestEndToEndInputSamples:
             mcp_url = f"{server.base_url}/gradio_api/mcp/sse"
             try:
                 response = requests.get(mcp_url, timeout=3, stream=True)
-                assert response.status_code == 200, f"MCP SSE endpoint returned {response.status_code}"
+                assert (
+                    response.status_code == 200
+                ), f"MCP SSE endpoint returned {response.status_code}"
                 print("✅ MCP SSE endpoint accessible")
             except requests.exceptions.ReadTimeout:
                 print("✅ MCP SSE endpoint opened (timeout normal)")
@@ -364,8 +385,12 @@ class TestEndToEndInputSamples:
                 import gradio_server
 
                 # Test task creation
-                result1 = gradio_server.create_task("E2E Test Task", "Testing end-to-end workflow", "high")
-                assert "successfully" in result1.lower(), f"create_task failed: {result1}"
+                result1 = gradio_server.create_task(
+                    "E2E Test Task", "Testing end-to-end workflow", "high"
+                )
+                assert (
+                    "successfully" in result1.lower()
+                ), f"create_task failed: {result1}"
                 print(f"✅ Task created: {result1}")
 
                 # Test task statistics
@@ -381,21 +406,30 @@ class TestEndToEndInputSamples:
                 print(f"✅ Task search completed: {len(search_result)} chars returned")
 
                 # Test helper functions are available
-                assert hasattr(gradio_server, '_load_tasks'), "Helper function _load_tasks missing"
-                assert hasattr(gradio_server, '_save_tasks'), "Helper function _save_tasks missing"
-                assert hasattr(gradio_server, 'TASKS_FILE'), "Constant TASKS_FILE missing"
+                assert hasattr(
+                    gradio_server, "_load_tasks"
+                ), "Helper function _load_tasks missing"
+                assert hasattr(
+                    gradio_server, "_save_tasks"
+                ), "Helper function _save_tasks missing"
+                assert hasattr(
+                    gradio_server, "TASKS_FILE"
+                ), "Constant TASKS_FILE missing"
                 print("✅ Helper functions and constants available")
 
                 # Verify it's using Blocks (tabbed interface)
                 import gradio as gr
-                assert isinstance(gradio_server.demo, gr.Blocks), "Should use Blocks for multiple functions"
+
+                assert isinstance(
+                    gradio_server.demo, gr.Blocks
+                ), "Should use Blocks for multiple functions"
                 print("✅ Using Blocks interface for multiple functions")
 
             finally:
                 if str(server_file.parent) in sys.path:
                     sys.path.remove(str(server_file.parent))
-                if 'gradio_server' in sys.modules:
-                    del sys.modules['gradio_server']
+                if "gradio_server" in sys.modules:
+                    del sys.modules["gradio_server"]
 
         finally:
             server.stop()
