@@ -123,6 +123,8 @@ The builder automatically generates an MCP client that uses the `smolagents` lib
 - Provide conversational responses with results
 - Handle complex multi-step interactions
 
+For a detailed explanation of how the agent client works, see the [Agent Client Guide](../user-guide/agent-client.md).
+
 #### Running the Generated Client
 
 To use the MCP client, navigate to your output directory and run:

@@ -52,7 +52,7 @@ The builder automatically creates interfaces that adapt to your function structu
 
 Beyond basic server generation, the builder offers several advanced capabilities. Local model support allows you to use Hugging Face models locally for docstring improvement, while API integration connects to OpenAI-compatible endpoints. Custom configuration options let you fine-tune model behavior and logging, and environment variables provide secure configuration management. The tool includes performance optimization with automatic device detection for CPU, CUDA, and MPS.
 
-The smolagents-based MCP client provides advanced testing and integration capabilities. It automatically discovers server tools, validates parameters, and generates sample prompts. This client can be customized for specific testing scenarios or extended to integrate with other MCP-compatible frameworks and applications.
+The smolagents-based MCP client provides advanced testing and integration capabilities. It automatically discovers server tools, validates parameters, and generates sample prompts. This client can be customized for specific testing scenarios or extended to integrate with other MCP-compatible frameworks and applications. The agent client guide provides detailed information about its architecture, configuration, and usage patterns.
 
 ## Documentation
 
