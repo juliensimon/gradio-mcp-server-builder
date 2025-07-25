@@ -4,7 +4,6 @@ Basic Math Operations Module
 This module provides fundamental arithmetic operations as MCP tools.
 """
 
-
 @mcp.tool()
 def add_numbers(a: float, b: float) -> float:
     """

@@ -4,7 +4,6 @@ Basic Hello World MCP Function
 This module demonstrates a simple MCP tool function.
 """
 
-
 @mcp.tool()
 def greet(name: str) -> str:
     """
