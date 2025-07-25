@@ -59,6 +59,7 @@ Both CI and slow test workflows upload artifacts:
 - Test results (`.pytest_cache/`)
 - Log files (`log/`)
 - Retention: 7 days (CI), 30 days (slow tests)
+- Uses latest GitHub Actions (v4 for artifacts, v4 for cache)
 
 ## Configuration
 
