@@ -95,7 +95,7 @@ The builder generates everything you need:
 
 - **🚀 MCP Server** - Exposes your functions as callable tools
 - **🌐 Gradio Interface** - Practical web UI for testing and demonstration
-- **📚 README** - Generated documentation with function descriptions
+- **📚 AI-generated docstrings** - Enhanced function documentation
 - **🧪 Test Client** - For testing the server
 - **⚙️ Configuration** - Requirements and config files
 
@@ -108,7 +108,7 @@ The tool automatically:
 1. **Parses** your `@mcp.tool()` decorated functions
 2. **Generates** an MCP server with validation and error handling
 3. **Creates** a responsive Gradio UI based on your function signatures
-4. **Documents** everything with examples and descriptions
+4. **Enhances** function docstrings with AI
 
 ![Server generation process](images/1-generating-the-input-simple-server.webp)
 
