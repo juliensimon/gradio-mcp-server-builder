@@ -672,7 +672,16 @@ if __name__ == "__main__":
             else:
                 # Generic example with first parameter
                 param_name = param_names[0]
-                return f"Can you {function_name} with {param_name}='example'?"
+                param_type = param_types[0]
+                # Use real values based on parameter type
+                if param_type == "float":
+                    return f"Can you {function_name} with {param_name}=5.0?"
+                elif param_type == "int":
+                    return f"Can you {function_name} with {param_name}=10?"
+                elif param_type == "bool":
+                    return f"Can you {function_name} with {param_name}=True?"
+                else:
+                    return f"Can you {function_name} with {param_name}='test'?"
         else:
             # For parameterless functions
             if any(
@@ -715,8 +724,18 @@ if __name__ == "__main__":
                 elif len(params) == 2 and all(t in ["int", "float"] for _, t in params):
                     examples.append(f"{function_name.capitalize()} 10 and 5")
                 else:
-                    # Generic parameter-based prompt
-                    param_example = ", ".join([f"{p}='example'" for p, _ in params[:2]])
+                    # Generic parameter-based prompt with real values
+                    param_examples = []
+                    for param_name, param_type in params[:2]:
+                        if param_type == "float":
+                            param_examples.append(f"{param_name}=5.0")
+                        elif param_type == "int":
+                            param_examples.append(f"{param_name}=10")
+                        elif param_type == "bool":
+                            param_examples.append(f"{param_name}=True")
+                        else:
+                            param_examples.append(f"{param_name}='test'")
+                    param_example = ", ".join(param_examples)
                     examples.append(f"Use {function_name} with {param_example}")
             else:
                 # For parameterless functions
