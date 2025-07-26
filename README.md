@@ -96,6 +96,30 @@ def format_currency(amount: float, currency: str = "USD") -> str:
 
 ## Getting Started
 
+### Visual Demo
+
+Here's what the tool generates for you:
+
+![Generating the server](images/1-generating-the-input-simple-server.webp)
+
+*Building an MCP server from Python functions*
+
+![Server UI](images/2-ui-of-the-input-simple-server.webp)
+
+*The generated Gradio server interface*
+
+![Client listing tools](images/3-ui-of-the-input-simple-client-listing-tools.webp)
+
+*MCP client interface showing available tools*
+
+![Client calling function](images/4-ui-of-the-input-simple-client-calling-a-function.webp)
+
+*Using the client to call a function*
+
+![Terminal output](images/5-terminal-output-of-the-input-simple-client-calling-a-function.webp)
+
+*Terminal output showing the function execution*
+
 ### Prerequisites
 
 - Python 3.8+
@@ -151,6 +175,10 @@ virtual environment with `deactivate`.
 
 ## How It Works
 
+The tool transforms your Python functions into a complete MCP server with web interface:
+
+![Server generation process](images/1-generating-the-input-simple-server.webp)
+
 ### Function Parsing
 
 The tool parses your Python file and extracts functions decorated with
@@ -169,6 +197,8 @@ It generates an MCP server that:
 ### Interface Creation
 
 The Gradio interface is automatically created based on your function signatures:
+
+![Generated Gradio interface](images/2-ui-of-the-input-simple-server.webp)
 
 - Input fields match your function parameters
 - Output displays are formatted appropriately
